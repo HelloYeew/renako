@@ -1,0 +1,10 @@
+{
+  "solution": {
+    "path": "Renako.sln",
+    "projects": [
+      "Renako.Game\\Renako.Game.csproj",
+      "Renako.Resources\\Renako.Resources.csproj",
+      "Renako.iOS\\Renako.iOS.csproj"
+    ]
+  }
+}

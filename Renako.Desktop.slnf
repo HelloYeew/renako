@@ -1,0 +1,11 @@
+﻿{
+  "solution": {
+    "path": "Renako.sln",
+    "projects": [
+      "Renako.Desktop\\Renako.Desktop.csproj",
+      "Renako.Game\\Renako.Game.csproj",
+      "Renako.Game.Tests\\Renako.Game.Tests.csproj",
+      "Renako.Resources\\Renako.Resources.csproj"
+    ]
+  }
+}
