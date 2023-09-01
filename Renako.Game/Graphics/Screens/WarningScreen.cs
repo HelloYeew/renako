@@ -95,20 +95,20 @@ public partial class WarningScreen : Screen
         base.OnEntering(e);
 
         logoContainer.ScaleTo(1, 500, Easing.OutCubic)
-                     .Delay(1500)
+                     .Delay(1750)
                      .RotateTo(-45, 250, Easing.OutCubic)
                      .Then()
                      .RotateTo(0, 250, Easing.OutCubic)
                      .Then()
                      .ScaleTo(0, 150, Easing.OutExpo);
         warningTextContainer.ScaleTo(1, 1000, Easing.OutCubic)
-                            .Delay(2000)
+                            .Delay(2250)
                             .ScaleTo(0, 150, Easing.OutExpo);
         descriptionText.ScaleTo(1, 1250, Easing.OutCubic)
-                       .Delay(2000)
+                       .Delay(2250)
                        .ScaleTo(0, 150, Easing.OutExpo);
         descriptionText2.ScaleTo(1, 1500, Easing.OutCubic)
-                        .Delay(2000)
+                        .Delay(2250)
                         .ScaleTo(0, 150, Easing.OutExpo);
     }
 }
