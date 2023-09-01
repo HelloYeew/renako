@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
+using Renako.Game.Audio;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 
@@ -18,12 +19,16 @@ public partial class TestSceneStartScreen : RenakoTestScene
     [Cached]
     private LogoScreenStack logoScreenStack = new LogoScreenStack();
 
+    [Cached]
+    private RenakoAudioManager audioManager = new RenakoAudioManager();
+
     [BackgroundDependencyLoader]
     private void load()
     {
         Dependencies.CacheAs(logoScreenStack);
         Dependencies.CacheAs(backgroundScreenStack);
         Dependencies.CacheAs(mainScreenStack);
+        Dependencies.CacheAs(audioManager);
     }
 
     [SetUp]
@@ -32,6 +37,7 @@ public partial class TestSceneStartScreen : RenakoTestScene
         Add(backgroundScreenStack);
         Add(mainScreenStack);
         Add(logoScreenStack);
+        Add(audioManager);
         mainScreenStack.Push(new StartScreen());
         AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is StartScreen);
         AddStep("rerun", () => {

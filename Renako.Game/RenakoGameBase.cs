@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
@@ -19,6 +20,8 @@ namespace Renako.Game
         private DependencyContainer dependencies;
 
         private RenakoTextureStore textureStore;
+
+        private AudioManager audioManager;
 
         protected RenakoGameBase()
         {
@@ -61,7 +64,11 @@ namespace Renako.Game
 
             // Host.Storage.PresentExternally();
 
+            ResourceStore<byte[]> trackResourceStore = new ResourceStore<byte[]>();
+            trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Tracks"));
+
             dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
+            dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
             dependencies.CacheAs(this);
         }
 

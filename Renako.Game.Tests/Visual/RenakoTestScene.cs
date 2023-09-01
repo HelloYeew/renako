@@ -11,7 +11,8 @@ namespace Renako.Game.Tests.Visual
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
-            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
+            IReadOnlyDependencyContainer baseDependencies = base.CreateChildDependencies(parent);
+            Dependencies = new DependencyContainer(baseDependencies);
             return Dependencies;
         }
 

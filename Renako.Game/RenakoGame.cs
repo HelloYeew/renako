@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
+using Renako.Game.Audio;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 
@@ -17,12 +19,18 @@ namespace Renako.Game
         private RenakoScreenStack mainScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
+        private RenakoAudioManager audioManager;
+        private Container drawableContainer;
 
         [BackgroundDependencyLoader]
         private void load()
         {
             Children = new Drawable[]
             {
+                drawableContainer = new Container
+                {
+                    RelativeSizeAxes = Axes.Both
+                },
                 backgroundScreenStack = new RenakoBackgroundScreenStack()
                 {
                     RelativeSizeAxes = Axes.Both
@@ -39,6 +47,8 @@ namespace Renako.Game
             dependencies.CacheAs(mainScreenStack);
             dependencies.CacheAs(backgroundScreenStack);
             dependencies.CacheAs(logoScreenStack);
+
+            loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>

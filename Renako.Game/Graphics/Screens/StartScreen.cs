@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using Renako.Game.Audio;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
@@ -21,6 +22,9 @@ public partial class StartScreen : Screen
 
     [Resolved]
     private LogoScreenStack logoScreenStack { get; set; }
+
+    [Resolved]
+    private RenakoAudioManager audioManager { get; set; }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
@@ -42,6 +46,8 @@ public partial class StartScreen : Screen
     public override void OnEntering(ScreenTransitionEvent e)
     {
         base.OnEntering(e);
+
+        audioManager.Track.Start();
 
         backgroundScreenStack.ImageSprite.Delay(250).FadeTo(1, 750, Easing.OutCubic);
 
@@ -66,6 +72,8 @@ public partial class StartScreen : Screen
 
     private void goToMainMenu()
     {
+        if (Clock.CurrentTime < 2000) return;
+
         this.Exit();
         logoScreenStack.LogoScreenObject.Logo.MoveTo(new Vector2(0.10f, 0.10f), 500, Easing.InOutCirc);
         mainScreenStack.Push(new MainMenuScreen());
