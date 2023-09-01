@@ -59,6 +59,8 @@ namespace Renako.Game
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Compatibility");
 
+            // Host.Storage.PresentExternally();
+
             dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
             dependencies.CacheAs(this);
         }

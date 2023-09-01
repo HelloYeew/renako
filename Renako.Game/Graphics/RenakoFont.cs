@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using osu.Framework.Graphics.Sprites;
 
 namespace Renako.Game.Graphics;
@@ -57,6 +58,9 @@ public class RenakoFont
             case Typeface.YuGothic:
                 return italics;
 
+            case Typeface.Offside:
+                return italics;
+
             default:
                 throw new ArgumentOutOfRangeException(nameof(typeface), typeface, null);
         }
@@ -75,16 +79,17 @@ public class RenakoFont
                 return "MPlus1p";
 
             case Typeface.JosefinSans:
-                return "Josefin Sans";
+                return "JosefinSans";
 
             case Typeface.YuGothic:
-                return "Yu Gothic";
+                return "YuGothic";
 
             case Typeface.Offside:
                 return "Offside";
-        }
 
-        return null;
+            default:
+                return null;
+        }
     }
 
     /// <summary>
@@ -93,8 +98,13 @@ public class RenakoFont
     /// <param name="typeface">The <see cref="Typeface"/>.</param>
     /// <param name="weight">The <see cref="FontWeight"/>.</param>
     /// <returns>The string representation of <paramref name="weight"/> in the specified <paramref name="typeface"/>.</returns>
+    [CanBeNull]
     public static string GetWeightString(Typeface typeface, FontWeight weight)
     {
+        // Offside font doesn't have any weight
+        if (typeface == Typeface.Offside || (typeface == Typeface.JosefinSans && weight == FontWeight.Regular))
+            return null;
+
         return GetWeightString(GetFamilyString(typeface), weight);
     }
 
