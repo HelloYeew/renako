@@ -26,14 +26,14 @@ public partial class RenakoLogo : CompositeDrawable
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Size = new Vector2(84),
-                    Texture = textureStore.Get("renako-logo")
+                    Texture = textureStore.Get("renako-logo-white-pink")
                 },
                 new SpriteText()
                 {
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Font = RenakoFont.GetFont(RenakoFont.Typeface.Offside, 48),
-                    Colour = Color4Extensions.FromHex("C589B3"),
+                    Colour = Color4Extensions.FromHex("F0C3DB"),
                     Size = new Vector2(159, 53),
                     Text = "Renako"
                 }

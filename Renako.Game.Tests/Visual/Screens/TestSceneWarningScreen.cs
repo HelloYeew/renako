@@ -9,16 +9,29 @@ namespace Renako.Game.Tests.Visual.Screens;
 [TestFixture]
 public partial class TestSceneWarningScreen : RenakoTestScene
 {
-    private ScreenStack mainScreenStack = new ScreenStack();
+    [Cached]
+    private RenakoBackgroundScreenStack backgroundScreenStack = new RenakoBackgroundScreenStack();
 
-    [Resolved]
-    private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
+    [Cached]
+    private RenakoScreenStack mainScreenStack = new RenakoScreenStack();
 
-    public TestSceneWarningScreen()
+    [Cached]
+    private LogoScreenStack logoScreenStack = new LogoScreenStack();
+
+    [BackgroundDependencyLoader]
+    private void load()
     {
+        Dependencies.CacheAs(logoScreenStack);
+        Dependencies.CacheAs(backgroundScreenStack);
+        Dependencies.CacheAs(mainScreenStack);
+    }
 
-        Add(backgroundScreenStack = new RenakoBackgroundScreenStack());
+    [SetUp]
+    private void setUp()
+    {
+        Add(backgroundScreenStack);
         Add(mainScreenStack);
+        Add(logoScreenStack);
         mainScreenStack.Push(new WarningScreen());
         AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is WarningScreen);
         AddStep("rerun", () => {

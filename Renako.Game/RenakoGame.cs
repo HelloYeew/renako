@@ -5,6 +5,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
+using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game
@@ -15,6 +16,7 @@ namespace Renako.Game
 
         private RenakoScreenStack mainScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
+        private LogoScreenStack logoScreenStack;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -28,10 +30,15 @@ namespace Renako.Game
                 mainScreenStack = new RenakoScreenStack()
                 {
                     RelativeSizeAxes = Axes.Both
+                },
+                logoScreenStack = new LogoScreenStack()
+                {
+                    RelativeSizeAxes = Axes.Both
                 }
             };
             dependencies.CacheAs(mainScreenStack);
             dependencies.CacheAs(backgroundScreenStack);
+            dependencies.CacheAs(logoScreenStack);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -41,7 +48,7 @@ namespace Renako.Game
         {
             base.LoadComplete();
 
-            mainScreenStack.Push(new MainScreen());
+            mainScreenStack.Push(new WarningScreen());
         }
 
         private Task asyncLoadStream;

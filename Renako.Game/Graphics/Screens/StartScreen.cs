@@ -5,14 +5,12 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
-using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
 public partial class StartScreen : Screen
 {
-    private RenakoLogo logo;
     private SpriteText pressAnyKeyText;
 
     [Resolved]
@@ -21,18 +19,14 @@ public partial class StartScreen : Screen
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
+    [Resolved]
+    private LogoScreenStack logoScreenStack { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
         InternalChildren = new Drawable[]
         {
-            logo = new RenakoLogo()
-            {
-                Anchor = Anchor.TopCentre,
-                Origin = Anchor.TopCentre,
-                RelativePositionAxes = Axes.Y,
-                Position = new Vector2(0, -0.15f)
-            },
             pressAnyKeyText = new SpriteText()
             {
                 Anchor = Anchor.BottomCentre,
@@ -40,37 +34,40 @@ public partial class StartScreen : Screen
                 RelativePositionAxes = Axes.Y,
                 Position = new Vector2(0, 0.15f),
                 Text = "Press any key to start".ToUpper(),
-                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 42f, RenakoFont.FontWeight.Bold),
-                Alpha = 0
+                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 42f, RenakoFont.FontWeight.Bold)
             }
         };
-
-        Scheduler.AddDelayed(() =>
-        {
-            backgroundScreenStack.ImageSprite.Texture = textureStore.Get("main-background");
-            backgroundScreenStack.ImageSprite.FadeTo(1, 250, Easing.OutCubic);
-        }, 250);
     }
 
     public override void OnEntering(ScreenTransitionEvent e)
     {
         base.OnEntering(e);
 
-        logo.MoveToY(0.15f, 750, Easing.OutCubic);
+        backgroundScreenStack.ImageSprite.Delay(250).FadeTo(1, 750, Easing.OutCubic);
+
+        logoScreenStack.LogoScreenObject.Logo.Position = new Vector2(0.5f, -0.15f);
+        logoScreenStack.LogoScreenObject.Logo.Alpha = 1;
+        logoScreenStack.LogoScreenObject.Logo.MoveTo(new Vector2(0.5f, 0.15f), 750, Easing.OutCubic);
         pressAnyKeyText.Delay(500).MoveToY(-0.15f, 750, Easing.OutCubic);
-        pressAnyKeyText.FadeTo(0, 500)
-                       .FadeTo(1, 500)
-                       .Loop();
+        Scheduler.AddDelayed(() => pressAnyKeyText.Loop(b => b.FadeTo(0.25f).FadeTo(1, 1000)).Loop(), 1250);
+    }
+
+    protected override bool OnMouseDown(MouseDownEvent e)
+    {
+        goToMainMenu();
+        return base.OnMouseDown(e);
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
     {
+        goToMainMenu();
         return base.OnKeyDown(e);
     }
 
     private void goToMainMenu()
     {
         this.Exit();
+        logoScreenStack.LogoScreenObject.Logo.MoveTo(new Vector2(0.10f, 0.10f), 500, Easing.InOutCirc);
         mainScreenStack.Push(new MainMenuScreen());
     }
 }

@@ -1,6 +1,5 @@
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
-using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Tests.Visual
 {
@@ -10,16 +9,9 @@ namespace Renako.Game.Tests.Visual
 
         public new DependencyContainer Dependencies { get; set; }
 
-        public new RenakoBackgroundScreenStack BackgroundScreenStack { get; set; }
-
-        public new RenakoScreenStack MainScreenStack { get; set; }
-
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent)
         {
-            IReadOnlyDependencyContainer baseDependencies = base.CreateChildDependencies(parent);
-            Dependencies = new DependencyContainer(baseDependencies);
-            Dependencies.CacheAs(BackgroundScreenStack = new RenakoBackgroundScreenStack());
-            Dependencies.CacheAs(MainScreenStack = new RenakoScreenStack());
+            Dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
             return Dependencies;
         }
 

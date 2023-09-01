@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Screens;
 using osuTK;
+using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
@@ -15,6 +16,9 @@ public partial class WarningScreen : Screen
     private Container warningTextContainer;
     private SpriteText descriptionText;
     private SpriteText descriptionText2;
+
+    [Resolved]
+    private RenakoScreenStack mainScreenStack { get; set; }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
@@ -95,20 +99,22 @@ public partial class WarningScreen : Screen
         base.OnEntering(e);
 
         logoContainer.ScaleTo(1, 500, Easing.OutCubic)
-                     .Delay(1750)
+                     .Delay(2000)
                      .RotateTo(-45, 250, Easing.OutCubic)
                      .Then()
                      .RotateTo(0, 250, Easing.OutCubic)
                      .Then()
                      .ScaleTo(0, 150, Easing.OutExpo);
         warningTextContainer.ScaleTo(1, 1000, Easing.OutCubic)
-                            .Delay(2250)
+                            .Delay(2500)
                             .ScaleTo(0, 150, Easing.OutExpo);
         descriptionText.ScaleTo(1, 1250, Easing.OutCubic)
-                       .Delay(2250)
+                       .Delay(2500)
                        .ScaleTo(0, 150, Easing.OutExpo);
         descriptionText2.ScaleTo(1, 1500, Easing.OutCubic)
-                        .Delay(2250)
+                        .Delay(2500)
                         .ScaleTo(0, 150, Easing.OutExpo);
+
+        Scheduler.AddDelayed(() => mainScreenStack.Push(new StartScreen()), 3500);
     }
 }
