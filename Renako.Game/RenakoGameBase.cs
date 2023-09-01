@@ -3,6 +3,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
 using osuTK;
+using Renako.Game.Stores;
 using Renako.Resources;
 
 namespace Renako.Game
@@ -14,6 +15,10 @@ namespace Renako.Game
         // the screen scaling for all components including the test browser and framework overlays.
 
         protected override Container<Drawable> Content { get; }
+
+        private DependencyContainer dependencies;
+
+        private RenakoTextureStore textureStore;
 
         protected RenakoGameBase()
         {
@@ -53,6 +58,11 @@ namespace Renako.Game
             AddFont(Resources, @"Fonts/Noto/Noto-Hangul");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Compatibility");
+
+            dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
+            dependencies.CacheAs(this);
         }
+
+        protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
     }
 }
