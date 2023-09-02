@@ -5,11 +5,11 @@ using Renako.Game.Graphics.Drawables;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneLogo : RenakoTestScene
+public partial class TestSceneMenuButton : RenakoTestScene
 {
-    public TestSceneLogo()
+    public TestSceneMenuButton()
     {
-        Add(new RenakoLogo()
+        Add(new MenuButton()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre

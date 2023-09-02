@@ -17,19 +17,21 @@ public partial class LogoScreen : Screen
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
-    [BackgroundDependencyLoader]
-    private void load()
+    public LogoScreen()
     {
-        mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeLogoLocationOnScreenChanged(e.OldValue, e.NewValue));
-
         InternalChild = Logo = new RenakoLogo()
         {
             Anchor = Anchor.TopLeft,
             Origin = Anchor.Centre,
             RelativePositionAxes = Axes.Both,
-            RelativeSizeAxes = Axes.Both,
             Alpha = 0
         };
+    }
+
+    [BackgroundDependencyLoader]
+    private void load()
+    {
+        mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeLogoLocationOnScreenChanged(e.OldValue, e.NewValue));
     }
 
     /// <summary>
@@ -48,7 +50,16 @@ public partial class LogoScreen : Screen
         }
         else if (oldScreen is StartScreen && newScreen is MainMenuScreen)
         {
-            Logo.MoveTo(new Vector2(0.1f, 0.075f), 500, Easing.InOutCirc);
+            MoveToMainMenu();
         }
+    }
+
+    /// <summary>
+    /// Run the logo animation to move to main menu.
+    /// </summary>
+    public void MoveToMainMenu()
+    {
+        Logo.Alpha = 1;
+        Logo.MoveTo(new Vector2(0.1f, 0.075f), 500, Easing.InOutCirc);
     }
 }

@@ -5,11 +5,11 @@ using Renako.Game.Graphics.Drawables;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneLogo : RenakoTestScene
+public partial class TestSceneReverseMenuButton : RenakoTestScene
 {
-    public TestSceneLogo()
+    public TestSceneReverseMenuButton()
     {
-        Add(new RenakoLogo()
+        Add(new ReverseMenuButton()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre
