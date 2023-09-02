@@ -21,9 +21,9 @@ public partial class LogoScreen : Screen
     {
         InternalChild = Logo = new RenakoLogo()
         {
-            Anchor = Anchor.TopLeft,
+            Anchor = Anchor.TopCentre,
             Origin = Anchor.Centre,
-            RelativePositionAxes = Axes.Both,
+            RelativePositionAxes = Axes.Y,
             Alpha = 0
         };
     }
@@ -44,9 +44,9 @@ public partial class LogoScreen : Screen
         // WarningScreen -> StartScreen : Move logo from top.
         if (oldScreen is WarningScreen && newScreen is StartScreen)
         {
-            Logo.Position = new Vector2(0.5f, -0.15f);
+            Logo.Position = new Vector2(0, -0.15f);
             Logo.Alpha = 1;
-            Logo.MoveTo(new Vector2(0.5f, 0.15f), 750, Easing.OutCubic);
+            Logo.MoveTo(new Vector2(0, 0.15f), 750, Easing.OutCubic);
         }
         else if (oldScreen is StartScreen && newScreen is MainMenuScreen)
         {
@@ -60,6 +60,11 @@ public partial class LogoScreen : Screen
     public void MoveToMainMenu()
     {
         Logo.Alpha = 1;
-        Logo.MoveTo(new Vector2(0.1f, 0.075f), 500, Easing.InOutCirc);
+        Logo.RelativePositionAxes = Axes.None;
+        Logo.Anchor = Anchor.TopLeft;
+        Logo.Origin = Anchor.TopLeft;
+        Logo.Scale = new Vector2(0);
+        Logo.Position = new Vector2(20, 20);
+        Logo.ScaleTo(1, 500, Easing.OutQuint);
     }
 }

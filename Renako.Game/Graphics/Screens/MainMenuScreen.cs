@@ -11,19 +11,22 @@ namespace Renako.Game.Graphics.Screens;
 
 public partial class MainMenuScreen : Screen
 {
+    private FillFlowContainer menuContainer;
+    private FillFlowContainer reverseMenuContainer;
+
     [BackgroundDependencyLoader]
     private void load()
     {
         InternalChildren = new Drawable[]
         {
-            new FillFlowContainer()
+            menuContainer = new FillFlowContainer()
             {
                 Anchor = Anchor.TopLeft,
                 Origin = Anchor.TopLeft,
                 RelativeSizeAxes = Axes.Both,
                 Direction = FillDirection.Vertical,
                 Spacing = new Vector2(0, 28),
-                Position = new Vector2(-MenuButton.CONTAINER_PADDING, 0),
+                Position = new Vector2(-MenuButton.CONTAINER_PADDING - 600, 0),
                 Children = new Drawable[]
                 {
                     // Play
@@ -76,26 +79,35 @@ public partial class MainMenuScreen : Screen
                     },
                 }
             },
-            new FillFlowContainer()
+            reverseMenuContainer = new FillFlowContainer()
             {
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
                 RelativeSizeAxes = Axes.Both,
                 Direction = FillDirection.Vertical,
+                RelativePositionAxes = Axes.Y,
                 Spacing = new Vector2(0, 28),
-                Position = new Vector2(ReverseMenuButton.CONTAINER_PADDING, 175),
+                Position = new Vector2(600, 0.23f),
                 Child = new ReverseMenuButton()
                 {
-                    ButtonWidth = 0.24f,
+                    ButtonWidth = 0.2f,
                     BackgroundColor = Color4Extensions.FromHex("E0E1F0"),
                     IconColor = Color4Extensions.FromHex("2D284B"),
                     TitleColor = Color4Extensions.FromHex("403F75"),
                     DescriptionColor = Color4Extensions.FromHex("171A2D"),
                     Icon = FontAwesome.Solid.Cog,
-                    Title = "Exit",
-                    Description = "See you soon!"
+                    Title = "Settings",
+                    Description = "Get ready for fight!"
                 }
             }
         };
+    }
+
+    public override void OnEntering(ScreenTransitionEvent e)
+    {
+        menuContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 750, Easing.OutQuart);
+        reverseMenuContainer.MoveToX(MenuButton.CONTAINER_PADDING, 1000, Easing.OutQuart);
+
+        base.OnEntering(e);
     }
 }
