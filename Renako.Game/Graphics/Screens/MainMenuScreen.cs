@@ -26,13 +26,13 @@ public partial class MainMenuScreen : Screen
                 RelativeSizeAxes = Axes.Both,
                 Direction = FillDirection.Vertical,
                 Spacing = new Vector2(0, 28),
-                Position = new Vector2(-MenuButton.CONTAINER_PADDING - 600, 0),
+                Position = new Vector2(-600, 0),
                 Children = new Drawable[]
                 {
                     // Play
                     new MenuButton()
                     {
-                        ButtonWidth = 0.45f,
+                        ButtonWidth = 0.4f,
                         BackgroundColor = Color4Extensions.FromHex("F2DFE9"),
                         IconColor = Color4Extensions.FromHex("4B2839"),
                         TitleColor = Color4Extensions.FromHex("67344D"),
@@ -44,7 +44,7 @@ public partial class MainMenuScreen : Screen
                     // Editor
                     new MenuButton()
                     {
-                        ButtonWidth = 0.38f,
+                        ButtonWidth = 0.35f,
                         BackgroundColor = Color4Extensions.FromHex("FDE798"),
                         IconColor = Color4Extensions.FromHex("4B4A28"),
                         TitleColor = Color4Extensions.FromHex("666734"),
@@ -56,7 +56,7 @@ public partial class MainMenuScreen : Screen
                     // List
                     new MenuButton()
                     {
-                        ButtonWidth = 0.31f,
+                        ButtonWidth = 0.3f,
                         BackgroundColor = Color4Extensions.FromHex("C3DCC2"),
                         IconColor = Color4Extensions.FromHex("284B2E"),
                         TitleColor = Color4Extensions.FromHex("407642"),
@@ -68,7 +68,7 @@ public partial class MainMenuScreen : Screen
                     // Exit
                     new MenuButton()
                     {
-                        ButtonWidth = 0.24f,
+                        ButtonWidth = 0.25f,
                         BackgroundColor = Color4Extensions.FromHex("ECC1C1"),
                         IconColor = Color4Extensions.FromHex("4B2828"),
                         TitleColor = Color4Extensions.FromHex("753F3F"),
