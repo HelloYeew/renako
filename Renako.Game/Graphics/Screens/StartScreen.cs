@@ -70,7 +70,6 @@ public partial class StartScreen : Screen
         if (Clock.CurrentTime < 2000) return;
 
         this.Exit();
-        logoScreenStack.LogoScreenObject.Logo.MoveTo(new Vector2(0.10f, 0.10f), 500, Easing.InOutCirc);
         mainScreenStack.Push(new MainMenuScreen());
     }
 }

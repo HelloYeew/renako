@@ -46,5 +46,9 @@ public partial class LogoScreen : Screen
             Logo.Alpha = 1;
             Logo.MoveTo(new Vector2(0.5f, 0.15f), 750, Easing.OutCubic);
         }
+        else if (oldScreen is StartScreen && newScreen is MainMenuScreen)
+        {
+            Logo.MoveTo(new Vector2(0.1f, 0.075f), 500, Easing.InOutCirc);
+        }
     }
 }
