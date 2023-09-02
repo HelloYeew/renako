@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
@@ -39,6 +40,14 @@ public partial class StartScreen : Screen
                 Position = new Vector2(0, 0.15f),
                 Text = "Press any key to start".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 42f, RenakoFont.FontWeight.Bold)
+            },
+            new SpriteText()
+            {
+                Anchor = Anchor.BottomLeft,
+                Origin = Anchor.BottomLeft,
+                Text = "Development Build".ToUpper(),
+                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
+                Colour = Color4Extensions.FromHex("82767E")
             }
         };
     }
