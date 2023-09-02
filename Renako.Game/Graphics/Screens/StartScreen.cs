@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Development;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
@@ -14,6 +15,8 @@ namespace Renako.Game.Graphics.Screens;
 public partial class StartScreen : Screen
 {
     private SpriteText pressAnyKeyText;
+    private SpriteText buildText;
+    private SpriteText rightBottomText;
 
     [Resolved]
     private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
@@ -41,11 +44,19 @@ public partial class StartScreen : Screen
                 Text = "Press any key to start".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 42f, RenakoFont.FontWeight.Bold)
             },
-            new SpriteText()
+            buildText = new SpriteText()
             {
                 Anchor = Anchor.BottomLeft,
                 Origin = Anchor.BottomLeft,
-                Text = "Development Build".ToUpper(),
+                Text = DebugUtils.IsDebugBuild ? "Development build".ToUpper() : $"Version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}".ToUpper(),
+                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
+                Colour = Color4Extensions.FromHex("82767E")
+            },
+            rightBottomText = new SpriteText()
+            {
+                Anchor = Anchor.BottomRight,
+                Origin = Anchor.BottomRight,
+                Text = "2023 HelloYeew".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
                 Colour = Color4Extensions.FromHex("82767E")
             }
@@ -57,6 +68,8 @@ public partial class StartScreen : Screen
         base.OnEntering(e);
 
         backgroundScreenStack.ImageSprite.Delay(250).FadeTo(1, 750, Easing.OutCubic);
+        buildText.Delay(500).FadeTo(1, 750, Easing.OutCubic);
+        rightBottomText.Delay(750).FadeTo(1, 750, Easing.OutCubic);
 
         pressAnyKeyText.Delay(500).MoveToY(-0.15f, 750, Easing.OutCubic);
         Scheduler.AddDelayed(() => pressAnyKeyText.Loop(b => b.FadeTo(0.25f).FadeTo(1, 1000)).Loop(), 1250);
