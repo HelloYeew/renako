@@ -25,14 +25,14 @@ public partial class TestSceneStartScreen : RenakoTestScene
     [BackgroundDependencyLoader]
     private void load()
     {
+        Dependencies.CacheAs(mainScreenStack);
         Dependencies.CacheAs(logoScreenStack);
         Dependencies.CacheAs(backgroundScreenStack);
-        Dependencies.CacheAs(mainScreenStack);
         Dependencies.CacheAs(audioManager);
     }
 
     [SetUp]
-    private void setUp()
+    public void SetUp()
     {
         Add(backgroundScreenStack);
         Add(mainScreenStack);

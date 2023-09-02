@@ -47,13 +47,8 @@ public partial class StartScreen : Screen
     {
         base.OnEntering(e);
 
-        audioManager.Track.Start();
-
         backgroundScreenStack.ImageSprite.Delay(250).FadeTo(1, 750, Easing.OutCubic);
 
-        logoScreenStack.LogoScreenObject.Logo.Position = new Vector2(0.5f, -0.15f);
-        logoScreenStack.LogoScreenObject.Logo.Alpha = 1;
-        logoScreenStack.LogoScreenObject.Logo.MoveTo(new Vector2(0.5f, 0.15f), 750, Easing.OutCubic);
         pressAnyKeyText.Delay(500).MoveToY(-0.15f, 750, Easing.OutCubic);
         Scheduler.AddDelayed(() => pressAnyKeyText.Loop(b => b.FadeTo(0.25f).FadeTo(1, 1000)).Loop(), 1250);
     }

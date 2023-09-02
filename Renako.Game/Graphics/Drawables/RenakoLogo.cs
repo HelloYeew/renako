@@ -13,6 +13,7 @@ public partial class RenakoLogo : CompositeDrawable
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
+        Size = new Vector2(259, 53);
         InternalChild = new FillFlowContainer()
         {
             Anchor = Anchor.Centre,
