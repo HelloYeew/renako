@@ -10,7 +10,7 @@ using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
-public partial class WarningScreen : Screen
+public partial class WarningScreen : RenakoScreen
 {
     private Container logoContainer;
     private Container warningTextContainer;

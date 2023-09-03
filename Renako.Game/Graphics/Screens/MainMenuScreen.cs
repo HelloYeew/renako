@@ -6,13 +6,20 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Screens;
 using osuTK;
 using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
-public partial class MainMenuScreen : Screen
+/// <summary>
+/// Screen that will be shown in the main menu.
+/// </summary>
+public partial class MainMenuScreen : RenakoScreen
 {
     private FillFlowContainer menuContainer;
     private FillFlowContainer reverseMenuContainer;
+
+    [Resolved]
+    private RenakoScreenStack mainScreenStack { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -39,7 +46,11 @@ public partial class MainMenuScreen : Screen
                         DescriptionColor = Color4Extensions.FromHex("251319"),
                         Icon = FontAwesome.Solid.Play,
                         Title = "Play",
-                        Description = "Let's have some fun!"
+                        Description = "Let's have some fun!",
+                        Action = () =>
+                        {
+                            mainScreenStack.Push(new PlayMenuScreen());
+                        }
                     },
                     // Editor
                     new MenuButton()

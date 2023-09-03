@@ -7,10 +7,11 @@ using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
+/// <inheritdoc />
 /// <summary>
 /// Screen that contain only Renako logo for flexible transition in logo.
 /// </summary>
-public partial class LogoScreen : Screen
+public partial class LogoScreen : RenakoScreen
 {
     public RenakoLogo Logo;
 
@@ -48,7 +49,18 @@ public partial class LogoScreen : Screen
             Logo.Alpha = 1;
             Logo.MoveTo(new Vector2(0, 0.15f), 750, Easing.OutCubic);
         }
+        // StartScreen -> MainMenuScreen : Move logo to left-top
         else if (oldScreen is StartScreen && newScreen is MainMenuScreen)
+        {
+            MoveToMainMenu();
+        }
+        // MainMenuScreen -> Any screen : Move logo to top
+        else if (oldScreen is MainMenuScreen)
+        {
+            Logo.Alpha = 0;
+        }
+        // Any screen -> MainMenuScreen : Move logo to left-top
+        else if (newScreen is MainMenuScreen)
         {
             MoveToMainMenu();
         }

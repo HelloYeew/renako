@@ -16,6 +16,8 @@ public partial class RenakoAudioManager : CompositeDrawable
     public Track Track;
     private ITrackStore trackStore;
 
+    private double mainThemeDuration = 0;
+
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
@@ -34,10 +36,38 @@ public partial class RenakoAudioManager : CompositeDrawable
     /// <param name="newScreen">The new <see cref="IScreen"/> that will be changed.</param>
     private void changeTrackOnScreenChanged(IScreen oldScreen, IScreen newScreen)
     {
+        // Case specifically for starting the game.
         if (oldScreen is WarningScreen && newScreen is StartScreen)
         {
-            Track?.Stop();
             Track = trackStore.Get("theme/main-theme.mp3");
+            Track.Looping = true;
+            Track.Start();
+        }
+        else if (oldScreen is StartScreen && newScreen is MainMenuScreen)
+        {
+            return;
+        }
+
+        // Record the duration of the main theme if old screen is StartScreen or MainMenuScreen.
+        if (oldScreen is MainMenuScreen or StartScreen)
+        {
+            mainThemeDuration = Track.CurrentTime;
+        }
+
+        if (newScreen is MainMenuScreen)
+        {
+            Track?.Stop();
+            Track?.Dispose();
+            Track = trackStore.Get("theme/main-theme.mp3");
+            Track.Looping = true;
+            Track.Seek(mainThemeDuration);
+            Track.Start();
+        }
+        else if (newScreen is PlayMenuScreen)
+        {
+            Track?.Stop();
+            Track?.Dispose();
+            Track = trackStore.Get("theme/play-theme.mp3");
             Track.Looping = true;
             Track.Start();
         }

@@ -12,7 +12,8 @@ using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
 
-public partial class StartScreen : Screen
+
+public partial class StartScreen : RenakoScreen
 {
     private SpriteText pressAnyKeyText;
     private SpriteText buildText;
