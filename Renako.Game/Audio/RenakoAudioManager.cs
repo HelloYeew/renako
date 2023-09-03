@@ -37,7 +37,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         if (oldScreen is WarningScreen && newScreen is StartScreen)
         {
             Track?.Stop();
-            Track = trackStore.Get("main-theme.mp3");
+            Track = trackStore.Get("theme/main-theme.mp3");
             Track.Looping = true;
             Track.Start();
         }
