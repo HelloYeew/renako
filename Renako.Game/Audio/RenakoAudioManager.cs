@@ -73,6 +73,15 @@ public partial class RenakoAudioManager : CompositeDrawable
             Track.Looping = true;
             Track.Start();
         }
+        else if (newScreen is SongSelectionScreen)
+        {
+            Track?.Stop();
+            Track?.Dispose();
+            Track = trackStore.Get("beatmaps/innocence.mp3");
+            Track.Looping = true;
+            Track.Seek(55400);
+            Track.Start();
+        }
     }
 
     /// <summary>

@@ -17,6 +17,7 @@ public partial class MenuTitle : CompositeDrawable
     public ColourInfo DescriptionColor { get; set; } = Color4Extensions.FromHex("251319");
     public string Title { get; set; } = "Play";
     public string Description { get; set; } = "Let's have some fun!";
+    public bool AutoUpperCaseTitle { get; set; } = true;
 
     public const float CONTAINER_PADDING = 20;
 
@@ -69,7 +70,7 @@ public partial class MenuTitle : CompositeDrawable
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
                                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 35f, RenakoFont.FontWeight.Bold),
-                                Text = Title.ToUpper(),
+                                Text = AutoUpperCaseTitle ? Title.ToUpper() : Title,
                                 Colour = TitleColor
                             },
                             new SpriteText()

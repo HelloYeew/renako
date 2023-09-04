@@ -54,7 +54,8 @@ public partial class PlayMenuScreen : Screen
                         DescriptionColor = Color4Extensions.FromHex("261321"),
                         Icon = FontAwesome.Solid.User,
                         Title = "Single Player".ToUpper(),
-                        Description = "1v1 with the boss"
+                        Description = "1v1 with the boss",
+                        Action = () => mainScreenStack.Push(new SongSelectionScreen())
                     },
                     // Multiplayer
                     new MenuButton()
