@@ -80,7 +80,7 @@ public partial class TestSceneAudioVisualizerConcept : RenakoTestScene
             Anchor = Anchor.BottomLeft,
             Origin = Anchor.BottomLeft,
             Direction = FillDirection.Horizontal,
-            Spacing = new osuTK.Vector2(0, 0),
+            Spacing = new osuTK.Vector2(2, 0),
             Children = frequencyAmplitudesBox
         });
         Add(trackName = new SpriteText()

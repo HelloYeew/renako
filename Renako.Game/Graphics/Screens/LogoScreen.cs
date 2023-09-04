@@ -47,7 +47,7 @@ public partial class LogoScreen : RenakoScreen
         {
             Logo.Position = new Vector2(0, -0.15f);
             Logo.Alpha = 1;
-            Logo.MoveTo(new Vector2(0, 0.15f), 750, Easing.OutCubic);
+            Logo.MoveTo(new Vector2(0, 0.15f), 500, Easing.OutCubic);
         }
         // StartScreen -> MainMenuScreen : Move logo to left-top
         else if (oldScreen is StartScreen && newScreen is MainMenuScreen)

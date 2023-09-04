@@ -24,6 +24,7 @@ public partial class MainMenuScreen : RenakoScreen
     [BackgroundDependencyLoader]
     private void load()
     {
+        Alpha = 0;
         InternalChildren = new Drawable[]
         {
             menuContainer = new FillFlowContainer()
@@ -116,9 +117,40 @@ public partial class MainMenuScreen : RenakoScreen
 
     public override void OnEntering(ScreenTransitionEvent e)
     {
-        menuContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 750, Easing.OutQuart);
-        reverseMenuContainer.MoveToX(MenuButton.CONTAINER_PADDING, 1000, Easing.OutQuart);
+        this.FadeIn(500, Easing.OutQuart);
+
+        menuContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
+        reverseMenuContainer.MoveToX(MenuButton.CONTAINER_PADDING, 750, Easing.OutQuart);
 
         base.OnEntering(e);
+    }
+
+    public override void OnSuspending(ScreenTransitionEvent e)
+    {
+        this.FadeOut(500, Easing.OutQuart);
+
+        menuContainer.MoveToX(-600, 500, Easing.OutQuart);
+        reverseMenuContainer.MoveToX(600, 750, Easing.OutQuart);
+
+        base.OnSuspending(e);
+    }
+
+    public override void OnResuming(ScreenTransitionEvent e)
+    {
+        this.FadeIn(500, Easing.OutQuart);
+
+        menuContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
+        reverseMenuContainer.MoveToX(MenuButton.CONTAINER_PADDING, 750, Easing.OutQuart);
+
+        base.OnResuming(e);
+    }
+
+    public override bool OnExiting(ScreenExitEvent e)
+    {
+        this.FadeOut(500, Easing.OutQuart);
+
+        menuContainer.MoveToX(-600, 500, Easing.OutQuart);
+        reverseMenuContainer.MoveToX(600, 750, Easing.OutQuart);
+        return base.OnExiting(e);
     }
 }
