@@ -300,7 +300,7 @@ public partial class SongSelectionScreen : RenakoScreen
     {
         this.FadeIn(500, Easing.OutQuart);
         songTitleContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
-        songListContainer.MoveToY(-115, 750, Easing.OutQuart);
+        songListContainer.MoveToY(-115, 750, Easing.OutBack);
 
         base.OnEntering(e);
     }
