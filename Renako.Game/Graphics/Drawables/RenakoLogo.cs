@@ -27,7 +27,7 @@ public partial class RenakoLogo : CompositeDrawable
                     Anchor = Anchor.Centre,
                     Origin = Anchor.Centre,
                     Size = new Vector2(84),
-                    Texture = textureStore.Get("renako-logo-white-pink")
+                    Texture = textureStore.Get("Logo/renako-logo-white-pink")
                 },
                 new SpriteText()
                 {

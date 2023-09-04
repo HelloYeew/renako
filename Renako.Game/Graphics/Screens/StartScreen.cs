@@ -68,7 +68,6 @@ public partial class StartScreen : RenakoScreen
     {
         base.OnEntering(e);
 
-        backgroundScreenStack.ImageSprite.Delay(250).FadeTo(1, 750, Easing.OutCubic);
         buildText.Delay(500).FadeTo(1, 750, Easing.OutCubic);
         rightBottomText.Delay(750).FadeTo(1, 750, Easing.OutCubic);
 

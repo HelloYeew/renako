@@ -31,23 +31,10 @@ namespace Renako.Game
                 {
                     RelativeSizeAxes = Axes.Both
                 },
-                backgroundScreenStack = new RenakoBackgroundScreenStack()
-                {
-                    RelativeSizeAxes = Axes.Both
-                },
-                mainScreenStack = new RenakoScreenStack()
-                {
-                    RelativeSizeAxes = Axes.Both
-                },
-                logoScreenStack = new LogoScreenStack()
-                {
-                    RelativeSizeAxes = Axes.Both
-                }
             };
-            dependencies.CacheAs(mainScreenStack);
-            dependencies.CacheAs(backgroundScreenStack);
-            dependencies.CacheAs(logoScreenStack);
-
+            loadComponentSingleFile(backgroundScreenStack = new RenakoBackgroundScreenStack(), Add, true);
+            loadComponentSingleFile(mainScreenStack = new RenakoScreenStack(), Add, true);
+            loadComponentSingleFile(logoScreenStack = new LogoScreenStack(), Add, true);
             loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
         }
 

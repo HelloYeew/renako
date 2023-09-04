@@ -27,6 +27,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeTrackOnScreenChanged(e.OldValue, e.NewValue));
 
         trackStore = audioManagerSource.Tracks;
+        Track = trackStore.Get("theme/main-theme.mp3");
     }
 
     /// <summary>
@@ -39,6 +40,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         // Case specifically for starting the game.
         if (oldScreen is WarningScreen && newScreen is StartScreen)
         {
+            Track?.Dispose();
             Track = trackStore.Get("theme/main-theme.mp3");
             Track.Looping = true;
             Track.Start();
@@ -71,5 +73,13 @@ public partial class RenakoAudioManager : CompositeDrawable
             Track.Looping = true;
             Track.Start();
         }
+    }
+
+    /// <summary>
+    /// Mute the track.
+    /// </summary>
+    public void Mute()
+    {
+        Track.Volume.Value = 0;
     }
 }

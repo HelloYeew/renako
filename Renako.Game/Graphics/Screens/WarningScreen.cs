@@ -48,7 +48,7 @@ public partial class WarningScreen : RenakoScreen
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
-                            Texture = textureStore.Get("renako-logo"),
+                            Texture = textureStore.Get("Logo/renako-logo"),
                             Size = new Vector2(84)
                         }
                     },
