@@ -89,7 +89,7 @@ public partial class StartScreen : RenakoScreen
 
     private void goToMainMenu()
     {
-        if (Clock.CurrentTime < 2000) return;
+        if (Clock.CurrentTime < 5000) return;
 
         this.Exit();
         mainScreenStack.Push(new MainMenuScreen());
