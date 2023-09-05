@@ -80,6 +80,7 @@ public partial class RenakoAudioManager : CompositeDrawable
             Track = trackStore.Get("beatmaps/innocence.mp3");
             Track.Looping = true;
             Track.Seek(55400);
+            Track.RestartPoint = 55400;
             Track.Start();
         }
     }
