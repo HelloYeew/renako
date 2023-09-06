@@ -25,7 +25,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         mainBackgroundTexture = textureStore.Get("Screen/main-background.jpeg");
         playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
         // TODO: This need to be depend on current working beatmap background
-        songSelectionBackgroundTexture = textureStore.Get("Beatmaps/Background/innocence.jpg");
+        songSelectionBackgroundTexture = textureStore.Get("Beatmaps/Background/innocence-tv-size.jpg");
 
         AddInternal(ImageSpriteDown = new Sprite()
         {

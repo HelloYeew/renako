@@ -90,7 +90,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         TitleColor = Color4Extensions.FromHex("67344D"),
                         DescriptionColor = Color4Extensions.FromHex("251319"),
                         AutoUpperCaseTitle = false,
-                        Title = "Innocence",
+                        Title = "Innocence (TV Size)",
                         Description = "Eir Aoi"
                     },
                     // Song info
@@ -288,7 +288,7 @@ public partial class SongSelectionScreen : RenakoScreen
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
                             RelativeSizeAxes = Axes.Both,
-                            Texture = textureStore.Get("Beatmaps/Album/innocence.jpg")
+                            Texture = textureStore.Get("Beatmaps/Album/innocence-tv-size.jpg")
                         }
                     }
                 }

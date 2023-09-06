@@ -77,10 +77,10 @@ public partial class RenakoAudioManager : CompositeDrawable
         {
             Track?.Stop();
             Track?.Dispose();
-            Track = trackStore.Get("beatmaps/innocence.mp3");
+            Track = trackStore.Get("beatmaps/innocence-tv-size.mp3");
             Track.Looping = true;
-            Track.Seek(55400);
-            Track.RestartPoint = 55400;
+            Track.Seek(54300);
+            Track.RestartPoint = 54300;
             Track.Start();
         }
     }

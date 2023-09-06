@@ -24,7 +24,7 @@ public partial class TestSceneHorizontalTextureSwiper : RenakoTestScene
             swiperItemList.Add(new TextureSwiperItem<int>()
             {
                 Item = i,
-                Texture = textureStore.Get("Beatmaps/Album/innocence.jpg")
+                Texture = textureStore.Get("Beatmaps/Album/innocence-tv-size.jpg")
             });
         }
 
