@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
@@ -26,7 +24,7 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
 
     public List<TextureSwiperItem<T>> Items { get; set; } = new List<TextureSwiperItem<T>>();
 
-    private BindableInt currentIndex = new BindableInt();
+    private readonly BindableInt currentIndex = new BindableInt();
     public readonly Bindable<T> CurrentItem = new Bindable<T>();
 
     public HorizontalTextureSwiper()
@@ -35,7 +33,6 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
         Origin = Anchor.BottomCentre;
         RelativeSizeAxes = Axes.X;
         Size = new Vector2(1, 150);
-        Position = new Vector2(0, -115);
     }
 
     [BackgroundDependencyLoader]
@@ -43,83 +40,6 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     {
         InternalChildren = new Drawable[]
         {
-            new Box()
-            {
-                Anchor = Anchor.BottomCentre,
-                Origin = Anchor.BottomCentre,
-                RelativeSizeAxes = Axes.Both,
-                Colour = Color4Extensions.FromHex("82767E")
-            },
-            chevronLeftContainer = new BasicButton()
-            {
-                Anchor = Anchor.CentreLeft,
-                Origin = Anchor.CentreLeft,
-                Size = new Vector2(30, 20),
-                Position = new Vector2(15, 0),
-                Colour = Colour4.White,
-                Action = Previous,
-                Child = new FillFlowContainer()
-                {
-                    Anchor = Anchor.CentreLeft,
-                    Origin = Anchor.CentreLeft,
-                    RelativeSizeAxes = Axes.Both,
-                    Direction = FillDirection.Horizontal,
-                    Children = new Drawable[]
-                    {
-                        new SpriteIcon()
-                        {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            Size = new Vector2(20),
-                            Icon = FontAwesome.Solid.ChevronLeft,
-                            Colour = Color4Extensions.FromHex("D2C9D8"),
-                        },
-                        new SpriteIcon()
-                        {
-                            Anchor = Anchor.CentreLeft,
-                            Origin = Anchor.CentreLeft,
-                            Size = new Vector2(20),
-                            Icon = FontAwesome.Solid.ChevronLeft,
-                            Colour = Color4Extensions.FromHex("D2C9D8"),
-                        }
-                    }
-                }
-            },
-            chevronRightContainer = new BasicButton()
-            {
-                Anchor = Anchor.CentreRight,
-                Origin = Anchor.CentreRight,
-                Size = new Vector2(30, 20),
-                Position = new Vector2(-15, 0),
-                Colour = Colour4.White,
-                Action = Next,
-                Child = new FillFlowContainer()
-                {
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    RelativeSizeAxes = Axes.Both,
-                    Direction = FillDirection.Horizontal,
-                    Children = new Drawable[]
-                    {
-                        new SpriteIcon()
-                        {
-                            Anchor = Anchor.CentreRight,
-                            Origin = Anchor.CentreRight,
-                            Size = new Vector2(20),
-                            Icon = FontAwesome.Solid.ChevronRight,
-                            Colour = Color4Extensions.FromHex("D2C9D8"),
-                        },
-                        new SpriteIcon()
-                        {
-                            Anchor = Anchor.CentreRight,
-                            Origin = Anchor.CentreRight,
-                            Size = new Vector2(20),
-                            Icon = FontAwesome.Solid.ChevronRight,
-                            Colour = Color4Extensions.FromHex("D2C9D8"),
-                        }
-                    }
-                }
-            },
             new FillFlowContainer()
             {
                 Anchor = Anchor.Centre,
@@ -344,4 +264,3 @@ public partial class TextureSwiperContainer : Container
         textureBox.Texture = null;
     }
 }
-

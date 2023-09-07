@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Renako.Game.Beatmaps;
 
 namespace Renako.Game.Utilities;
@@ -9,7 +10,13 @@ namespace Renako.Game.Utilities;
 /// </summary>
 public class BeatmapTestUtility
 {
-    private Random random = new Random();
+    private readonly Random random = new Random();
+
+    public List<BeatmapSet> BeatmapSets { get; set; }
+
+    public List<Beatmap> Beatmaps { get; set; }
+
+    public DifficultyLevel[] AllDifficultyLevels = Enum.GetValues(typeof(DifficultyLevel)).Cast<DifficultyLevel>().ToArray();
 
     public string[] RandomNameList = new string[]
     {
@@ -17,11 +24,17 @@ public class BeatmapTestUtility
         "Renako"
     };
 
+    public BeatmapTestUtility()
+    {
+        BeatmapSets = GetLocalBeatmapSets();
+        Beatmaps = GenerateRandomBeatmaps();
+    }
+
     /// <summary>
     ///
     /// </summary>
     /// <returns></returns>
-    public List<BeatmapSet> LocalBeatmapSets()
+    public List<BeatmapSet> GetLocalBeatmapSets()
     {
         return new List<BeatmapSet>()
         {
@@ -37,7 +50,7 @@ public class BeatmapTestUtility
                 TotalLength = 89000,
                 PreviewTime = 54300,
                 BPM = 183,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/innocence-tv-size.jpg",
@@ -56,7 +69,7 @@ public class BeatmapTestUtility
                 TotalLength = 267000,
                 PreviewTime = 47900,
                 BPM = 180,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/ideal-white.jpg",
@@ -75,7 +88,7 @@ public class BeatmapTestUtility
                 TotalLength = 242000,
                 PreviewTime = 78500,
                 BPM = 180,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/ano-yume-wo-nazotte.jpg",
@@ -94,7 +107,7 @@ public class BeatmapTestUtility
                 TotalLength = 246000,
                 PreviewTime = 85000,
                 BPM = 185,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/snowmix.jpg",
@@ -113,7 +126,7 @@ public class BeatmapTestUtility
                 TotalLength = 189000,
                 PreviewTime = 42000,
                 BPM = 176,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/moonlightspeed.jpg",
@@ -132,7 +145,7 @@ public class BeatmapTestUtility
                 TotalLength = 226000,
                 PreviewTime = 58750,
                 BPM = 210,
-                Creator = GetRandomName(),
+                Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/kani-do-luck.jpg",
@@ -143,10 +156,40 @@ public class BeatmapTestUtility
     }
 
     /// <summary>
+    /// Generate
+    /// </summary>
+    /// <returns></returns>
+    public List<Beatmap> GenerateRandomBeatmaps()
+    {
+        int incrementID = 1;
+        List<Beatmap> beatmaps = new List<Beatmap>();
+
+        foreach (BeatmapSet beatmapSet in GetLocalBeatmapSets())
+        {
+            foreach (DifficultyLevel difficultyLevel in AllDifficultyLevels)
+            {
+                beatmaps.Add(new Beatmap()
+                {
+                    ID = incrementID,
+                    BeatmapSet = beatmapSet,
+                    Creator = GetRandomCreatorName(),
+                    DifficultyLevel = difficultyLevel,
+                    DifficultyName = difficultyLevel.ToString(),
+                    DifficultyRating = random.NextDouble() * 10,
+                    BackgroundPath = beatmapSet.BackgroundPath
+                });
+                incrementID++;
+            }
+        }
+
+        return beatmaps;
+    }
+
+    /// <summary>
     /// Return a random name from the list.
     /// </summary>
     /// <returns>A random name</returns>
-    public string GetRandomName()
+    public string GetRandomCreatorName()
     {
         return RandomNameList[random.Next(0, RandomNameList.Length)];
     }

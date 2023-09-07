@@ -86,4 +86,9 @@ public class BeatmapSet
     /// The path of the video of the beatmap set. If the beatmap set doesn't have a video, set this as blank.
     /// </summary>
     public string VideoPath { get; set; } = "";
+
+    public override string ToString()
+    {
+        return $"{Title} - {Artist}";
+    }
 }

@@ -36,4 +36,9 @@ public class Beatmap
     /// The path of the background file.
     /// </summary>
     public string BackgroundPath { get; set; }
+
+    public override string ToString()
+    {
+        return $"{BeatmapSet.Title} [{DifficultyName}]";
+    }
 }

@@ -1,13 +1,17 @@
-﻿using osu.Framework.Allocation;
+﻿using System.Collections.Generic;
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Screens;
 using osuTK;
+using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Drawables;
+using Renako.Game.Stores;
 
 namespace Renako.Game.Graphics.Screens;
 
@@ -15,8 +19,14 @@ public partial class SongSelectionScreen : RenakoScreen
 {
     private FillFlowContainer songTitleContainer;
     private Container songListContainer;
-    private Container chevronLeftContainer;
-    private Container chevronRightContainer;
+    private Button chevronLeftButton;
+    private Button chevronRightButton;
+
+    [Resolved]
+    private BeatmapsCollection beatmapsCollection { get; set; }
+
+    private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
+    private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
 
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
@@ -24,6 +34,22 @@ public partial class SongSelectionScreen : RenakoScreen
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
+        beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
+        beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
+        {
+            Items = beatmapSetSwiperItemList,
+            Position = new Vector2(0, 0)
+        };
+
+        foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
+        {
+            beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
+            {
+                Item = beatmapSet,
+                Texture = textureStore.Get(beatmapSet.CoverPath)
+            });
+        }
+
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
@@ -208,12 +234,14 @@ public partial class SongSelectionScreen : RenakoScreen
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex("82767E")
                     },
-                    chevronLeftContainer = new Container()
+                    chevronLeftButton = new BasicButton()
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
                         Size = new Vector2(30, 20),
                         Position = new Vector2(15, 0),
+                        Colour = Colour4.White,
+                        Action = beatmapSetSwiper.Previous,
                         Child = new FillFlowContainer()
                         {
                             Anchor = Anchor.CentreLeft,
@@ -241,12 +269,14 @@ public partial class SongSelectionScreen : RenakoScreen
                             }
                         }
                     },
-                    chevronRightContainer = new Container()
+                    chevronRightButton = new BasicButton()
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
                         Size = new Vector2(30, 20),
                         Position = new Vector2(-15, 0),
+                        Colour = Colour4.White,
+                        Action = beatmapSetSwiper.Next,
                         Child = new FillFlowContainer()
                         {
                             Anchor = Anchor.CentreRight,
@@ -274,23 +304,7 @@ public partial class SongSelectionScreen : RenakoScreen
                             }
                         }
                     },
-                    new Container()
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Size = new Vector2(220, 220),
-                        Masking = true,
-                        CornerRadius = 10,
-                        FillMode = FillMode.Fill,
-                        Rotation = 10,
-                        Child = new Sprite()
-                        {
-                            Anchor = Anchor.Centre,
-                            Origin = Anchor.Centre,
-                            RelativeSizeAxes = Axes.Both,
-                            Texture = textureStore.Get("Beatmaps/Album/innocence-tv-size.jpg")
-                        }
-                    }
+                    beatmapSetSwiper
                 }
             }
         };

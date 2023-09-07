@@ -9,6 +9,7 @@ using osu.Framework.Threading;
 using Renako.Game.Audio;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
+using Renako.Game.Stores;
 
 namespace Renako.Game
 {
@@ -21,10 +22,13 @@ namespace Renako.Game
         private LogoScreenStack logoScreenStack;
         private RenakoAudioManager audioManager;
         private Container drawableContainer;
+        private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();
 
         [BackgroundDependencyLoader]
         private void load()
         {
+            beatmapsCollection.GenerateTestCollection();
+
             Children = new Drawable[]
             {
                 drawableContainer = new Container
@@ -32,6 +36,7 @@ namespace Renako.Game
                     RelativeSizeAxes = Axes.Both
                 },
             };
+            dependencies.CacheAs(beatmapsCollection);
             loadComponentSingleFile(backgroundScreenStack = new RenakoBackgroundScreenStack(), Add, true);
             loadComponentSingleFile(mainScreenStack = new RenakoScreenStack(), Add, true);
             loadComponentSingleFile(logoScreenStack = new LogoScreenStack(), Add, true);
