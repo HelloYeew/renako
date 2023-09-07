@@ -7,6 +7,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
 using Renako.Game.Audio;
+using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Stores;
@@ -23,6 +24,7 @@ namespace Renako.Game
         private RenakoAudioManager audioManager;
         private Container drawableContainer;
         private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();
+        private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
         [BackgroundDependencyLoader]
         private void load()
@@ -37,6 +39,7 @@ namespace Renako.Game
                 },
             };
             dependencies.CacheAs(beatmapsCollection);
+            dependencies.CacheAs(workingBeatmap);
             loadComponentSingleFile(backgroundScreenStack = new RenakoBackgroundScreenStack(), Add, true);
             loadComponentSingleFile(mainScreenStack = new RenakoScreenStack(), Add, true);
             loadComponentSingleFile(logoScreenStack = new LogoScreenStack(), Add, true);

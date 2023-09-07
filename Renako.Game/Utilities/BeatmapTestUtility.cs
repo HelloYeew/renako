@@ -130,7 +130,7 @@ public class BeatmapTestUtility
                 HasVideo = false,
                 UseLocalSource = true,
                 CoverPath = "Beatmaps/Album/moonlightspeed.jpg",
-                TrackPath = "beatmaps/moonlightspeed.m4a",
+                TrackPath = "beatmaps/moonlightspeed.mp3",
                 BackgroundPath = "Beatmaps/Background/moonlightspeed.jpg"
             },
             new BeatmapSet()

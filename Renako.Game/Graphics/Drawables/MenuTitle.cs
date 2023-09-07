@@ -1,4 +1,5 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -15,13 +16,28 @@ public partial class MenuTitle : CompositeDrawable
     public ColourInfo BackgroundColor { get; set; } = Color4Extensions.FromHex("F2DFE9");
     public ColourInfo TitleColor { get; set; } = Color4Extensions.FromHex("67344D");
     public ColourInfo DescriptionColor { get; set; } = Color4Extensions.FromHex("251319");
-    public string Title { get; set; } = "Play";
-    public string Description { get; set; } = "Let's have some fun!";
+
+    private readonly Bindable<string> bindableTitle = new Bindable<string>("Play");
+    private readonly Bindable<string> bindableDescription = new Bindable<string>("Let's have some fun!");
     public bool AutoUpperCaseTitle { get; set; } = true;
 
     public const float CONTAINER_PADDING = 20;
 
     private Box backgroundBox;
+    private SpriteText titleSpriteText;
+    private SpriteText descriptionSpriteText;
+
+    public string Title
+    {
+        get => bindableTitle.Value;
+        set => bindableTitle.Value = value;
+    }
+
+    public string Description
+    {
+        get => bindableDescription.Value;
+        set => bindableDescription.Value = value;
+    }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -65,7 +81,7 @@ public partial class MenuTitle : CompositeDrawable
                         Direction = FillDirection.Vertical,
                         Children = new Drawable[]
                         {
-                            new SpriteText()
+                            titleSpriteText = new SpriteText()
                             {
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
@@ -73,7 +89,7 @@ public partial class MenuTitle : CompositeDrawable
                                 Text = AutoUpperCaseTitle ? Title.ToUpper() : Title,
                                 Colour = TitleColor
                             },
-                            new SpriteText()
+                            descriptionSpriteText = new SpriteText()
                             {
                                 Anchor = Anchor.CentreLeft,
                                 Origin = Anchor.CentreLeft,
@@ -86,5 +102,13 @@ public partial class MenuTitle : CompositeDrawable
                 }
             }
         };
+        bindableTitle.BindValueChanged((value) =>
+        {
+            titleSpriteText.Text = AutoUpperCaseTitle ? value.NewValue.ToUpper() : value.NewValue;
+        }, true);
+        bindableDescription.BindValueChanged((value) =>
+        {
+            descriptionSpriteText.Text = value.NewValue;
+        }, true);
     }
 }

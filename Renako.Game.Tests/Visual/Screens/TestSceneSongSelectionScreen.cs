@@ -2,6 +2,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
 using Renako.Game.Audio;
+using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Stores;
@@ -26,6 +27,9 @@ public partial class TestSceneSongSelectionScreen : RenakoTestScene
     [Cached]
     private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();
 
+    [Cached]
+    private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -35,6 +39,7 @@ public partial class TestSceneSongSelectionScreen : RenakoTestScene
         Dependencies.CacheAs(logoScreenStack);
         Dependencies.CacheAs(audioManager);
         Dependencies.CacheAs(beatmapsCollection);
+        Dependencies.CacheAs(workingBeatmap);
     }
 
     [SetUp]

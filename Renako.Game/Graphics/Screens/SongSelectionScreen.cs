@@ -25,8 +25,13 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private BeatmapsCollection beatmapsCollection { get; set; }
 
+    [Resolved]
+    private WorkingBeatmap workingBeatmap { get; set; }
+
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
+    private MenuTitle songTitle;
+    private SpriteText creatorText;
 
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
@@ -109,7 +114,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         }
                     },
                     // Song title
-                    new MenuTitle()
+                    songTitle = new MenuTitle()
                     {
                         ButtonWidth = 0.35f,
                         BackgroundColor = Color4Extensions.FromHex("F2DFE9"),
@@ -169,7 +174,7 @@ public partial class SongSelectionScreen : RenakoScreen
                                                 Icon = FontAwesome.Solid.User,
                                                 Colour = Color4Extensions.FromHex("67344D")
                                             },
-                                            new SpriteText()
+                                            creatorText = new SpriteText()
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
@@ -308,6 +313,17 @@ public partial class SongSelectionScreen : RenakoScreen
                 }
             }
         };
+
+        beatmapSetSwiper.CurrentItem.BindValueChanged((item) =>
+        {
+            workingBeatmap.BeatmapSet = item.NewValue;
+        });
+        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((item) =>
+        {
+            songTitle.Title = item.NewValue.Title;
+            songTitle.Description = item.NewValue.Artist;
+            creatorText.Text = item.NewValue.Creator;
+        });
     }
 
     public override void OnEntering(ScreenTransitionEvent e)
