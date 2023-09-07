@@ -1,4 +1,6 @@
-﻿using Renako.Game.Beatmaps;
+﻿using osu.Framework.Allocation;
+using Renako.Game.Beatmaps;
+using Renako.Game.Stores;
 
 namespace Renako.Game.Utilities;
 
@@ -7,6 +9,9 @@ namespace Renako.Game.Utilities;
 /// </summary>
 public class BeatmapSetUtility
 {
+    [Resolved]
+    private BeatmapsCollection beatmapsCollection { get; set; }
+
     /// <summary>
     /// Get the formatted time using in UI from <see cref="BeatmapSet"/> in the format of mm:ss
     /// </summary>
