@@ -6,21 +6,19 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
-using osu.Framework.Graphics.UserInterface;
 using osuTK;
 
 namespace Renako.Game.Graphics.Drawables;
 
 public partial class HorizontalTextureSwiper<T> : CompositeDrawable
 {
-    private Button chevronLeftContainer;
-    private Button chevronRightContainer;
-
+    private TextureSwiperContainer leftContainer3;
     private TextureSwiperContainer leftContainer2;
     private TextureSwiperContainer leftContainer1;
     private TextureSwiperContainer centerContainer;
     private TextureSwiperContainer rightContainer1;
     private TextureSwiperContainer rightContainer2;
+    private TextureSwiperContainer rightContainer3;
 
     public List<TextureSwiperItem<T>> Items { get; set; } = new List<TextureSwiperItem<T>>();
 
@@ -36,7 +34,7 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     }
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore)
+    private void load()
     {
         InternalChildren = new Drawable[]
         {
@@ -49,6 +47,7 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
                 Spacing = new Vector2(50, 0),
                 Children = new Drawable[]
                 {
+                    leftContainer3 = new TextureSwiperContainer(),
                     leftContainer2 = new TextureSwiperContainer(),
                     leftContainer1 = new TextureSwiperContainer(),
                     centerContainer = new TextureSwiperContainer()
@@ -57,7 +56,8 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
                         Size = new Vector2(220, 220)
                     },
                     rightContainer1 = new TextureSwiperContainer(),
-                    rightContainer2 = new TextureSwiperContainer()
+                    rightContainer2 = new TextureSwiperContainer(),
+                    rightContainer3 = new TextureSwiperContainer()
                 }
             }
         };
@@ -144,6 +144,24 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     }
 
     /// <summary>
+    /// Set the item of the swiper to the specified item.
+    /// If the item is not found, nothing will be changed.
+    /// </summary>
+    /// <param name="item">The item that will be set.</param>
+    public void SetItem(T item)
+    {
+        for (int i = 0; i < Items.Count; i++)
+        {
+            if (Items[i].Item.Equals(item))
+            {
+                currentIndex.Value = i;
+                UpdateContainerItem();
+                break;
+            }
+        }
+    }
+
+    /// <summary>
     /// Get the current index of the swiper item.
     /// </summary>
     public int CurrentIndex => currentIndex.Value;
@@ -153,6 +171,17 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     /// </summary>
     public void UpdateContainerItem()
     {
+        // Update the left container 3.
+        // If current index - 3 is less than 0, set as blank container
+        if (currentIndex.Value - 3 < 0)
+        {
+            leftContainer3.ClearTexture();
+        }
+        else
+        {
+            leftContainer3.SetTexture(Items[currentIndex.Value - 3].Texture);
+        }
+
         // Update the left container 2.
         // If current index - 2 is less than 0, set as blank container
         if (currentIndex.Value - 2 < 0)
@@ -198,6 +227,17 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
         else
         {
             rightContainer2.SetTexture(Items[currentIndex.Value + 2].Texture);
+        }
+
+        // Update the right container 2.
+        // If current index + 2 is more than the items count, set as blank container
+        if (currentIndex.Value + 3 >= Items.Count)
+        {
+            rightContainer3.ClearTexture();
+        }
+        else
+        {
+            rightContainer3.SetTexture(Items[currentIndex.Value + 3].Texture);
         }
 
         CurrentItem.Value = Items[currentIndex.Value].Item;

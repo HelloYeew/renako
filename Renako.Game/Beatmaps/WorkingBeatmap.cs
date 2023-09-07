@@ -1,4 +1,5 @@
 using osu.Framework.Bindables;
+using osu.Framework.Logging;
 
 namespace Renako.Game.Beatmaps;
 
@@ -21,5 +22,11 @@ public class WorkingBeatmap
     {
         get => BindableWorkingBeatmapSet.Value;
         set => BindableWorkingBeatmapSet.Value = value;
+    }
+
+    public WorkingBeatmap()
+    {
+        BindableWorkingBeatmap.BindValueChanged((e) => Logger.Log($"Working beatmap changed to {e.NewValue}"));
+        BindableWorkingBeatmapSet.BindValueChanged((e) => Logger.Log($"Working beatmap set changed to {e.NewValue}"));
     }
 }

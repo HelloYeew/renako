@@ -7,11 +7,14 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Input;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Drawables;
 using Renako.Game.Stores;
+using Renako.Game.Utilities;
 
 namespace Renako.Game.Graphics.Screens;
 
@@ -32,6 +35,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private MenuTitle songTitle;
     private SpriteText creatorText;
+    private SpriteText lengthText;
 
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
@@ -206,7 +210,7 @@ public partial class SongSelectionScreen : RenakoScreen
                                                 Icon = FontAwesome.Solid.Clock,
                                                 Colour = Color4Extensions.FromHex("67344D")
                                             },
-                                            new SpriteText()
+                                            lengthText = new SpriteText()
                                             {
                                                 Anchor = Anchor.CentreLeft,
                                                 Origin = Anchor.CentreLeft,
@@ -246,7 +250,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         Size = new Vector2(30, 20),
                         Position = new Vector2(15, 0),
                         Colour = Colour4.White,
-                        Action = beatmapSetSwiper.Previous,
+                        Action = togglePreviousButton,
                         Child = new FillFlowContainer()
                         {
                             Anchor = Anchor.CentreLeft,
@@ -281,7 +285,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         Size = new Vector2(30, 20),
                         Position = new Vector2(-15, 0),
                         Colour = Colour4.White,
-                        Action = beatmapSetSwiper.Next,
+                        Action = toggleNextButton,
                         Child = new FillFlowContainer()
                         {
                             Anchor = Anchor.CentreRight,
@@ -323,6 +327,7 @@ public partial class SongSelectionScreen : RenakoScreen
             songTitle.Title = item.NewValue.Title;
             songTitle.Description = item.NewValue.Artist;
             creatorText.Text = item.NewValue.Creator;
+            lengthText.Text = BeatmapSetUtility.GetFormattedTime(item.NewValue);
         });
     }
 
@@ -333,5 +338,29 @@ public partial class SongSelectionScreen : RenakoScreen
         songListContainer.MoveToY(-115, 750, Easing.OutBack);
 
         base.OnEntering(e);
+    }
+
+    private void toggleNextButton()
+    {
+        beatmapSetSwiper.Next();
+    }
+
+    private void togglePreviousButton()
+    {
+        beatmapSetSwiper.Previous();
+    }
+
+    protected override bool OnKeyDown(KeyDownEvent e)
+    {
+        if (e.Key == Key.Right)
+        {
+            toggleNextButton();
+        }
+        else if (e.Key == Key.Left)
+        {
+            togglePreviousButton();
+        }
+
+        return base.OnKeyDown(e);
     }
 }
