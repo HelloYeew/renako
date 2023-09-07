@@ -100,7 +100,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     {
         if (oldBeatmapSet == null || newBeatmapSet == null || oldBeatmapSet == newBeatmapSet) return;
 
-        if (CurrentScreen is not SongSelectionScreen) return;
+        if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
 
         Texture newBackgroundTexture = textureStore.Get(newBeatmapSet.BackgroundPath);
 
