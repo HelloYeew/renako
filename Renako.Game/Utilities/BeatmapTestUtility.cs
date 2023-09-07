@@ -21,7 +21,9 @@ public class BeatmapTestUtility
     public string[] RandomNameList = new string[]
     {
         "HelloYeew",
-        "Renako"
+        "Renako",
+        "Yuuki",
+        "Mai"
     };
 
     public BeatmapTestUtility()
