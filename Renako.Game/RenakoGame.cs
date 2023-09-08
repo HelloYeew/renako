@@ -19,6 +19,7 @@ namespace Renako.Game
         private DependencyContainer dependencies;
 
         private RenakoScreenStack mainScreenStack;
+        private SettingsScreenStack settingsScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
         private RenakoAudioManager audioManager;
@@ -44,6 +45,7 @@ namespace Renako.Game
             loadComponentSingleFile(mainScreenStack = new RenakoScreenStack(), Add, true);
             loadComponentSingleFile(logoScreenStack = new LogoScreenStack(), Add, true);
             loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
+            loadComponentSingleFile(settingsScreenStack = new SettingsScreenStack(), Add, true);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
