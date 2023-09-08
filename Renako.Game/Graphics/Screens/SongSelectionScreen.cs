@@ -443,11 +443,17 @@ public partial class SongSelectionScreen : RenakoScreen
         {
             togglePreviousButton();
         }
-        else if (e.Key == Key.Escape)
-        {
-            this.Exit();
-        }
 
         return base.OnKeyDown(e);
+    }
+
+    protected override bool OnScroll(ScrollEvent e)
+    {
+        if (e.ScrollDelta.Y > 0)
+            togglePreviousButton();
+        else if (e.ScrollDelta.Y < 0)
+            toggleNextButton();
+
+        return base.OnScroll(e);
     }
 }

@@ -3,8 +3,10 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Input;
 using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
 
@@ -48,10 +50,7 @@ public partial class MainMenuScreen : RenakoScreen
                         Icon = FontAwesome.Solid.Play,
                         Title = "Play",
                         Description = "Let's have some fun!",
-                        Action = () =>
-                        {
-                            mainScreenStack.Push(new PlayMenuScreen());
-                        }
+                        Action = togglePlayButton
                     },
                     // Editor
                     new MenuButton()
@@ -115,6 +114,14 @@ public partial class MainMenuScreen : RenakoScreen
         };
     }
 
+    /// <summary>
+    /// Action for play button.
+    /// </summary>
+    private void togglePlayButton()
+    {
+        mainScreenStack.Push(new PlayMenuScreen());
+    }
+
     public override void OnEntering(ScreenTransitionEvent e)
     {
         this.FadeIn(500, Easing.OutQuart);
@@ -152,5 +159,13 @@ public partial class MainMenuScreen : RenakoScreen
         menuContainer.MoveToX(-600, 500, Easing.OutQuart);
         reverseMenuContainer.MoveToX(600, 750, Easing.OutQuart);
         return base.OnExiting(e);
+    }
+
+    protected override bool OnKeyDown(KeyDownEvent e)
+    {
+        if (e.Key == Key.P)
+            togglePlayButton();
+
+        return base.OnKeyDown(e);
     }
 }

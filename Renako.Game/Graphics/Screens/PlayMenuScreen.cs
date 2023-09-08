@@ -57,7 +57,7 @@ public partial class PlayMenuScreen : Screen
                         Icon = FontAwesome.Solid.User,
                         Title = "Single Player".ToUpper(),
                         Description = "1v1 with the boss",
-                        Action = () => mainScreenStack.Push(new SongSelectionScreen())
+                        Action = toggleSinglePlayerButton
                     },
                     // Multiplayer
                     new MenuButton()
@@ -78,6 +78,14 @@ public partial class PlayMenuScreen : Screen
                 Action = this.Exit
             }
         };
+    }
+
+    /// <summary>
+    /// Toggle single player button.
+    /// </summary>
+    private void toggleSinglePlayerButton()
+    {
+        mainScreenStack.Push(new SongSelectionScreen());
     }
 
     public override void OnEntering(ScreenTransitionEvent e)
@@ -113,10 +121,8 @@ public partial class PlayMenuScreen : Screen
 
     protected override bool OnKeyDown(KeyDownEvent e)
     {
-        if (e.Key == Key.Escape)
-        {
-            this.Exit();
-        }
+        if (e.Key == Key.P)
+            toggleSinglePlayerButton();
 
         return base.OnKeyDown(e);
     }
