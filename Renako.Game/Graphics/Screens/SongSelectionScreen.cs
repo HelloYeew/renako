@@ -63,6 +63,9 @@ public partial class SongSelectionScreen : RenakoScreen
             });
         }
 
+        if (workingBeatmap.BeatmapSet != null)
+            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item == workingBeatmap.BeatmapSet);
+
         Alpha = 0;
         InternalChildren = new Drawable[]
         {

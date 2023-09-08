@@ -80,13 +80,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         }
         else if (newScreen is SongSelectionScreen)
         {
-            Track?.Stop();
-            Track?.Dispose();
-            Track = trackStore.Get("beatmaps/innocence-tv-size.mp3");
-            Track.Looping = true;
-            Track.Seek(54300);
-            Track.RestartPoint = 54300;
-            Track.Start();
+            changeTrackOnBeatmapSetChanged(null, workingBeatmap.BeatmapSet);
         }
     }
 
@@ -97,7 +91,7 @@ public partial class RenakoAudioManager : CompositeDrawable
     /// <param name="newBeatmapSet">The new <see cref="BeatmapSet"/> that will be changed.</param>
     private void changeTrackOnBeatmapSetChanged(BeatmapSet oldBeatmapSet, BeatmapSet newBeatmapSet)
     {
-        if (newBeatmapSet == null || oldBeatmapSet == null || newBeatmapSet == oldBeatmapSet)
+        if (newBeatmapSet == null || Equals(oldBeatmapSet, newBeatmapSet))
             return;
 
         // We don't want to change the track if the screen is not SongSelectionScreen.

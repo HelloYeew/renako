@@ -25,8 +25,13 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     private readonly BindableInt currentIndex = new BindableInt();
     public readonly Bindable<T> CurrentItem = new Bindable<T>();
 
-    public HorizontalTextureSwiper()
+    /// <summary>
+    /// Create a new <see cref="HorizontalTextureSwiper{T}"/>.
+    /// </summary>
+    /// <param name="defaultItem">The starting item that swiper will be started with.</param>
+    public HorizontalTextureSwiper(T defaultItem = default)
     {
+        CurrentItem.Value = defaultItem;
         Anchor = Anchor.BottomCentre;
         Origin = Anchor.BottomCentre;
         RelativeSizeAxes = Axes.X;
@@ -164,7 +169,11 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     /// <summary>
     /// Get the current index of the swiper item.
     /// </summary>
-    public int CurrentIndex => currentIndex.Value;
+    public int CurrentIndex
+    {
+        get => currentIndex.Value;
+        set => currentIndex.Value = value;
+    }
 
     /// <summary>
     /// Update the container item in the swiper.

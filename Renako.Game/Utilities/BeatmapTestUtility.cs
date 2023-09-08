@@ -107,7 +107,7 @@ public class BeatmapTestUtility
                 Source = "Winter Sky Fantasia",
                 SourceUnicode = "幽天のファンタジア",
                 TotalLength = 246000,
-                PreviewTime = 85000,
+                PreviewTime = 189430,
                 BPM = 185,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,

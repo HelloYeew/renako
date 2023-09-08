@@ -86,7 +86,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                 break;
 
             case (SongSelectionScreen):
-                ChangeBackground(fallbackBeatmapBackground);
+                changeBackgroundByBeatmapSet(null, workingBeatmap.BeatmapSet);
                 break;
         }
     }
@@ -98,7 +98,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// <param name="newBeatmapSet">The new beatmap set that will be changed.</param>
     private void changeBackgroundByBeatmapSet(BeatmapSet oldBeatmapSet, BeatmapSet newBeatmapSet)
     {
-        if (oldBeatmapSet == null || newBeatmapSet == null || oldBeatmapSet == newBeatmapSet) return;
+        if (newBeatmapSet == null || Equals(oldBeatmapSet, newBeatmapSet)) return;
 
         if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
 

@@ -1,4 +1,7 @@
-﻿namespace Renako.Game.Beatmaps;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Renako.Game.Beatmaps;
 
 /// <summary>
 /// The beatmap or difficulty in <see cref="BeatmapSet"/>
@@ -40,5 +43,27 @@ public class Beatmap
     public override string ToString()
     {
         return $"{BeatmapSet.Title} [{DifficultyName}]";
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Beatmap beatmap &&
+               ID == beatmap.ID &&
+               EqualityComparer<BeatmapSet>.Default.Equals(BeatmapSet, beatmap.BeatmapSet) &&
+               Creator == beatmap.Creator &&
+               DifficultyName == beatmap.DifficultyName &&
+               DifficultyLevel == beatmap.DifficultyLevel &&
+               DifficultyRating == beatmap.DifficultyRating &&
+               BackgroundPath == beatmap.BackgroundPath;
+    }
+
+    protected bool Equals(Beatmap other)
+    {
+        return ID == other.ID && Equals(BeatmapSet, other.BeatmapSet) && Creator == other.Creator && DifficultyName == other.DifficultyName && DifficultyLevel == other.DifficultyLevel && DifficultyRating.Equals(other.DifficultyRating) && BackgroundPath == other.BackgroundPath;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(ID, BeatmapSet, Creator, DifficultyName, (int)DifficultyLevel, DifficultyRating, BackgroundPath);
     }
 }
