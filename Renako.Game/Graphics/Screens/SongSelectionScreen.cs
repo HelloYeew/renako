@@ -449,10 +449,16 @@ public partial class SongSelectionScreen : RenakoScreen
 
     protected override bool OnScroll(ScrollEvent e)
     {
-        if (e.ScrollDelta.Y > 0)
-            togglePreviousButton();
-        else if (e.ScrollDelta.Y < 0)
-            toggleNextButton();
+        switch (e.ScrollDelta.Y)
+        {
+            case > 0:
+                togglePreviousButton();
+                break;
+
+            case < 0:
+                toggleNextButton();
+                break;
+        }
 
         return base.OnScroll(e);
     }
