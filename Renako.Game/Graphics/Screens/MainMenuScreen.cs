@@ -23,6 +23,9 @@ public partial class MainMenuScreen : RenakoScreen
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
+    [Resolved]
+    private SettingsScreenStack settingsScreenStack { get; set; }
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -108,7 +111,8 @@ public partial class MainMenuScreen : RenakoScreen
                     DescriptionColor = Color4Extensions.FromHex("171A2D"),
                     Icon = FontAwesome.Solid.Cog,
                     Title = "Settings",
-                    Description = "Get ready for fight!"
+                    Description = "Get ready for fight!",
+                    Action = () => settingsScreenStack.ToggleVisibility()
                 }
             }
         };

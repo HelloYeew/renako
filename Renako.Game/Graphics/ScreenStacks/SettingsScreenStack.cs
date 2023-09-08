@@ -41,4 +41,12 @@ public partial class SettingsScreenStack : ScreenStack
 
         return base.OnKeyDown(e);
     }
+
+    /// <summary>
+    /// Toggle visibility of settings container.
+    /// </summary>
+    public void ToggleVisibility()
+    {
+        settingsContainer.ToggleVisibility();
+    }
 }
