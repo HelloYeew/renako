@@ -392,6 +392,8 @@ public partial class SongSelectionScreen : RenakoScreen
         });
         workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((item) =>
         {
+            if (item.NewValue == null) return;
+
             songTitle.Title = item.NewValue.Title;
             songTitle.Description = item.NewValue.Artist;
             creatorText.Text = item.NewValue.Creator;
@@ -400,7 +402,7 @@ public partial class SongSelectionScreen : RenakoScreen
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
-        });
+        }, true);
     }
 
     public override void OnEntering(ScreenTransitionEvent e)
@@ -410,6 +412,15 @@ public partial class SongSelectionScreen : RenakoScreen
         songListContainer.MoveToY(-115, 750, Easing.OutBack);
 
         base.OnEntering(e);
+    }
+
+    public override bool OnExiting(ScreenExitEvent e)
+    {
+        this.FadeOut(500, Easing.OutQuart);
+        songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
+        songListContainer.MoveToY(600, 750, Easing.OutQuart);
+
+        return base.OnExiting(e);
     }
 
     private void toggleNextButton()
@@ -431,6 +442,10 @@ public partial class SongSelectionScreen : RenakoScreen
         else if (e.Key == Key.Left)
         {
             togglePreviousButton();
+        }
+        else if (e.Key == Key.Escape)
+        {
+            this.Exit();
         }
 
         return base.OnKeyDown(e);

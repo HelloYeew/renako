@@ -3,8 +3,10 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using osuTK.Input;
 using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
 
@@ -107,5 +109,15 @@ public partial class PlayMenuScreen : Screen
         this.FadeOut(500, Easing.OutQuart);
         menuContainer.MoveToX(-600, 500, Easing.OutQuart);
         return base.OnExiting(e);
+    }
+
+    protected override bool OnKeyDown(KeyDownEvent e)
+    {
+        if (e.Key == Key.Escape)
+        {
+            this.Exit();
+        }
+
+        return base.OnKeyDown(e);
     }
 }
