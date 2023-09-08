@@ -88,7 +88,7 @@ public class BeatmapTestUtility
                 Source = "Ano Yume wo Nazotte - Single",
                 SourceUnicode = "あの夢をなぞって - Single",
                 TotalLength = 242000,
-                PreviewTime = 78500,
+                PreviewTime = 182700,
                 BPM = 180,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,
