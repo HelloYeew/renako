@@ -44,9 +44,9 @@ public partial class SettingsContainer : FocusedOverlayContainer
                 Child = new MenuTitle()
                 {
                     ButtonWidth = 0.45f,
-                    BackgroundColor = Color4Extensions.FromHex("F2DFE9"),
-                    TitleColor = Color4Extensions.FromHex("67344D"),
-                    DescriptionColor = Color4Extensions.FromHex("251319"),
+                    BackgroundColor = Color4Extensions.FromHex("E0E1F0"),
+                    TitleColor = Color4Extensions.FromHex("403F75"),
+                    DescriptionColor = Color4Extensions.FromHex("171A2D"),
                     Title = "Settings".ToUpper(),
                     Description = "Get ready for fight!"
                 }
@@ -83,6 +83,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 Origin = Anchor.CentreRight,
                                 Text = "Tips".ToUpper(),
                                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 28f, RenakoFont.FontWeight.Bold),
+                                Colour = Color4Extensions.FromHex("C4C6EA")
                             },
                             new SpriteIcon()
                             {
@@ -90,7 +91,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 Origin = Anchor.CentreRight,
                                 Icon = FontAwesome.Solid.Lightbulb,
                                 Size = new Vector2(24),
-                                Colour = Color4Extensions.FromHex("F2DFE9")
+                                Colour = Color4Extensions.FromHex("A7ABE1")
                             }
                         }
                     },
@@ -99,7 +100,8 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
                         Text = "Use Ctrl + O to toggle settings anywhere!",
-                        Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, 20f)
+                        Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, 20f),
+                        Colour = Color4Extensions.FromHex("E0E1F0")
                     }
                 }
             },
