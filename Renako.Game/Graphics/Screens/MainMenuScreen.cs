@@ -4,6 +4,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
+using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Input;
@@ -25,6 +26,9 @@ public partial class MainMenuScreen : RenakoScreen
 
     [Resolved]
     private SettingsScreenStack settingsScreenStack { get; set; }
+
+    [Resolved]
+    private GameHost host { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -89,7 +93,8 @@ public partial class MainMenuScreen : RenakoScreen
                         DescriptionColor = Color4Extensions.FromHex("2D1717"),
                         Icon = FontAwesome.Solid.SignOutAlt,
                         Title = "Exit",
-                        Description = "See you soon!"
+                        Description = "See you soon!",
+                        Action = host.Exit
                     },
                 }
             },
