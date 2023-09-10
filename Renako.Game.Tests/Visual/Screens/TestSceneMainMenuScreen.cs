@@ -26,6 +26,9 @@ public partial class TestSceneMainMenuScreen : RenakoTestScene
     [Cached]
     private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
+    [Cached]
+    private SettingsScreenStack settingsScreenStack = new SettingsScreenStack();
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -34,6 +37,7 @@ public partial class TestSceneMainMenuScreen : RenakoTestScene
         Dependencies.CacheAs(backgroundScreenStack);
         Dependencies.CacheAs(audioManager);
         Dependencies.CacheAs(workingBeatmap);
+        Dependencies.CacheAs(settingsScreenStack);
     }
 
     [SetUp]
