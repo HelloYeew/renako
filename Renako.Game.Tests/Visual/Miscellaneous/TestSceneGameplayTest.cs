@@ -341,10 +341,11 @@ public partial class TestSceneGameplayTest : RenakoTestScene
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
-                        Size = new Vector2(20),
+                        Size = new Vector2(25),
                         Position = new Vector2(RNG.NextSingle(-400, 400), RNG.NextSingle(-200, 200)),
                         Colour = Color4Extensions.FromHex("FF0000")
                     });
+                    fruitPositionText.Text = $"Fruit Position: {fruit.Position.X}, {fruit.Position.Y}";
                     fruit.FadeTo(0, 3000).Expire();
                     fruitNoteTime.RemoveAt(i);
                 }
