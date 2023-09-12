@@ -100,7 +100,7 @@ public partial class TestSceneGameplayTest : RenakoTestScene
         76013.18,
         77643.21,
         79049.58,
-        0820.57,
+        80820.57,
         82459.36,
         84037.55,
         85610.56
