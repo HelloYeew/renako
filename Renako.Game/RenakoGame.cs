@@ -41,9 +41,12 @@ namespace Renako.Game
             };
             dependencies.CacheAs(beatmapsCollection);
             dependencies.CacheAs(workingBeatmap);
-            loadComponentSingleFile(backgroundScreenStack = new RenakoBackgroundScreenStack(), Add, true);
-            loadComponentSingleFile(mainScreenStack = new RenakoScreenStack(), Add, true);
-            loadComponentSingleFile(logoScreenStack = new LogoScreenStack(), Add, true);
+            dependencies.CacheAs(backgroundScreenStack = new RenakoBackgroundScreenStack());
+            dependencies.CacheAs(mainScreenStack = new RenakoScreenStack());
+            dependencies.CacheAs(logoScreenStack = new LogoScreenStack());
+            Add(backgroundScreenStack);
+            Add(mainScreenStack);
+            Add(logoScreenStack);
             loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
             loadComponentSingleFile(settingsScreenStack = new SettingsScreenStack(), Add, true);
         }
