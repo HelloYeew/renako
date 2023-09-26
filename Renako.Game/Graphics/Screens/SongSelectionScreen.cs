@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using osu.Framework.Allocation;
+using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -13,6 +14,7 @@ using osu.Framework.Screens;
 using osuTK;
 using osuTK.Input;
 using Renako.Game.Beatmaps;
+using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
 using Renako.Game.Stores;
 using Renako.Game.Utilities;
@@ -41,11 +43,13 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText creatorText;
     private SpriteText lengthText;
 
+    private Bindable<bool> useUnicodeInfo;
+
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore)
+    private void load(TextureStore textureStore, RenakoConfigManager renakoConfigManager)
     {
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
@@ -397,15 +401,32 @@ public partial class SongSelectionScreen : RenakoScreen
         {
             if (item.NewValue == null) return;
 
-            songTitle.Title = item.NewValue.Title;
-            songTitle.Description = item.NewValue.Artist;
+            songTitle.Title = useUnicodeInfo.Value ? item.NewValue.TitleUnicode : item.NewValue.Title;
+            songTitle.Description = useUnicodeInfo.Value ? item.NewValue.ArtistUnicode : item.NewValue.Artist;
             creatorText.Text = item.NewValue.Creator;
             lengthText.Text = BeatmapSetUtility.GetFormattedTime(item.NewValue);
-            sourceText.Text = item.NewValue.Source;
+            sourceText.Text = useUnicodeInfo.Value ? item.NewValue.SourceUnicode : item.NewValue.Source;
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
         }, true);
+
+        useUnicodeInfo = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
+        useUnicodeInfo.ValueChanged += delegate
+        {
+            if (useUnicodeInfo.Value)
+            {
+                songTitle.Title = workingBeatmap.BeatmapSet.TitleUnicode;
+                songTitle.Description = workingBeatmap.BeatmapSet.ArtistUnicode;
+                sourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
+            }
+            else
+            {
+                songTitle.Title = workingBeatmap.BeatmapSet.Title;
+                songTitle.Description = workingBeatmap.BeatmapSet.Artist;
+                sourceText.Text = workingBeatmap.BeatmapSet.Source;
+            }
+        };
     }
 
     public override void OnEntering(ScreenTransitionEvent e)

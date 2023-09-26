@@ -4,7 +4,9 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
+using osu.Framework.Graphics.UserInterface;
 using osuTK;
+using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
 
 namespace Renako.Game.Graphics.Containers;
@@ -16,12 +18,13 @@ public partial class SettingsContainer : FocusedOverlayContainer
 {
     private Container menuTitleContainer;
     private FillFlowContainer tipsContainer;
+    private Container settingsContainer;
 
     protected override bool BlockNonPositionalInput => false;
     protected override bool BlockScrollInput => false;
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(RenakoConfigManager renakoConfigManager)
     {
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -108,6 +111,44 @@ public partial class SettingsContainer : FocusedOverlayContainer
             new BackButton()
             {
                 Action = ToggleVisibility
+            },
+            settingsContainer = new Container()
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                RelativeSizeAxes = Axes.Both,
+                Size = new Vector2(0.7f, 0.5f),
+                Masking = true,
+                CornerRadius = 16,
+                Children = new Drawable[]
+                {
+                    new Box()
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = Color4Extensions.FromHex("5F5F66"),
+                        Alpha = 0.8f
+                    },
+                    new FillFlowContainer()
+                    {
+                        Anchor = Anchor.TopLeft,
+                        Origin = Anchor.TopLeft,
+                        RelativeSizeAxes = Axes.Both,
+                        Direction = FillDirection.Vertical,
+                        Spacing = new Vector2(0, 16),
+                        Children = new Drawable[] {
+                            new SpriteText()
+                            {
+                                Text = "Use unicode info"
+                            },
+                            new BasicCheckbox
+                            {
+                                Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
+                            }
+                        }
+                    }
+                }
             }
         };
     }

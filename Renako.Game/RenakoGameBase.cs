@@ -1,9 +1,12 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Development;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.IO.Stores;
+using osu.Framework.Platform;
 using osuTK;
+using Renako.Game.Configurations;
 using Renako.Game.Stores;
 using Renako.Resources;
 
@@ -16,6 +19,10 @@ namespace Renako.Game
         // the screen scaling for all components including the test browser and framework overlays.
 
         protected override Container<Drawable> Content { get; }
+
+        protected Storage Storage { get; set; }
+
+        protected RenakoConfigManager LocalConfig { get; private set; }
 
         private DependencyContainer dependencies;
 
@@ -69,7 +76,17 @@ namespace Renako.Game
 
             dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
             dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
+            dependencies.CacheAs(LocalConfig);
             dependencies.CacheAs(this);
+        }
+
+        public override void SetHost(GameHost host)
+        {
+            base.SetHost(host);
+            Storage = host.Storage;
+            LocalConfig ??= DebugUtils.IsDebugBuild
+                ? new DevelopmentRenakoConfigManager(Storage)
+                : new RenakoConfigManager(Storage);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
