@@ -2,5 +2,8 @@ namespace Renako.Game.Configurations;
 
 public enum RenakoSetting
 {
-    UseUnicodeInfo
+    UseUnicodeInfo,
+
+    LatestBeatmapSetID,
+    LatestBeatmapID
 }

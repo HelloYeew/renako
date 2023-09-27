@@ -42,7 +42,7 @@ public class BeatmapTestUtility
         {
             new BeatmapSet()
             {
-                ID = 1,
+                ID = 0,
                 Title = "Innocence (TV Size)",
                 TitleUnicode = "Innocence (TV Size)",
                 Artist = "Eir Aoi",
@@ -61,7 +61,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 2,
+                ID = 1,
                 Title = "ideal white",
                 TitleUnicode = "ideal white",
                 Artist = "Mashiro Ayano",
@@ -80,7 +80,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 3,
+                ID = 2,
                 Title = "Ano Yume wo Nazotte",
                 TitleUnicode = "あの夢をなぞって",
                 Artist = "YOASOBI",
@@ -99,7 +99,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 4,
+                ID = 3,
                 Title = "SnowMix",
                 TitleUnicode = "SnowMix",
                 Artist = "marasy & Hatsune Miku",
@@ -118,7 +118,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 5,
+                ID = 4,
                 Title = "Moonlightspeed",
                 TitleUnicode = "Moonlightspeed",
                 Artist = "Midnight Grand Orchestra",
@@ -137,7 +137,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 6,
+                ID = 5,
                 Title = "Kani*Do-Luck!",
                 TitleUnicode = "カニ*Do-Luck!",
                 Artist = "Aiuraba",
@@ -163,7 +163,7 @@ public class BeatmapTestUtility
     /// <returns></returns>
     public List<Beatmap> GenerateRandomBeatmaps()
     {
-        int incrementID = 1;
+        int incrementID = 0;
         List<Beatmap> beatmaps = new List<Beatmap>();
 
         foreach (BeatmapSet beatmapSet in GetLocalBeatmapSets())

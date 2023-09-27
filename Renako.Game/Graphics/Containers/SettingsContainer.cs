@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
@@ -24,7 +25,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     protected override bool BlockScrollInput => false;
 
     [BackgroundDependencyLoader]
-    private void load(RenakoConfigManager renakoConfigManager)
+    private void load(RenakoConfigManager renakoConfigManager, Storage storage)
     {
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -130,6 +131,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         Colour = Color4Extensions.FromHex("5F5F66"),
                         Alpha = 0.8f
                     },
+                    // TODO: Replace with designed settings container.
                     new FillFlowContainer()
                     {
                         Anchor = Anchor.TopLeft,
@@ -137,7 +139,9 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         RelativeSizeAxes = Axes.Both,
                         Direction = FillDirection.Vertical,
                         Spacing = new Vector2(0, 16),
-                        Children = new Drawable[] {
+                        Padding = new MarginPadding(15),
+                        Children = new Drawable[]
+                        {
                             new SpriteText()
                             {
                                 Text = "Use unicode info"
@@ -145,6 +149,13 @@ public partial class SettingsContainer : FocusedOverlayContainer
                             new BasicCheckbox
                             {
                                 Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
+                            },
+                            new BasicButton()
+                            {
+                                Action = () => storage.PresentExternally(),
+                                Text = "Open Renako folder",
+                                Width = 300,
+                                Height = 30
                             }
                         }
                     }

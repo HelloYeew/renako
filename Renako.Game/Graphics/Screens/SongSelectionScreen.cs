@@ -48,8 +48,11 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
 
+    private const int default_beatmapset_id = 0;
+    private const int default_beatmap_id = 0;
+
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager renakoConfigManager)
+    private void load(TextureStore textureStore, RenakoConfigManager config)
     {
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
@@ -57,6 +60,9 @@ public partial class SongSelectionScreen : RenakoScreen
             Items = beatmapSetSwiperItemList,
             Position = new Vector2(0, 0)
         };
+
+        workingBeatmap.BeatmapSet = config.Get<int>(RenakoSetting.LatestBeatmapSetID) == 0 ? beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id) : beatmapsCollection.GetBeatmapSetByID(config.Get<int>(RenakoSetting.LatestBeatmapSetID));
+        workingBeatmap.Beatmap = config.Get<int>(RenakoSetting.LatestBeatmapID) == 0 ? beatmapsCollection.GetBeatmapByID(default_beatmap_id) : beatmapsCollection.GetBeatmapByID(config.Get<int>(RenakoSetting.LatestBeatmapID));
 
         foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
         {
@@ -393,6 +399,23 @@ public partial class SongSelectionScreen : RenakoScreen
             }
         };
 
+        useUnicodeInfo = config.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
+        useUnicodeInfo.ValueChanged += delegate
+        {
+            if (useUnicodeInfo.Value)
+            {
+                songTitle.Title = workingBeatmap.BeatmapSet.TitleUnicode;
+                songTitle.Description = workingBeatmap.BeatmapSet.ArtistUnicode;
+                sourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
+            }
+            else
+            {
+                songTitle.Title = workingBeatmap.BeatmapSet.Title;
+                songTitle.Description = workingBeatmap.BeatmapSet.Artist;
+                sourceText.Text = workingBeatmap.BeatmapSet.Source;
+            }
+        };
+
         beatmapSetSwiper.CurrentItem.BindValueChanged((item) =>
         {
             workingBeatmap.BeatmapSet = item.NewValue;
@@ -409,24 +432,16 @@ public partial class SongSelectionScreen : RenakoScreen
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
+
+            Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
         }, true);
 
-        useUnicodeInfo = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
-        useUnicodeInfo.ValueChanged += delegate
+        workingBeatmap.BindableWorkingBeatmap.BindValueChanged((item) =>
         {
-            if (useUnicodeInfo.Value)
-            {
-                songTitle.Title = workingBeatmap.BeatmapSet.TitleUnicode;
-                songTitle.Description = workingBeatmap.BeatmapSet.ArtistUnicode;
-                sourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
-            }
-            else
-            {
-                songTitle.Title = workingBeatmap.BeatmapSet.Title;
-                songTitle.Description = workingBeatmap.BeatmapSet.Artist;
-                sourceText.Text = workingBeatmap.BeatmapSet.Source;
-            }
-        };
+            if (item.NewValue == null) return;
+
+            Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, item.NewValue.ID));
+        });
     }
 
     public override void OnEntering(ScreenTransitionEvent e)

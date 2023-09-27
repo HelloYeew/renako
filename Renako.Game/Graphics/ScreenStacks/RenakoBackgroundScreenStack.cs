@@ -114,11 +114,14 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// <param name="duration">Duration of the fade out and fade in.</param>
     public void ChangeBackground(Texture texture, int duration = 500)
     {
-        ImageSpriteDown.Texture = ImageSpriteUp.Texture;
-        ImageSpriteDown.Alpha = ImageSpriteUp.Alpha;
-        ImageSpriteUp.Texture = texture;
-        ImageSpriteUp.Alpha = 0;
-        ImageSpriteUp.FadeIn(duration, Easing.OutCubic);
-        ImageSpriteDown.FadeOut(duration, Easing.OutCubic);
+        Scheduler.Add(() =>
+        {
+            ImageSpriteDown.Texture = ImageSpriteUp.Texture;
+            ImageSpriteDown.Alpha = ImageSpriteUp.Alpha;
+            ImageSpriteUp.Texture = texture;
+            ImageSpriteUp.Alpha = 0;
+            ImageSpriteUp.FadeIn(duration, Easing.OutCubic);
+            ImageSpriteDown.FadeOut(duration, Easing.OutCubic);
+        });
     }
 }

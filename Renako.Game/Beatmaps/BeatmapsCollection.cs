@@ -50,4 +50,24 @@ public class BeatmapsCollection
             { "max", (int)max }
         };
     }
+
+    /// <summary>
+    /// Get the <see cref="BeatmapSet"/> by ID.
+    /// </summary>
+    /// <param name="id">The ID of the <see cref="BeatmapSet"/></param>
+    /// <returns>The <see cref="BeatmapSet"/></returns>
+    public BeatmapSet GetBeatmapSetByID(int id)
+    {
+        return BeatmapSets.Find((e) => e.ID == id);
+    }
+
+    /// <summary>
+    /// Get the <see cref="Beatmap"/> by ID.
+    /// </summary>
+    /// <param name="id">The ID of the <see cref="Beatmap"/></param>
+    /// <returns>The <see cref="Beatmap"/></returns>
+    public Beatmap GetBeatmapByID(int id)
+    {
+        return Beatmaps.Find((e) => e.ID == id);
+    }
 }
