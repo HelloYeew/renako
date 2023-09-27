@@ -12,7 +12,7 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
 
     protected override void InitialiseDefaults()
     {
-        SetDefault(RenakoSetting.UseUnicodeInfo, true);
+        SetDefault(RenakoSetting.UseUnicodeInfo, false);
         SetDefault(RenakoSetting.LatestBeatmapSetID, 0);
         SetDefault(RenakoSetting.LatestBeatmapID, 0);
     }
