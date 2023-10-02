@@ -75,8 +75,8 @@ public partial class LogoScreen : RenakoScreen
         Logo.RelativePositionAxes = Axes.None;
         Logo.Anchor = Anchor.TopLeft;
         Logo.Origin = Anchor.TopLeft;
-        Logo.Scale = new Vector2(0);
         Logo.Position = new Vector2(20, 20);
+        Logo.Scale = new Vector2(0);
         Logo.ScaleTo(1, 500, Easing.OutQuint);
     }
 }
