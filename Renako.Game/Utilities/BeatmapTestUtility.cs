@@ -47,8 +47,8 @@ public class BeatmapTestUtility
                 TitleUnicode = "Innocence (TV Size)",
                 Artist = "Eir Aoi",
                 ArtistUnicode = "藍井エイル",
-                Source = "Sword Art Online",
-                SourceUnicode = "ソードアート・オンライン",
+                Source = "Sword Art Online II",
+                SourceUnicode = "ソードアート・オンライン II",
                 TotalLength = 89000,
                 PreviewTime = 54300,
                 BPM = 183,
@@ -62,40 +62,40 @@ public class BeatmapTestUtility
             new BeatmapSet()
             {
                 ID = 1,
-                Title = "ideal white",
-                TitleUnicode = "ideal white",
-                Artist = "Mashiro Ayano",
-                ArtistUnicode = "綾野ましろ",
-                Source = "Fate/stay night: Unlimited Blade Works",
-                SourceUnicode = "Fate/stay night: Unlimited Blade Works",
-                TotalLength = 267000,
-                PreviewTime = 47900,
-                BPM = 180,
+                Title = "Courage",
+                TitleUnicode = "courage",
+                Artist = "Haruka Tomatsu",
+                ArtistUnicode = "戸松遥",
+                Source = "Sword Art Online II",
+                SourceUnicode = "ソードアート・オンライン II",
+                TotalLength = 254000,
+                PreviewTime = 49700,
+                BPM = 98,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
-                CoverPath = "Beatmaps/Album/ideal-white.jpg",
-                TrackPath = "beatmaps/ideal-white.mp3",
-                BackgroundPath = "Beatmaps/Background/ideal-white.jpg"
+                CoverPath = "Beatmaps/Album/courage.jpg",
+                TrackPath = "beatmaps/courage.mp3",
+                BackgroundPath = "Beatmaps/Background/courage.jpg"
             },
             new BeatmapSet()
             {
                 ID = 2,
-                Title = "Ano Yume wo Nazotte",
-                TitleUnicode = "あの夢をなぞって",
-                Artist = "YOASOBI",
-                ArtistUnicode = "YOASOBI",
-                Source = "Ano Yume wo Nazotte - Single",
-                SourceUnicode = "あの夢をなぞって - Single",
-                TotalLength = 242000,
-                PreviewTime = 182700,
-                BPM = 180,
+                Title = "Passionate Starmine",
+                TitleUnicode = "熱色スターマイン",
+                Artist = "Roselia",
+                ArtistUnicode = "Roselia",
+                Source = "Passionate Starmine - EP",
+                SourceUnicode = "熱色スターマイン - EP",
+                TotalLength = 267000,
+                PreviewTime = 242000,
+                BPM = 187,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
-                CoverPath = "Beatmaps/Album/ano-yume-wo-nazotte.jpg",
-                TrackPath = "beatmaps/ano-yume-wo-nazotte.mp3",
-                BackgroundPath = "Beatmaps/Background/ano-yume-wo-nazotte.jpg"
+                CoverPath = "Beatmaps/Album/passionate-starmine.jpg",
+                TrackPath = "beatmaps/passionate-starmine.mp3",
+                BackgroundPath = "Beatmaps/Background/passionate-starmine.jpg"
             },
             new BeatmapSet()
             {
@@ -119,46 +119,46 @@ public class BeatmapTestUtility
             new BeatmapSet()
             {
                 ID = 4,
-                Title = "Moonlightspeed",
-                TitleUnicode = "Moonlightspeed",
-                Artist = "Midnight Grand Orchestra",
-                ArtistUnicode = "Midnight Grand Orchestra",
-                Source = "Moonlightspeed - Single",
-                SourceUnicode = "Moonlightspeed - Single",
-                TotalLength = 189000,
-                PreviewTime = 42000,
-                BPM = 176,
+                Title = "Mirai No Museum",
+                TitleUnicode = "未来のミュージアム",
+                Artist = "Perfume",
+                ArtistUnicode = "Perfume",
+                Source = "Mirai No Museum - EP",
+                SourceUnicode = "未来のミュージアム - EP",
+                TotalLength = 202000,
+                PreviewTime = 158600,
+                BPM = 170,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
-                CoverPath = "Beatmaps/Album/moonlightspeed.jpg",
-                TrackPath = "beatmaps/moonlightspeed.mp3",
-                BackgroundPath = "Beatmaps/Background/moonlightspeed.jpg"
+                CoverPath = "Beatmaps/Album/mirai-no-museum.jpg",
+                TrackPath = "beatmaps/mirai-no-museum.mp3",
+                BackgroundPath = "Beatmaps/Background/mirai-no-museum.jpg"
             },
             new BeatmapSet()
             {
                 ID = 5,
-                Title = "Kani*Do-Luck!",
-                TitleUnicode = "カニ*Do-Luck!",
-                Artist = "Aiuraba",
-                ArtistUnicode = "あいうらば",
-                Source = "Aiura",
-                SourceUnicode = "あいうら",
-                TotalLength = 226000,
-                PreviewTime = 58750,
-                BPM = 210,
+                Title = "ONESELF",
+                TitleUnicode = "ONESELF",
+                Artist = "Twinfield feat. Hatsune Miku",
+                ArtistUnicode = "Twinfield feat. 初音ミク",
+                Source = "ONESELF - Single",
+                SourceUnicode = "ONESELF - Single",
+                TotalLength = 241000,
+                PreviewTime = 190875,
+                BPM = 220,
                 Creator = GetRandomCreatorName(),
                 HasVideo = false,
                 UseLocalSource = true,
-                CoverPath = "Beatmaps/Album/kani-do-luck.jpg",
-                TrackPath = "beatmaps/kani-do-luck.mp3",
-                BackgroundPath = "Beatmaps/Background/kani-do-luck.jpg"
+                CoverPath = "Beatmaps/Album/oneself.jpg",
+                TrackPath = "beatmaps/oneself.mp3",
+                BackgroundPath = "Beatmaps/Background/oneself.jpg"
             }
         };
     }
 
     /// <summary>
-    /// Generate
+    /// Generate random beatmaps for testing.
     /// </summary>
     /// <returns></returns>
     public List<Beatmap> GenerateRandomBeatmaps()
