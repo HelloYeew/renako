@@ -1,6 +1,5 @@
 ﻿using osu.Framework.Platform;
 using osu.Framework;
-using Renako.Game;
 
 namespace Renako.Desktop
 {
@@ -9,7 +8,7 @@ namespace Renako.Desktop
         public static void Main()
         {
             using (GameHost host = Host.GetSuitableDesktopHost(@"Renako"))
-            using (osu.Framework.Game game = new RenakoGame())
+            using (osu.Framework.Game game = new RenakoGameDesktop())
                 host.Run(game);
         }
     }
