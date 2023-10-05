@@ -89,6 +89,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                     Bottom = 0,
                     Left = 0
                 },
+                // TODO: Change color to design
                 Children = new Drawable[]
                 {
                     new FillFlowContainer()
