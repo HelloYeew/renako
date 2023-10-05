@@ -4,6 +4,8 @@ public enum RenakoSetting
 {
     UseUnicodeInfo,
 
+    ShowFPSCounter,
+
     LatestBeatmapSetID,
     LatestBeatmapID
 }

@@ -180,17 +180,38 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 {
                                     Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
                                 },
-                                new BasicButton()
-                                {
-                                    Action = () => storage.PresentExternally(),
-                                    Text = "Open Renako folder",
-                                    Width = 300,
-                                    Height = 30
-                                },
                                 new SpriteText()
                                 {
                                     Text = "Display".ToUpper(),
                                     Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Show FPS"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.ShowFPSCounter)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "FPS Limit"
+                                },
+                                new BasicDropdown<FrameSync>
+                                {
+                                    Width = 300,
+                                    Items = Enum.GetValues(typeof(FrameSync)).Cast<FrameSync>(),
+                                    Current = frameworkConfigManager.GetBindable<FrameSync>(FrameworkSetting.FrameSync)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Execution mode"
+                                },
+                                new BasicDropdown<ExecutionMode>
+                                {
+                                    Width = 300,
+                                    Items = Enum.GetValues(typeof(ExecutionMode)).Cast<ExecutionMode>(),
+                                    Current = frameworkConfigManager.GetBindable<ExecutionMode>(FrameworkSetting.ExecutionMode)
                                 },
                                 new SpriteText()
                                 {
@@ -261,6 +282,18 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                     Height = 30,
                                     Current = audioManager.VolumeTrack,
                                     KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Maintenance".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new BasicButton()
+                                {
+                                    Action = () => storage.PresentExternally(),
+                                    Text = "Open Renako folder",
+                                    Width = 300,
+                                    Height = 30
                                 }
                             }
                         }
