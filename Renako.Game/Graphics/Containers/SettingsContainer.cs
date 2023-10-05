@@ -150,102 +150,118 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         Colour = Color4Extensions.FromHex("5F5F66"),
                         Alpha = 0.8f
                     },
-                    // TODO: Replace with designed settings container.
-                    new FillFlowContainer()
+                    new BasicScrollContainer()
                     {
-                        Anchor = Anchor.TopLeft,
-                        Origin = Anchor.TopLeft,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Direction = FillDirection.Vertical,
-                        Spacing = new Vector2(0, 16),
-                        Padding = new MarginPadding(15),
-                        Children = new Drawable[]
+                        Child = new FillFlowContainer()
                         {
-                            new SpriteText()
+                            Anchor = Anchor.TopLeft,
+                            Origin = Anchor.TopLeft,
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Direction = FillDirection.Vertical,
+                            Spacing = new Vector2(0, 16),
+                            Padding = new MarginPadding(15),
+                            Children = new Drawable[]
                             {
-                                Text = "General".ToUpper(),
-                                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Use unicode info"
-                            },
-                            new BasicCheckbox
-                            {
-                                Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
-                            },
-                            new BasicButton()
-                            {
-                                Action = () => storage.PresentExternally(),
-                                Text = "Open Renako folder",
-                                Width = 300,
-                                Height = 30
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Display".ToUpper(),
-                                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Window mode",
-                                Alpha = host.Window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f
-                            },
-                            new BasicDropdown<WindowMode>()
-                            {
-                                Width = 300,
-                                Items = window?.SupportedWindowModes,
-                                Alpha = window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f,
-                                Current = frameworkConfigManager.GetBindable<WindowMode>(FrameworkSetting.WindowMode)
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Display"
-                            },
-                            displayDropdown = new DisplaySettingsDropdown()
-                            {
-                                Width = 300,
-                                Items = window?.Displays,
-                                Current = currentDisplay
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Audio".ToUpper(),
-                                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Master"
-                            },
-                            new BasicSliderBar<double>()
-                            {
-                                Width = 300,
-                                Height = 30,
-                                Current = audioManager.Volume,
-                                KeyboardStep = 0.01f,
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Effect"
-                            },
-                            new BasicSliderBar<double>()
-                            {
-                                Width = 300,
-                                Height = 30,
-                                Current = audioManager.VolumeSample,
-                                KeyboardStep = 0.01f,
-                            },
-                            new SpriteText()
-                            {
-                                Text = "Music"
-                            },
-                            new BasicSliderBar<double>()
-                            {
-                                Width = 300,
-                                Height = 30,
-                                Current = audioManager.VolumeTrack,
-                                KeyboardStep = 0.01f,
-                            },
+                                new SpriteText()
+                                {
+                                    Text = "General".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Use unicode info"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
+                                },
+                                new BasicButton()
+                                {
+                                    Action = () => storage.PresentExternally(),
+                                    Text = "Open Renako folder",
+                                    Width = 300,
+                                    Height = 30
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Display".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Renderer"
+                                },
+                                new BasicDropdown<RendererType>
+                                {
+                                    Width = 300,
+                                    Items = host.GetPreferredRenderersForCurrentPlatform().OrderBy(t => t).Where(t => t != RendererType.Vulkan),
+                                    Current = frameworkConfigManager.GetBindable<RendererType>(FrameworkSetting.Renderer)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Window mode",
+                                    Alpha = host.Window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f
+                                },
+                                new BasicDropdown<WindowMode>()
+                                {
+                                    Width = 300,
+                                    Items = window?.SupportedWindowModes,
+                                    Alpha = window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f,
+                                    Current = frameworkConfigManager.GetBindable<WindowMode>(FrameworkSetting.WindowMode)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Display"
+                                },
+                                displayDropdown = new DisplaySettingsDropdown()
+                                {
+                                    Width = 300,
+                                    Items = window?.Displays,
+                                    Current = currentDisplay
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Audio".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Master"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.Volume,
+                                    KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Effect"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.VolumeSample,
+                                    KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Music"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.VolumeTrack,
+                                    KeyboardStep = 0.01f,
+                                }
+                            }
                         }
                     }
                 }
