@@ -194,8 +194,8 @@ public partial class SettingsContainer : FocusedOverlayContainer
                             new BasicDropdown<WindowMode>()
                             {
                                 Width = 300,
-                                Items = host.Window?.SupportedWindowModes,
-                                Alpha = host.Window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f,
+                                Items = window?.SupportedWindowModes,
+                                Alpha = window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f,
                                 Current = frameworkConfigManager.GetBindable<WindowMode>(FrameworkSetting.WindowMode)
                             },
                             new SpriteText()
@@ -316,7 +316,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     {
         public static readonly DisplayListComparer DEFAULT = new DisplayListComparer();
 
-        public bool Equals(Display? x, Display? y)
+        public bool Equals(Display x, Display y)
         {
             if (ReferenceEquals(x, y)) return true;
             if (ReferenceEquals(x, null)) return false;
