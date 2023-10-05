@@ -1,7 +1,7 @@
 ﻿using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics.Sprites;
 
-namespace Renako.Game.Graphics.Drawables;
+namespace Renako.Game.Graphics.UserInterface;
 
 public partial class BackButton : LeftBottomButton
 {

@@ -15,7 +15,7 @@ using osu.Framework.Localisation;
 using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Configurations;
-using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Graphics.Containers;
 

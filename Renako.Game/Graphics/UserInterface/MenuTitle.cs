@@ -8,7 +8,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osuTK;
 
-namespace Renako.Game.Graphics.Drawables;
+namespace Renako.Game.Graphics.UserInterface;
 
 public partial class MenuTitle : CompositeDrawable
 {
