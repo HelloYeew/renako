@@ -1,14 +1,21 @@
-﻿using osu.Framework.Allocation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Bindables;
+using osu.Framework.Configuration;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Localisation;
 using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Configurations;
-using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Graphics.Containers;
 
@@ -21,12 +28,24 @@ public partial class SettingsContainer : FocusedOverlayContainer
     private FillFlowContainer tipsContainer;
     private Container settingsContainer;
 
+    private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
+
+    private BasicDropdown<Display> displayDropdown;
+
     protected override bool BlockNonPositionalInput => false;
     protected override bool BlockScrollInput => false;
 
     [BackgroundDependencyLoader]
-    private void load(RenakoConfigManager renakoConfigManager, Storage storage)
+    private void load(RenakoConfigManager renakoConfigManager, FrameworkConfigManager frameworkConfigManager, Storage storage, GameHost host, AudioManager audioManager)
     {
+        IWindow window = host.Window;
+
+        if (window != null)
+        {
+            currentDisplay.BindTo(window.CurrentDisplayBindable);
+            window.DisplaysChanged += onDisplaysChanged;
+        }
+
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
@@ -70,6 +89,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                     Bottom = 0,
                     Left = 0
                 },
+                // TODO: Change color to design
                 Children = new Drawable[]
                 {
                     new FillFlowContainer()
@@ -131,31 +151,150 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         Colour = Color4Extensions.FromHex("5F5F66"),
                         Alpha = 0.8f
                     },
-                    // TODO: Replace with designed settings container.
-                    new FillFlowContainer()
+                    new BasicScrollContainer()
                     {
-                        Anchor = Anchor.TopLeft,
-                        Origin = Anchor.TopLeft,
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
-                        Direction = FillDirection.Vertical,
-                        Spacing = new Vector2(0, 16),
-                        Padding = new MarginPadding(15),
-                        Children = new Drawable[]
+                        Child = new FillFlowContainer()
                         {
-                            new SpriteText()
+                            Anchor = Anchor.TopLeft,
+                            Origin = Anchor.TopLeft,
+                            RelativeSizeAxes = Axes.X,
+                            AutoSizeAxes = Axes.Y,
+                            Direction = FillDirection.Vertical,
+                            Spacing = new Vector2(0, 16),
+                            Padding = new MarginPadding(15),
+                            Children = new Drawable[]
                             {
-                                Text = "Use unicode info"
-                            },
-                            new BasicCheckbox
-                            {
-                                Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
-                            },
-                            new BasicButton()
-                            {
-                                Action = () => storage.PresentExternally(),
-                                Text = "Open Renako folder",
-                                Width = 300,
-                                Height = 30
+                                new SpriteText()
+                                {
+                                    Text = "General".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Use unicode info"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Display".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Show FPS"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.ShowFPSCounter)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "FPS Limit"
+                                },
+                                new BasicDropdown<FrameSync>
+                                {
+                                    Width = 300,
+                                    Items = Enum.GetValues(typeof(FrameSync)).Cast<FrameSync>(),
+                                    Current = frameworkConfigManager.GetBindable<FrameSync>(FrameworkSetting.FrameSync)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Execution mode"
+                                },
+                                new BasicDropdown<ExecutionMode>
+                                {
+                                    Width = 300,
+                                    Items = Enum.GetValues(typeof(ExecutionMode)).Cast<ExecutionMode>(),
+                                    Current = frameworkConfigManager.GetBindable<ExecutionMode>(FrameworkSetting.ExecutionMode)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Renderer"
+                                },
+                                new BasicDropdown<RendererType>
+                                {
+                                    Width = 300,
+                                    Items = host.GetPreferredRenderersForCurrentPlatform().OrderBy(t => t).Where(t => t != RendererType.Vulkan),
+                                    Current = frameworkConfigManager.GetBindable<RendererType>(FrameworkSetting.Renderer)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Window mode",
+                                    Alpha = host.Window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f
+                                },
+                                new BasicDropdown<WindowMode>()
+                                {
+                                    Width = 300,
+                                    Items = window?.SupportedWindowModes,
+                                    Alpha = window?.SupportedWindowModes.Count() > 1 ? 1f : 0.5f,
+                                    Current = frameworkConfigManager.GetBindable<WindowMode>(FrameworkSetting.WindowMode)
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Display"
+                                },
+                                displayDropdown = new DisplaySettingsDropdown()
+                                {
+                                    Width = 300,
+                                    Items = window?.Displays,
+                                    Current = currentDisplay
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Audio".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Master"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.Volume,
+                                    KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Effect"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.VolumeSample,
+                                    KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Music"
+                                },
+                                new BasicSliderBar<double>()
+                                {
+                                    Width = 300,
+                                    Height = 30,
+                                    Current = audioManager.VolumeTrack,
+                                    KeyboardStep = 0.01f,
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Maintenance".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new BasicButton()
+                                {
+                                    Action = () => storage.PresentExternally(),
+                                    Text = "Open Renako folder",
+                                    Width = 300,
+                                    Height = 30
+                                }
                             }
                         }
                     }
@@ -192,5 +331,63 @@ public partial class SettingsContainer : FocusedOverlayContainer
     protected override void PopOut()
     {
         Exit();
+    }
+
+    private void onDisplaysChanged(IEnumerable<Display> displays)
+    {
+        Scheduler.AddOnce(d =>
+        {
+            if (!displayDropdown.Items.SequenceEqual(d, DisplayListComparer.DEFAULT))
+                displayDropdown.Items = d;
+        }, displays);
+    }
+
+    /// <summary>
+    /// The <see cref="Dropdown{T}"/> that extend to show the display name.
+    /// </summary>
+    private partial class DisplaySettingsDropdown : BasicDropdown<Display>
+    {
+        protected override LocalisableString GenerateItemText(Display item)
+        {
+            return $"{item.Index}: {item.Name} ({item.Bounds.Width}x{item.Bounds.Height})";
+        }
+    }
+
+    /// <summary>
+    /// Contrary to <see cref="Display.Equals(osu.Framework.Platform.Display?)"/>, this comparer disregards the value of <see cref="Display.Bounds"/>.
+    /// We want to just show a list of displays, and for the purposes of settings we don't care about their bounds when it comes to the list.
+    /// However, <see cref="IWindow.DisplaysChanged"/> fires even if only the resolution of the current display was changed
+    /// (because it causes the bounds of all displays to also change).
+    /// We're not interested in those changes, so compare only the rest that we actually care about.
+    /// This helps to avoid a bindable/event feedback loop, in which a resolution change
+    /// would trigger a display "change", which would in turn reset resolution again.
+    /// </summary>
+    private class DisplayListComparer : IEqualityComparer<Display>
+    {
+        public static readonly DisplayListComparer DEFAULT = new DisplayListComparer();
+
+        public bool Equals(Display x, Display y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+
+            return x.Index == y.Index
+                   && x.Name == y.Name
+                   && x.DisplayModes.SequenceEqual(y.DisplayModes);
+        }
+
+        public int GetHashCode(Display obj)
+        {
+            var hashCode = new HashCode();
+
+            hashCode.Add(obj.Index);
+            hashCode.Add(obj.Name);
+            hashCode.Add(obj.DisplayModes.Length);
+            foreach (var displayMode in obj.DisplayModes)
+                hashCode.Add(displayMode);
+
+            return hashCode.ToHashCode();
+        }
     }
 }

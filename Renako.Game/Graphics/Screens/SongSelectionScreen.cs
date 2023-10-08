@@ -16,6 +16,7 @@ using osuTK.Input;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.UserInterface;
 using Renako.Game.Stores;
 using Renako.Game.Utilities;
 

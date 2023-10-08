@@ -1,6 +1,6 @@
 using NUnit.Framework;
 using osu.Framework.Graphics;
-using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Tests.Visual.Drawables;
 

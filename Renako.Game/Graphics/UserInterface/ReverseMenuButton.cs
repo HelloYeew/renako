@@ -9,7 +9,7 @@ using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osuTK;
 
-namespace Renako.Game.Graphics.Drawables;
+namespace Renako.Game.Graphics.UserInterface;
 
 public partial class ReverseMenuButton : Button
 {

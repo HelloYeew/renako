@@ -8,8 +8,8 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Input;
-using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
+using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Graphics.Screens;
 

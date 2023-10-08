@@ -1,8 +1,10 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
+using osu.Framework.Bindables;
 using osu.Framework.Development;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Performance;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osuTK;
@@ -29,6 +31,8 @@ namespace Renako.Game
         private RenakoTextureStore textureStore;
 
         private AudioManager audioManager;
+
+        private Bindable<bool> fpsDisplayVisible;
 
         protected RenakoGameBase()
         {
@@ -78,6 +82,15 @@ namespace Renako.Game
             dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
             dependencies.CacheAs(LocalConfig);
             dependencies.CacheAs(this);
+        }
+
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
+            fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };
+            fpsDisplayVisible.TriggerChange();
         }
 
         public override void SetHost(GameHost host)
