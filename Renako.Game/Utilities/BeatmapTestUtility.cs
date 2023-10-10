@@ -153,6 +153,26 @@ public class BeatmapTestUtility
                 CoverPath = "Beatmaps/Album/oneself.jpg",
                 TrackPath = "beatmaps/oneself.mp3",
                 BackgroundPath = "Beatmaps/Background/oneself.jpg"
+            },
+            // Added for edge case for very long title and dark background
+            new BeatmapSet()
+            {
+                ID = 6,
+                Title = "I'm Glad You're Evil Too",
+                TitleUnicode = "きみも悪い人でよかった",
+                Artist = "PinocchioP feat. Hatsune Miku",
+                ArtistUnicode = "ピノキオピー feat. 初音ミク",
+                Source = "HUMAN",
+                SourceUnicode = "HUMAN",
+                TotalLength = 391000,
+                PreviewTime = 268000,
+                BPM = 120,
+                Creator = GetRandomCreatorName(),
+                HasVideo = false,
+                UseLocalSource = true,
+                CoverPath = "Beatmaps/Album/im-glad-youre-evil-too.jpg",
+                TrackPath = "beatmaps/im-glad-youre-evil-too.mp3",
+                BackgroundPath = "Beatmaps/Background/im-glad-youre-evil-too.jpg"
             }
         };
     }
