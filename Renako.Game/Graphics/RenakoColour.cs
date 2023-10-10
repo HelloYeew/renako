@@ -7,6 +7,11 @@ namespace Renako.Game.Graphics;
 
 public class RenakoColour
 {
+    /// <summary>
+    /// Get the colour for a given difficulty level from gradient.
+    /// </summary>
+    /// <param name="difficultyLevel">The difficulty level to get the colour for.</param>
+    /// <returns>A <see cref="Color4"/> for the given difficulty level.</returns>
     public static Color4 ForDifficultyLevel(double difficultyLevel) => ColourUtility.SampleFromLinearGradient(new[]
     {
         (0f, Color4Extensions.FromHex("8EE5C8")),
