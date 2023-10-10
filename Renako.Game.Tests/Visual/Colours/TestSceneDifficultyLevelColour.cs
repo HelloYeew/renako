@@ -24,7 +24,7 @@ public partial class TestSceneDifficultyLevelColour : RenakoTestScene
                 AutoSizeAxes = Axes.Both,
                 Direction = FillDirection.Horizontal,
                 Spacing = new Vector2(5f),
-                Scale = new Vector2(0.6f),
+                Scale = new Vector2(0.65f),
                 ChildrenEnumerable = Enumerable.Range(0, 20).Select(i => new FillFlowContainer
                 {
                     Anchor = Anchor.Centre,
@@ -71,7 +71,7 @@ public partial class TestSceneDifficultyLevelColour : RenakoTestScene
                                 {
                                     Anchor = Anchor.TopCentre,
                                     Origin = Anchor.TopCentre,
-                                    Text = $"{(1f * i + 0.1f * j):0.00}",
+                                    Text = $"{1f * i + 0.1f * j:0.00}"
                                 }
                             }
                         };
