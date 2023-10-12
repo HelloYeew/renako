@@ -27,8 +27,6 @@ public partial class SongSelectionScreen : RenakoScreen
 {
     private FillFlowContainer songTitleContainer;
     private Container songListContainer;
-    private Button chevronLeftButton;
-    private Button chevronRightButton;
 
     [Resolved]
     private BeatmapsCollection beatmapsCollection { get; set; }
@@ -44,9 +42,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText bpmText;
     private SpriteText creatorText;
     private SpriteText lengthText;
-    private StopwatchClock beatmapChangeTimer = new StopwatchClock();
-    private double lastBeatmapChangeTime = 0;
-    private bool isBeatmapChanged = false;
+    private readonly StopwatchClock beatmapChangeTimer = new StopwatchClock();
+    private double lastBeatmapChangeTime;
+    private bool isBeatmapChanged;
 
     private Bindable<bool> useUnicodeInfo;
 
@@ -81,7 +79,7 @@ public partial class SongSelectionScreen : RenakoScreen
         }
 
         if (workingBeatmap.BeatmapSet != null)
-            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item == workingBeatmap.BeatmapSet);
+            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item.Equals(workingBeatmap.BeatmapSet));
 
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -331,7 +329,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex("82767E")
                     },
-                    chevronLeftButton = new BasicButton()
+                    new BasicButton()
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
@@ -366,7 +364,7 @@ public partial class SongSelectionScreen : RenakoScreen
                             }
                         }
                     },
-                    chevronRightButton = new BasicButton()
+                    new BasicButton()
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
@@ -423,12 +421,12 @@ public partial class SongSelectionScreen : RenakoScreen
             }
         };
 
-        beatmapSetSwiper.CurrentItem.BindValueChanged((item) =>
+        beatmapSetSwiper.CurrentItem.BindValueChanged(_ =>
         {
             isBeatmapChanged = false;
             lastBeatmapChangeTime = beatmapChangeTimer.CurrentTime;
         });
-        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((item) =>
+        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
 
@@ -445,7 +443,7 @@ public partial class SongSelectionScreen : RenakoScreen
             isBeatmapChanged = true;
         }, true);
 
-        workingBeatmap.BindableWorkingBeatmap.BindValueChanged((item) =>
+        workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
 
