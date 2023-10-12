@@ -1,5 +1,4 @@
 using osu.Framework.Allocation;
-using osu.Framework.Testing;
 using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.ScreenStacks;
@@ -12,16 +11,6 @@ namespace Renako.Game.Tests.Visual;
 /// </summary>
 public partial class GameDrawableTestScene : RenakoTestScene
 {
-    /// <summary>
-    /// Load the beatmap test collection using <see cref="BeatmapsCollection.GenerateTestCollection"/>
-    /// </summary>
-    public bool LoadBeatmapTestCollection { get; set; } = false;
-
-    /// <summary>
-    /// Load all screen stacks using in game on setup.
-    /// </summary>
-    public bool LoadAllScreenStacks { get; set; } = false;
-
     [Cached]
     public readonly RenakoBackgroundScreenStack backgroundScreenStack = new RenakoBackgroundScreenStack();
 
@@ -55,26 +44,6 @@ public partial class GameDrawableTestScene : RenakoTestScene
         Dependencies.CacheAs(beatmapsCollection);
 
         Add(audioManager);
-
-        if (LoadBeatmapTestCollection) beatmapsCollection.GenerateTestCollection();
-    }
-
-    [SetUpSteps]
-    public void setupTest()
-    {
-        AddStep("clear all children", () =>
-        {
-            Clear();
-        });
-
-        if (LoadAllScreenStacks)
-        {
-            Scheduler.Add(() => loadAllScreenStacks());
-        }
-    }
-
-    public void loadAllScreenStacks()
-    {
         Add(backgroundScreenStack);
         Add(mainScreenStack);
         Add(logoScreenStack);

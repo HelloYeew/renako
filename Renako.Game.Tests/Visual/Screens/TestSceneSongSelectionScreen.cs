@@ -10,6 +10,7 @@ public partial class TestSceneSongSelectionScreen : GameDrawableTestScene
     public void TestSongSelectionScreen()
     {
         MuteTrack();
+        AddStep("load beatmap test collection", () => beatmapsCollection.GenerateTestCollection());
         AddStep("add song selection screen", () => mainScreenStack.Push(new SongSelectionScreen()));
         AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is SongSelectionScreen);
         AddStep("rerun", () => {
