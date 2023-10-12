@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
+using osu.Framework.Timing;
 using osuTK;
 using osuTK.Input;
 using Renako.Game.Beatmaps;
@@ -26,8 +27,6 @@ public partial class SongSelectionScreen : RenakoScreen
 {
     private FillFlowContainer songTitleContainer;
     private Container songListContainer;
-    private Button chevronLeftButton;
-    private Button chevronRightButton;
 
     [Resolved]
     private BeatmapsCollection beatmapsCollection { get; set; }
@@ -43,6 +42,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText bpmText;
     private SpriteText creatorText;
     private SpriteText lengthText;
+    private readonly StopwatchClock beatmapChangeTimer = new StopwatchClock();
+    private double lastBeatmapChangeTime;
+    private bool isBeatmapChanged;
 
     private Bindable<bool> useUnicodeInfo;
 
@@ -55,6 +57,8 @@ public partial class SongSelectionScreen : RenakoScreen
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore, RenakoConfigManager config)
     {
+        beatmapChangeTimer.Start();
+
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
         {
@@ -75,7 +79,7 @@ public partial class SongSelectionScreen : RenakoScreen
         }
 
         if (workingBeatmap.BeatmapSet != null)
-            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item == workingBeatmap.BeatmapSet);
+            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item.Equals(workingBeatmap.BeatmapSet));
 
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -325,7 +329,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex("82767E")
                     },
-                    chevronLeftButton = new BasicButton()
+                    new BasicButton()
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
@@ -360,7 +364,7 @@ public partial class SongSelectionScreen : RenakoScreen
                             }
                         }
                     },
-                    chevronRightButton = new BasicButton()
+                    new BasicButton()
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
@@ -417,11 +421,12 @@ public partial class SongSelectionScreen : RenakoScreen
             }
         };
 
-        beatmapSetSwiper.CurrentItem.BindValueChanged((item) =>
+        beatmapSetSwiper.CurrentItem.BindValueChanged(_ =>
         {
-            workingBeatmap.BeatmapSet = item.NewValue;
+            isBeatmapChanged = false;
+            lastBeatmapChangeTime = beatmapChangeTimer.CurrentTime;
         });
-        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((item) =>
+        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
 
@@ -435,14 +440,26 @@ public partial class SongSelectionScreen : RenakoScreen
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
+            isBeatmapChanged = true;
         }, true);
 
-        workingBeatmap.BindableWorkingBeatmap.BindValueChanged((item) =>
+        workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, item.NewValue.ID));
         });
+    }
+
+    protected override void Update()
+    {
+        if (lastBeatmapChangeTime + 200 < beatmapChangeTimer.CurrentTime && !isBeatmapChanged)
+        {
+            workingBeatmap.BeatmapSet = beatmapSetSwiper.CurrentItem.Value;
+            isBeatmapChanged = true;
+        }
+
+        base.Update();
     }
 
     public override void OnEntering(ScreenTransitionEvent e)
@@ -456,6 +473,8 @@ public partial class SongSelectionScreen : RenakoScreen
 
     public override bool OnExiting(ScreenExitEvent e)
     {
+        beatmapChangeTimer.Stop();
+        beatmapChangeTimer.Reset();
         this.FadeOut(500, Easing.OutQuart);
         songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
         songListContainer.MoveToY(600, 750, Easing.OutQuart);
