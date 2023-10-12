@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
+using osu.Framework.Timing;
 using osuTK;
 using osuTK.Input;
 using Renako.Game.Beatmaps;
@@ -43,6 +44,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText bpmText;
     private SpriteText creatorText;
     private SpriteText lengthText;
+    private StopwatchClock beatmapChangeTimer = new StopwatchClock();
+    private double lastBeatmapChangeTime = 0;
+    private bool isBeatmapChanged = false;
 
     private Bindable<bool> useUnicodeInfo;
 
@@ -55,6 +59,8 @@ public partial class SongSelectionScreen : RenakoScreen
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore, RenakoConfigManager config)
     {
+        beatmapChangeTimer.Start();
+
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
         {
@@ -419,7 +425,8 @@ public partial class SongSelectionScreen : RenakoScreen
 
         beatmapSetSwiper.CurrentItem.BindValueChanged((item) =>
         {
-            workingBeatmap.BeatmapSet = item.NewValue;
+            isBeatmapChanged = false;
+            lastBeatmapChangeTime = beatmapChangeTimer.CurrentTime;
         });
         workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((item) =>
         {
@@ -445,6 +452,17 @@ public partial class SongSelectionScreen : RenakoScreen
         });
     }
 
+    protected override void Update()
+    {
+        if (lastBeatmapChangeTime + 200 < beatmapChangeTimer.CurrentTime && !isBeatmapChanged)
+        {
+            workingBeatmap.BeatmapSet = beatmapSetSwiper.CurrentItem.Value;
+            isBeatmapChanged = true;
+        }
+
+        base.Update();
+    }
+
     public override void OnEntering(ScreenTransitionEvent e)
     {
         this.FadeIn(500, Easing.OutQuart);
@@ -456,6 +474,8 @@ public partial class SongSelectionScreen : RenakoScreen
 
     public override bool OnExiting(ScreenExitEvent e)
     {
+        beatmapChangeTimer.Stop();
+        beatmapChangeTimer.Reset();
         this.FadeOut(500, Easing.OutQuart);
         songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
         songListContainer.MoveToY(600, 750, Easing.OutQuart);

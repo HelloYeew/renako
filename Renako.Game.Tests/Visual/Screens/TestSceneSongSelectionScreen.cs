@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
 using osu.Framework.Screens;
 using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
@@ -31,7 +32,7 @@ public partial class TestSceneSongSelectionScreen : RenakoTestScene
     private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManagerSource)
     {
         beatmapsCollection.GenerateTestCollection();
         Dependencies.CacheAs(mainScreenStack);
@@ -40,6 +41,7 @@ public partial class TestSceneSongSelectionScreen : RenakoTestScene
         Dependencies.CacheAs(audioManager);
         Dependencies.CacheAs(beatmapsCollection);
         Dependencies.CacheAs(workingBeatmap);
+        audioManagerSource.VolumeTrack.Value = 0;
     }
 
     [SetUp]
@@ -50,7 +52,6 @@ public partial class TestSceneSongSelectionScreen : RenakoTestScene
         Add(logoScreenStack);
         Add(audioManager);
         mainScreenStack.Push(new SongSelectionScreen());
-        Scheduler.Add(() => audioManager.Mute());
         AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is SongSelectionScreen);
         AddStep("rerun", () => {
             mainScreenStack.CurrentScreen?.Exit();
