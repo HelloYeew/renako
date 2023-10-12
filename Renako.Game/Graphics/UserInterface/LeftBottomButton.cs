@@ -80,7 +80,7 @@ public partial class LeftBottomButton : Button
         };
 
         hoverSample = audioManager.Samples.Get("UI/hover");
-        clickSample = audioManager.Samples.Get("UI/click-enter1");
+        clickSample = audioManager.Samples.Get("UI/click-back");
     }
 
     protected override bool OnHover(HoverEvent e)
