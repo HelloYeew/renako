@@ -18,7 +18,7 @@ namespace Renako.Game
     {
         private DependencyContainer dependencies;
 
-        private RenakoScreenStack mainScreenStack;
+        public RenakoScreenStack MainScreenStack { get; private set; }
         private SettingsScreenStack settingsScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
@@ -42,10 +42,10 @@ namespace Renako.Game
             dependencies.CacheAs(beatmapsCollection);
             dependencies.CacheAs(workingBeatmap);
             dependencies.CacheAs(backgroundScreenStack = new RenakoBackgroundScreenStack());
-            dependencies.CacheAs(mainScreenStack = new RenakoScreenStack());
+            dependencies.CacheAs(MainScreenStack = new RenakoScreenStack());
             dependencies.CacheAs(logoScreenStack = new LogoScreenStack());
             Add(backgroundScreenStack);
-            Add(mainScreenStack);
+            Add(MainScreenStack);
             Add(logoScreenStack);
             loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
             loadComponentSingleFile(settingsScreenStack = new SettingsScreenStack(), Add, true);
@@ -58,7 +58,7 @@ namespace Renako.Game
         {
             base.LoadComplete();
 
-            mainScreenStack.Push(new WarningScreen());
+            MainScreenStack.Push(new WarningScreen());
         }
 
         private Task asyncLoadStream;

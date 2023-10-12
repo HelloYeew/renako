@@ -1,28 +1,12 @@
 ﻿using NUnit.Framework;
-using osu.Framework.Allocation;
-using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-[TestFixture]
-public partial class TestSceneSettingsScreenStack : RenakoTestScene
+public partial class TestSceneSettingsScreenStack : GameDrawableTestScene
 {
-    [Cached]
-    private RenakoScreenStack mainScreenStack = new RenakoScreenStack();
-
-    private readonly SettingsScreenStack settingsScreenStack = new SettingsScreenStack();
-
-    [BackgroundDependencyLoader]
-    private void load()
+    [Test]
+    public void TestSettingsScreenStack()
     {
-        Dependencies.CacheAs(mainScreenStack);
-    }
-
-    [SetUp]
-    public void SetUp()
-    {
-        Add(mainScreenStack);
-        Add(settingsScreenStack);
         AddStep("toggle visibility", () => settingsScreenStack.ToggleVisibility());
     }
 }

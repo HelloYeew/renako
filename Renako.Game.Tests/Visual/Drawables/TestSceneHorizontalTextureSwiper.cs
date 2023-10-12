@@ -13,7 +13,7 @@ using Renako.Game.Utilities;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneHorizontalTextureSwiper : RenakoTestScene
+public partial class TestSceneHorizontalTextureSwiper : GameDrawableTestScene
 {
     private List<TextureSwiperItem<BeatmapSet>> swiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
     private HorizontalTextureSwiper<BeatmapSet> swiper;

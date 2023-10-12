@@ -18,8 +18,7 @@ public partial class SettingsScreenStack : ScreenStack
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
-    [BackgroundDependencyLoader]
-    private void load()
+    public SettingsScreenStack()
     {
         InternalChild = settingsContainer = new SettingsContainer
         {
