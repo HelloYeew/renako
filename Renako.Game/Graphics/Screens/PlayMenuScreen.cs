@@ -57,7 +57,8 @@ public partial class PlayMenuScreen : Screen
                         Icon = FontAwesome.Solid.User,
                         Title = "Single Player".ToUpper(),
                         Description = "1v1 with the boss",
-                        Action = toggleSinglePlayerButton
+                        Action = toggleSinglePlayerButton,
+                        ClickSample = MenuButtonClickSample.Enter2
                     },
                     // Multiplayer
                     new MenuButton()
@@ -69,7 +70,8 @@ public partial class PlayMenuScreen : Screen
                         DescriptionColor = Color4Extensions.FromHex("1E1528"),
                         Icon = FontAwesome.Solid.Users,
                         Title = "Multiplayer",
-                        Description = "Compete or help slain the boss"
+                        Description = "Compete or help slain the boss",
+                        ClickSample = MenuButtonClickSample.Enter2
                     }
                 }
             },

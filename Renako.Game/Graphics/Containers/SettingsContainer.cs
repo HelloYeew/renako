@@ -281,7 +281,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                     Width = 300,
                                     Height = 30,
                                     Current = audioManager.VolumeTrack,
-                                    KeyboardStep = 0.01f,
+                                    KeyboardStep = 0.01f
                                 },
                                 new SpriteText()
                                 {

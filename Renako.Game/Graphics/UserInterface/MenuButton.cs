@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -21,13 +23,16 @@ public partial class MenuButton : Button
     public IconUsage Icon { get; set; } = FontAwesome.Solid.Play;
     public string Title { get; set; } = "Play";
     public string Description { get; set; } = "Let's have some fun!";
+    public MenuButtonClickSample ClickSample { get; set; } = MenuButtonClickSample.Enter1;
 
     public const float CONTAINER_PADDING = 20;
 
     private Box backgroundBox;
+    private Sample hoverSample;
+    private Sample clickSample;
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Anchor = Anchor.CentreLeft;
         Origin = Anchor.CentreLeft;
@@ -97,12 +102,39 @@ public partial class MenuButton : Button
                 }
             }
         };
+
+        hoverSample = audioManager.Samples.Get("UI/hover");
+
+        switch (ClickSample)
+        {
+            case MenuButtonClickSample.Enter1:
+                clickSample = audioManager.Samples.Get("UI/click-enter1");
+                break;
+
+            case MenuButtonClickSample.Enter2:
+                clickSample = audioManager.Samples.Get("UI/click-enter2");
+                break;
+        }
     }
 
     protected override bool OnHover(HoverEvent e)
     {
         backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+        hoverSample?.Play();
 
         return base.OnHover(e);
     }
+
+    protected override bool OnClick(ClickEvent e)
+    {
+        clickSample?.Play();
+
+        return base.OnClick(e);
+    }
+}
+
+public enum MenuButtonClickSample
+{
+    Enter1,
+    Enter2
 }

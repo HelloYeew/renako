@@ -48,7 +48,8 @@ public partial class SongSelectionScreen : RenakoScreen
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
 
-    private Sample clickSample;
+    private Sample leftClickSample;
+    private Sample rightClickSample;
 
     private Bindable<bool> useUnicodeInfo;
 
@@ -61,7 +62,8 @@ public partial class SongSelectionScreen : RenakoScreen
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
     {
-        clickSample = audioManager.Samples.Get("UI/click-small");
+        leftClickSample = audioManager.Samples.Get("UI/click-small-left");
+        rightClickSample = audioManager.Samples.Get("UI/click-small-right");
 
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
@@ -496,13 +498,13 @@ public partial class SongSelectionScreen : RenakoScreen
     private void toggleNextButton()
     {
         beatmapSetSwiper.Next();
-        clickSample?.Play();
+        leftClickSample?.Play();
     }
 
     private void togglePreviousButton()
     {
         beatmapSetSwiper.Previous();
-        clickSample?.Play();
+        rightClickSample?.Play();
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
