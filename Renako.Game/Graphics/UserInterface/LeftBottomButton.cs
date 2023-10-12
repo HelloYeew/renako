@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -20,8 +22,11 @@ public partial class LeftBottomButton : Button
     public IconUsage Icon { get; set; } = FontAwesome.Solid.ArrowLeft;
     public string Text { get; set; } = "Back";
 
+    private Sample hoverSample;
+    private Sample clickSample;
+
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Anchor = Anchor.BottomLeft;
         Origin = Anchor.BottomLeft;
@@ -73,11 +78,14 @@ public partial class LeftBottomButton : Button
                 }
             }
         };
+
+        hoverSample = audioManager.Samples.Get("UI/hover");
     }
 
     protected override bool OnHover(HoverEvent e)
     {
         backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+        hoverSample?.Play();
 
         return base.OnHover(e);
     }

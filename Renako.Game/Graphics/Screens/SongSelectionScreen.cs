@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -46,6 +48,8 @@ public partial class SongSelectionScreen : RenakoScreen
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
 
+    private Sample clickSample;
+
     private Bindable<bool> useUnicodeInfo;
 
     private const int icon_size = 13;
@@ -55,9 +59,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int default_beatmap_id = 0;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager config)
+    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
     {
-        beatmapChangeTimer.Start();
+        clickSample = audioManager.Samples.Get("UI/click-small");
 
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
@@ -451,6 +455,13 @@ public partial class SongSelectionScreen : RenakoScreen
         });
     }
 
+    protected override void LoadComplete()
+    {
+        base.LoadComplete();
+
+        beatmapChangeTimer.Start();
+    }
+
     protected override void Update()
     {
         if (lastBeatmapChangeTime + 200 < beatmapChangeTimer.CurrentTime && !isBeatmapChanged)
@@ -485,11 +496,13 @@ public partial class SongSelectionScreen : RenakoScreen
     private void toggleNextButton()
     {
         beatmapSetSwiper.Next();
+        clickSample?.Play();
     }
 
     private void togglePreviousButton()
     {
         beatmapSetSwiper.Previous();
+        clickSample?.Play();
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
