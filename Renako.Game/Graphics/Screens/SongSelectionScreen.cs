@@ -442,6 +442,7 @@ public partial class SongSelectionScreen : RenakoScreen
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
+            isBeatmapChanged = true;
         }, true);
 
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged((item) =>
