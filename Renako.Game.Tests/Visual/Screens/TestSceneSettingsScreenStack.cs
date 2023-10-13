@@ -7,6 +7,6 @@ public partial class TestSceneSettingsScreenStack : GameDrawableTestScene
     [Test]
     public void TestSettingsScreenStack()
     {
-        AddStep("toggle visibility", () => settingsScreenStack.ToggleVisibility());
+        AddStep("toggle visibility", () => SettingsScreenStack.ToggleVisibility());
     }
 }

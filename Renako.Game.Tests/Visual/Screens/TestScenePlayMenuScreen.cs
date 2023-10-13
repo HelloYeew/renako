@@ -9,11 +9,11 @@ public partial class TestScenePlayMenuScreen : GameDrawableTestScene
     [Test]
     public void TestPlayMenuScreen()
     {
-        AddStep("add play menu screen", () => mainScreenStack.Push(new PlayMenuScreen()));
-        AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is PlayMenuScreen);
+        AddStep("add play menu screen", () => MainScreenStack.Push(new PlayMenuScreen()));
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is PlayMenuScreen);
         AddStep("rerun", () => {
-            mainScreenStack.CurrentScreen?.Exit();
-            mainScreenStack.Push(new PlayMenuScreen());
+            MainScreenStack.CurrentScreen?.Exit();
+            MainScreenStack.Push(new PlayMenuScreen());
         });
     }
 }

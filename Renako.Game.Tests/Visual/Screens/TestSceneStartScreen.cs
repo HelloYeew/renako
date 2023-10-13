@@ -9,11 +9,11 @@ public partial class TestSceneStartScreen : GameDrawableTestScene
     [Test]
     public void TestStartScreen()
     {
-        AddStep("add start screen", () => mainScreenStack.Push(new StartScreen()));
-        AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is StartScreen);
+        AddStep("add start screen", () => MainScreenStack.Push(new StartScreen()));
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is StartScreen);
         AddStep("rerun", () => {
-            mainScreenStack.CurrentScreen.Exit();
-            mainScreenStack.Push(new StartScreen());
+            MainScreenStack.CurrentScreen.Exit();
+            MainScreenStack.Push(new StartScreen());
         });
     }
 }

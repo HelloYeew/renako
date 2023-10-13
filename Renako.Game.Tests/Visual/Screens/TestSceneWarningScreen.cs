@@ -9,11 +9,11 @@ public partial class TestSceneWarningScreen : GameDrawableTestScene
     [Test]
     public void TestWarningScreen()
     {
-        AddStep("add warning screen", () => mainScreenStack.Push(new WarningScreen()));
-        AddAssert("screen loaded", () => mainScreenStack.CurrentScreen is WarningScreen);
+        AddStep("add warning screen", () => MainScreenStack.Push(new WarningScreen()));
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is WarningScreen);
         AddStep("rerun", () => {
-            mainScreenStack.CurrentScreen.Exit();
-            mainScreenStack.Push(new WarningScreen());
+            MainScreenStack.CurrentScreen.Exit();
+            MainScreenStack.Push(new WarningScreen());
         });
     }
 }
