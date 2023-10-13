@@ -8,6 +8,8 @@ using osu.Framework.Graphics.Performance;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osuTK;
+using Renako.Game.Audio;
+using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Stores;
 using Renako.Resources;
@@ -32,7 +34,13 @@ namespace Renako.Game
 
         private AudioManager audioManager;
 
+        protected RenakoAudioManager RenakoAudioManager;
+
         private Bindable<bool> fpsDisplayVisible;
+
+        private BeatmapsCollection beatmapsCollection;
+
+        private WorkingBeatmap workingBeatmap;
 
         protected RenakoGameBase()
         {
@@ -80,8 +88,13 @@ namespace Renako.Game
 
             dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
             dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
+            dependencies.CacheAs(RenakoAudioManager = new RenakoAudioManager());
             dependencies.CacheAs(LocalConfig);
+            dependencies.CacheAs(beatmapsCollection = new BeatmapsCollection());
+            dependencies.CacheAs(workingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
+
+            beatmapsCollection.GenerateTestCollection();
         }
 
         protected override void LoadComplete()

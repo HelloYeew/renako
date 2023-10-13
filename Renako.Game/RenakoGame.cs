@@ -6,11 +6,8 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Logging;
 using osu.Framework.Threading;
-using Renako.Game.Audio;
-using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
-using Renako.Game.Stores;
 
 namespace Renako.Game
 {
@@ -22,16 +19,11 @@ namespace Renako.Game
         private SettingsScreenStack settingsScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
-        private RenakoAudioManager audioManager;
         private Container drawableContainer;
-        private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();
-        private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
         [BackgroundDependencyLoader]
         private void load()
         {
-            beatmapsCollection.GenerateTestCollection();
-
             Children = new Drawable[]
             {
                 drawableContainer = new Container
@@ -39,15 +31,13 @@ namespace Renako.Game
                     RelativeSizeAxes = Axes.Both
                 },
             };
-            dependencies.CacheAs(beatmapsCollection);
-            dependencies.CacheAs(workingBeatmap);
             dependencies.CacheAs(backgroundScreenStack = new RenakoBackgroundScreenStack());
             dependencies.CacheAs(MainScreenStack = new RenakoScreenStack());
             dependencies.CacheAs(logoScreenStack = new LogoScreenStack());
             Add(backgroundScreenStack);
             Add(MainScreenStack);
             Add(logoScreenStack);
-            loadComponentSingleFile(audioManager = new RenakoAudioManager(), drawableContainer.Add, true);
+            Add(RenakoAudioManager);
             loadComponentSingleFile(settingsScreenStack = new SettingsScreenStack(), Add, true);
         }
 
