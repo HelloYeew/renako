@@ -38,9 +38,9 @@ namespace Renako.Game
 
         private Bindable<bool> fpsDisplayVisible;
 
-        private BeatmapsCollection beatmapsCollection;
+        protected BeatmapsCollection BeatmapsCollection;
 
-        private WorkingBeatmap workingBeatmap;
+        protected WorkingBeatmap WorkingBeatmap;
 
         protected RenakoGameBase()
         {
@@ -90,11 +90,9 @@ namespace Renako.Game
             dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
             dependencies.CacheAs(RenakoAudioManager = new RenakoAudioManager());
             dependencies.CacheAs(LocalConfig);
-            dependencies.CacheAs(beatmapsCollection = new BeatmapsCollection());
-            dependencies.CacheAs(workingBeatmap = new WorkingBeatmap());
+            dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
+            dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
-
-            beatmapsCollection.GenerateTestCollection();
         }
 
         protected override void LoadComplete()
