@@ -4,7 +4,7 @@ using Renako.Game.Graphics.ScreenStacks;
 namespace Renako.Game.Tests.Visual;
 
 /// <summary>
-/// The extend class of <see cref="RenakoTestScene"/> that's already have all the dependencies needed for testing.
+/// The extend class of <see cref="RenakoTestScene"/> that's already have all the dependencies needed for testing the game drawable.
 /// </summary>
 public partial class GameDrawableTestScene : RenakoTestScene
 {
