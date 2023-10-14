@@ -5,7 +5,7 @@ using Renako.Game.Graphics.UserInterface;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneLeftBottomButton : RenakoTestScene
+public partial class TestSceneLeftBottomButton : GameDrawableTestScene
 {
     public TestSceneLeftBottomButton()
     {
