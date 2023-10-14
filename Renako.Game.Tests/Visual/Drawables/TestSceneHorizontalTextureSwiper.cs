@@ -13,7 +13,7 @@ using Renako.Game.Utilities;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneHorizontalTextureSwiper : RenakoTestScene
+public partial class TestSceneHorizontalTextureSwiper : GameDrawableTestScene
 {
     private List<TextureSwiperItem<BeatmapSet>> swiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
     private HorizontalTextureSwiper<BeatmapSet> swiper;
@@ -46,20 +46,26 @@ public partial class TestSceneHorizontalTextureSwiper : RenakoTestScene
             Text = "Index: 0"
         });
         swiper.BindIndexChangeAction((index) => indexText.Text = $"Index: {index.NewValue}");
-        AddAssert("Index is 0", () => swiper.CurrentIndex == 0);
-        AddStep("Swipe to next", () => swiper.Next());
-        AddAssert("Index is 1", () => swiper.CurrentIndex == 1);
-        AddStep("Swipe to previous", () => swiper.Previous());
-        AddAssert("Index is 0", () => swiper.CurrentIndex == 0);
-        AddRepeatStep("Swipe to last", () => swiper.Next(), beatmapTestUtility.BeatmapSets.Count - 1);
-        AddAssert($"Index is {beatmapTestUtility.BeatmapSets.Count - 1}", () => swiper.CurrentIndex == beatmapTestUtility.BeatmapSets.Count - 1);
-        AddStep("Swipe next again", () => swiper.Next());
     }
 
     [Test]
     public void TestBasicSwiperHandling()
     {
-        AddStep("Toggle next", () => swiper.Next());
-        AddStep("Toggle previous", () => swiper.Previous());
+        AddStep("toggle next", () => swiper.Next());
+        AddStep("toggle previous", () => swiper.Previous());
+    }
+
+    [Test]
+    public void TestSwiperItemHandling()
+    {
+        AddStep("scroll to first", () => swiper.SetIndex(0));
+        AddAssert("index is 0", () => swiper.CurrentIndex == 0);
+        AddStep("swipe to next", () => swiper.Next());
+        AddAssert("index is 1", () => swiper.CurrentIndex == 1);
+        AddStep("swipe to previous", () => swiper.Previous());
+        AddAssert("index is 0", () => swiper.CurrentIndex == 0);
+        AddRepeatStep("swipe to last", () => swiper.Next(), beatmapTestUtility.BeatmapSets.Count - 1);
+        AddAssert($"index is {beatmapTestUtility.BeatmapSets.Count - 1}", () => swiper.CurrentIndex == beatmapTestUtility.BeatmapSets.Count - 1);
+        AddStep("swipe next again", () => swiper.Next());
     }
 }
