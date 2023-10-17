@@ -12,10 +12,12 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Localisation;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.UserInterface;
+using SDL2;
 
 namespace Renako.Game.Graphics.Containers;
 
@@ -26,7 +28,11 @@ public partial class SettingsContainer : FocusedOverlayContainer
 {
     private Container menuTitleContainer;
     private FillFlowContainer timeContainer;
+    private FillFlowContainer batteryContainer;
     private SpriteText currentTimeText;
+    private SpriteText currentBatteryText;
+    private SpriteIcon batteryIcon;
+    private SpriteIcon chargingIcon;
     private SpriteText runningTimeText;
 
     private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
@@ -117,6 +123,45 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 Origin = Anchor.CentreRight,
                                 Icon = FontAwesome.Solid.Clock,
                                 Size = new Vector2(24),
+                                Colour = Color4Extensions.FromHex("A7ABE1")
+                            }
+                        }
+                    },
+                    batteryContainer = new FillFlowContainer()
+                    {
+                        Anchor = Anchor.CentreRight,
+                        Origin = Anchor.CentreRight,
+                        RelativeSizeAxes = Axes.X,
+                        Direction = FillDirection.Horizontal,
+                        Spacing = new Vector2(4, 0),
+                        Margin = new MarginPadding()
+                        {
+                            Top = 8
+                        },
+                        Children = new Drawable[]
+                        {
+                            currentBatteryText = new SpriteText()
+                            {
+                                Anchor = Anchor.CentreRight,
+                                Origin = Anchor.CentreRight,
+                                Text = "100%",
+                                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 28f, RenakoFont.FontWeight.Bold),
+                                Colour = Color4Extensions.FromHex("C4C6EA")
+                            },
+                            batteryIcon = new SpriteIcon()
+                            {
+                                Anchor = Anchor.CentreRight,
+                                Origin = Anchor.CentreRight,
+                                Icon = FontAwesome.Solid.BatteryEmpty,
+                                Size = new Vector2(24),
+                                Colour = Color4Extensions.FromHex("A7ABE1")
+                            },
+                            chargingIcon = new SpriteIcon()
+                            {
+                                Anchor = Anchor.CentreRight,
+                                Origin = Anchor.CentreRight,
+                                Icon = FontAwesome.Solid.Bolt,
+                                Size = new Vector2(12),
                                 Colour = Color4Extensions.FromHex("A7ABE1")
                             }
                         }
@@ -303,6 +348,8 @@ public partial class SettingsContainer : FocusedOverlayContainer
                 }
             }
         };
+
+        updateBatteryStatus();
     }
 
     /// <summary>
@@ -331,6 +378,47 @@ public partial class SettingsContainer : FocusedOverlayContainer
 
         currentTimeText.Text = DateTime.Now.ToString("HH:mm:ss tt").ToUpper();
         runningTimeText.Text = $"You are fighting the boss for {DateTime.Now - startGameTime:hh\\:mm\\:ss} !";
+        updateBatteryStatus();
+    }
+
+    /// <summary>
+    /// Update battery status text
+    /// </summary>
+    private void updateBatteryStatus()
+    {
+        SDL.SDL_PowerState batteryStatus = SDL.SDL_GetPowerInfo(out _, out var percentage);
+
+        if (batteryStatus is SDL.SDL_PowerState.SDL_POWERSTATE_CHARGING or SDL.SDL_PowerState.SDL_POWERSTATE_CHARGED or SDL.SDL_PowerState.SDL_POWERSTATE_ON_BATTERY)
+        {
+            if (percentage >= 90)
+            {
+                batteryIcon.Icon = FontAwesome.Solid.BatteryFull;
+            }
+            else if (percentage >= 75)
+            {
+                batteryIcon.Icon = FontAwesome.Solid.BatteryThreeQuarters;
+            }
+            else if (percentage >= 50)
+            {
+                batteryIcon.Icon = FontAwesome.Solid.BatteryHalf;
+            }
+            else if (percentage >= 25)
+            {
+                batteryIcon.Icon = FontAwesome.Solid.BatteryQuarter;
+            }
+            else
+            {
+                batteryIcon.Icon = FontAwesome.Solid.BatteryEmpty;
+            }
+
+            chargingIcon.Alpha = batteryStatus == SDL.SDL_PowerState.SDL_POWERSTATE_CHARGING ? 1 : 0;
+            currentBatteryText.Text = $"{percentage}%";
+        }
+        else
+        {
+            Logger.Log($"Battery status is not supported. (SDL Value: {batteryStatus})", LoggingTarget.Runtime, LogLevel.Important);
+            batteryContainer.Alpha = 0;
+        }
     }
 
     protected override void PopIn()
