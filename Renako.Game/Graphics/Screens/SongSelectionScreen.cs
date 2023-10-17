@@ -339,7 +339,8 @@ public partial class SongSelectionScreen : RenakoScreen
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
-                        Size = new Vector2(30, 20),
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
                         Position = new Vector2(15, 0),
                         Colour = Colour4.White,
                         Action = togglePreviousButton,
@@ -374,7 +375,8 @@ public partial class SongSelectionScreen : RenakoScreen
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
-                        Size = new Vector2(30, 20),
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
                         Position = new Vector2(-15, 0),
                         Colour = Colour4.White,
                         Action = toggleNextButton,
