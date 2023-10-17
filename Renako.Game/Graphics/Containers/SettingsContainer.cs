@@ -376,7 +376,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     {
         base.Update();
 
-        currentTimeText.Text = DateTime.Now.ToString("HH:mm:ss tt").ToUpper();
+        currentTimeText.Text = DateTime.Now.ToString("hh:mm:ss tt").ToUpper();
         runningTimeText.Text = $"You are fighting the boss for {DateTime.Now - startGameTime:hh\\:mm\\:ss} !";
         updateBatteryStatus();
     }
