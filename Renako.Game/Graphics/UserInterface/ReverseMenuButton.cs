@@ -23,13 +23,11 @@ public partial class ReverseMenuButton : Button
     public IconUsage Icon { get; set; } = FontAwesome.Solid.Play;
     public string Title { get; set; } = "Play";
     public string Description { get; set; } = "Let's have some fun!";
-    public MenuButtonClickSample ClickSample { get; set; } = MenuButtonClickSample.Enter1;
 
     public const float CONTAINER_PADDING = 20;
 
     private Box backgroundBox;
     private Sample hoverSample;
-    private Sample clickSample;
 
     [BackgroundDependencyLoader]
     private void load(AudioManager audioManager)
@@ -104,17 +102,6 @@ public partial class ReverseMenuButton : Button
         };
 
         hoverSample = audioManager.Samples.Get("UI/hover");
-
-        switch (ClickSample)
-        {
-            case MenuButtonClickSample.Enter1:
-                clickSample = audioManager.Samples.Get("UI/click-enter1");
-                break;
-
-            case MenuButtonClickSample.Enter2:
-                clickSample = audioManager.Samples.Get("UI/click-enter2");
-                break;
-        }
     }
 
     protected override bool OnHover(HoverEvent e)
@@ -123,12 +110,5 @@ public partial class ReverseMenuButton : Button
         hoverSample?.Play();
 
         return base.OnHover(e);
-    }
-
-    protected override bool OnClick(ClickEvent e)
-    {
-        clickSample?.Play();
-
-        return base.OnClick(e);
     }
 }

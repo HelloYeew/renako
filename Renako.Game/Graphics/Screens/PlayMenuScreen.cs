@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -15,12 +17,13 @@ namespace Renako.Game.Graphics.Screens;
 public partial class PlayMenuScreen : Screen
 {
     private FillFlowContainer menuContainer;
+    private Sample clickSample;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -57,8 +60,7 @@ public partial class PlayMenuScreen : Screen
                         Icon = FontAwesome.Solid.User,
                         Title = "Single Player".ToUpper(),
                         Description = "1v1 with the boss",
-                        Action = toggleSinglePlayerButton,
-                        ClickSample = MenuButtonClickSample.Enter2
+                        Action = toggleSinglePlayerButton
                     },
                     // Multiplayer
                     new MenuButton()
@@ -70,8 +72,7 @@ public partial class PlayMenuScreen : Screen
                         DescriptionColor = Color4Extensions.FromHex("1E1528"),
                         Icon = FontAwesome.Solid.Users,
                         Title = "Multiplayer",
-                        Description = "Compete or help slain the boss",
-                        ClickSample = MenuButtonClickSample.Enter2
+                        Description = "Compete or help slain the boss"
                     }
                 }
             },
@@ -80,6 +81,8 @@ public partial class PlayMenuScreen : Screen
                 Action = this.Exit
             }
         };
+
+        clickSample = audioManager.Samples.Get("UI/click-enter2");
     }
 
     /// <summary>
@@ -87,6 +90,7 @@ public partial class PlayMenuScreen : Screen
     /// </summary>
     private void toggleSinglePlayerButton()
     {
+        clickSample?.Play();
         mainScreenStack.Push(new SongSelectionScreen());
     }
 

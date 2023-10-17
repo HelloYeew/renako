@@ -1,4 +1,6 @@
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -20,6 +22,7 @@ public partial class MainMenuScreen : RenakoScreen
 {
     private FillFlowContainer menuContainer;
     private FillFlowContainer reverseMenuContainer;
+    private Sample clickSample;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -31,7 +34,7 @@ public partial class MainMenuScreen : RenakoScreen
     private GameHost host { get; set; }
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -121,6 +124,8 @@ public partial class MainMenuScreen : RenakoScreen
                 }
             }
         };
+
+        clickSample = audioManager.Samples.Get("UI/click-enter1");
     }
 
     /// <summary>
@@ -128,6 +133,7 @@ public partial class MainMenuScreen : RenakoScreen
     /// </summary>
     private void togglePlayButton()
     {
+        clickSample?.Play();
         mainScreenStack.Push(new PlayMenuScreen());
     }
 
