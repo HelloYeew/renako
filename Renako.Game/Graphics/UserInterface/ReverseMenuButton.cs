@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -25,9 +27,10 @@ public partial class ReverseMenuButton : Button
     public const float CONTAINER_PADDING = 20;
 
     private Box backgroundBox;
+    private Sample hoverSample;
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Anchor = Anchor.CentreRight;
         Origin = Anchor.CentreRight;
@@ -97,11 +100,14 @@ public partial class ReverseMenuButton : Button
                 }
             }
         };
+
+        hoverSample = audioManager.Samples.Get("UI/hover");
     }
 
     protected override bool OnHover(HoverEvent e)
     {
         backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+        hoverSample?.Play();
 
         return base.OnHover(e);
     }

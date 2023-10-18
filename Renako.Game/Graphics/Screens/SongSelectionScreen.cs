@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -46,6 +48,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
 
+    private Sample leftClickSample;
+    private Sample rightClickSample;
+
     private Bindable<bool> useUnicodeInfo;
 
     private const int icon_size = 13;
@@ -55,9 +60,10 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int default_beatmap_id = 0;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager config)
+    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
     {
-        beatmapChangeTimer.Start();
+        leftClickSample = audioManager.Samples.Get("UI/click-small-left");
+        rightClickSample = audioManager.Samples.Get("UI/click-small-right");
 
         beatmapSetSwiperItemList = new List<TextureSwiperItem<BeatmapSet>>();
         beatmapSetSwiper = new HorizontalTextureSwiper<BeatmapSet>()
@@ -333,7 +339,8 @@ public partial class SongSelectionScreen : RenakoScreen
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
-                        Size = new Vector2(30, 20),
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
                         Position = new Vector2(15, 0),
                         Colour = Colour4.White,
                         Action = togglePreviousButton,
@@ -368,7 +375,8 @@ public partial class SongSelectionScreen : RenakoScreen
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
-                        Size = new Vector2(30, 20),
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
                         Position = new Vector2(-15, 0),
                         Colour = Colour4.White,
                         Action = toggleNextButton,
@@ -451,6 +459,13 @@ public partial class SongSelectionScreen : RenakoScreen
         });
     }
 
+    protected override void LoadComplete()
+    {
+        base.LoadComplete();
+
+        beatmapChangeTimer.Start();
+    }
+
     protected override void Update()
     {
         if (lastBeatmapChangeTime + 200 < beatmapChangeTimer.CurrentTime && !isBeatmapChanged)
@@ -485,11 +500,13 @@ public partial class SongSelectionScreen : RenakoScreen
     private void toggleNextButton()
     {
         beatmapSetSwiper.Next();
+        leftClickSample?.Play();
     }
 
     private void togglePreviousButton()
     {
         beatmapSetSwiper.Previous();
+        rightClickSample?.Play();
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
