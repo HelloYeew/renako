@@ -25,12 +25,15 @@ namespace Renako.Game.Graphics.Containers;
 public partial class SettingsContainer : FocusedOverlayContainer
 {
     private Container menuTitleContainer;
-    private FillFlowContainer tipsContainer;
-    private Container settingsContainer;
+    private FillFlowContainer timeContainer;
+    private SpriteText currentTimeText;
+    private SpriteText runningTimeText;
 
     private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
 
     private BasicDropdown<Display> displayDropdown;
+
+    private readonly DateTime startGameTime = DateTime.Now;
 
     protected override bool BlockNonPositionalInput => false;
     protected override bool BlockScrollInput => false;
@@ -74,7 +77,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                     Description = "Get ready for fight!"
                 }
             },
-            tipsContainer = new FillFlowContainer()
+            timeContainer = new FillFlowContainer()
             {
                 Anchor = Anchor.TopRight,
                 Origin = Anchor.TopRight,
@@ -89,7 +92,6 @@ public partial class SettingsContainer : FocusedOverlayContainer
                     Bottom = 0,
                     Left = 0
                 },
-                // TODO: Change color to design
                 Children = new Drawable[]
                 {
                     new FillFlowContainer()
@@ -101,11 +103,11 @@ public partial class SettingsContainer : FocusedOverlayContainer
                         Spacing = new Vector2(4, 0),
                         Children = new Drawable[]
                         {
-                            new SpriteText()
+                            currentTimeText = new SpriteText()
                             {
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
-                                Text = "Tips".ToUpper(),
+                                Text = DateTime.Now.ToString("HH:mm:ss tt").ToUpper(),
                                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 28f, RenakoFont.FontWeight.Bold),
                                 Colour = Color4Extensions.FromHex("C4C6EA")
                             },
@@ -113,17 +115,17 @@ public partial class SettingsContainer : FocusedOverlayContainer
                             {
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
-                                Icon = FontAwesome.Solid.Lightbulb,
+                                Icon = FontAwesome.Solid.Clock,
                                 Size = new Vector2(24),
                                 Colour = Color4Extensions.FromHex("A7ABE1")
                             }
                         }
                     },
-                    new SpriteText()
+                    runningTimeText = new SpriteText()
                     {
                         Anchor = Anchor.CentreRight,
                         Origin = Anchor.CentreRight,
-                        Text = "Use Ctrl + O to toggle settings anywhere!",
+                        Text = "You are fighting the boss for 00:00:00 !",
                         Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, 20f),
                         Colour = Color4Extensions.FromHex("E0E1F0")
                     }
@@ -133,7 +135,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
             {
                 Action = ToggleVisibility
             },
-            settingsContainer = new Container()
+            new Container()
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -281,7 +283,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                     Width = 300,
                                     Height = 30,
                                     Current = audioManager.VolumeTrack,
-                                    KeyboardStep = 0.01f,
+                                    KeyboardStep = 0.01f
                                 },
                                 new SpriteText()
                                 {
@@ -310,7 +312,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     {
         this.FadeIn(500, Easing.OutQuart);
         menuTitleContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
-        tipsContainer.MoveToX(0, 750, Easing.OutQuart);
+        timeContainer.MoveToX(0, 750, Easing.OutQuart);
     }
 
     /// <summary>
@@ -320,7 +322,15 @@ public partial class SettingsContainer : FocusedOverlayContainer
     {
         this.FadeOut(500, Easing.OutQuart);
         menuTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
-        tipsContainer.MoveToX(600, 750, Easing.OutQuart);
+        timeContainer.MoveToX(600, 750, Easing.OutQuart);
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        currentTimeText.Text = DateTime.Now.ToString("hh:mm:ss tt").ToUpper();
+        runningTimeText.Text = $"You are fighting the boss for {DateTime.Now - startGameTime:hh\\:mm\\:ss} !";
     }
 
     protected override void PopIn()
