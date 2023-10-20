@@ -42,7 +42,7 @@ public class Beatmap
 
     public override string ToString()
     {
-        return $"{BeatmapSet.Title} [{DifficultyName}]";
+        return $"{BeatmapSet.Title} [{DifficultyName}] by {Creator} ({DifficultyRating})";
     }
 
     public override bool Equals(object obj)

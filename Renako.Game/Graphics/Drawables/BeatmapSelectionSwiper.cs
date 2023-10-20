@@ -51,29 +51,17 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
                 Spacing = new Vector2(50, 0),
                 Children = new Drawable[]
                 {
+                    leftContainer3 = new BeatmapSelectionSwiperContainer(),
+                    leftContainer2 = new BeatmapSelectionSwiperContainer(),
+                    leftContainer1 = new BeatmapSelectionSwiperContainer(),
                     centerContainer = new BeatmapSelectionSwiperContainer()
                     {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Size = new Vector2(70, 70),
-                        Masking = true,
-                        CornerRadius = 10,
-                        FillMode = FillMode.Fill,
-                        Children = new Drawable[]
-                        {
-                            leftContainer3 = new BeatmapSelectionSwiperContainer(),
-                            leftContainer2 = new BeatmapSelectionSwiperContainer(),
-                            leftContainer1 = new BeatmapSelectionSwiperContainer(),
-                            centerContainer = new BeatmapSelectionSwiperContainer()
-                            {
-                                Rotation = 10,
-                                Size = new Vector2(220, 220)
-                            },
-                            rightContainer1 = new BeatmapSelectionSwiperContainer(),
-                            rightContainer2 = new BeatmapSelectionSwiperContainer(),
-                            rightContainer3 = new BeatmapSelectionSwiperContainer()
-                        }
-                    }
+                        Rotation = 10,
+                        Size = new Vector2(220, 220)
+                    },
+                    rightContainer1 = new BeatmapSelectionSwiperContainer(),
+                    rightContainer2 = new BeatmapSelectionSwiperContainer(),
+                    rightContainer3 = new BeatmapSelectionSwiperContainer()
                 }
             }
         };
@@ -126,6 +114,16 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     public void First()
     {
         currentIndex.Value = 0;
+        UpdateContainerItem();
+    }
+
+    /// <summary>
+    /// Set the texture of the swiper item.
+    /// </summary>
+    /// <param name="texture">The texture that will be set.</param>
+    public void SetTexture(Texture texture)
+    {
+        this.texture = texture;
         UpdateContainerItem();
     }
 
@@ -187,13 +185,13 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     }
 
     /// <summary>
-    /// Replace the current <see cref="Beatmap"/> list with the specified list.
+    /// Get or replace the current <see cref="Beatmap"/> list with the specified list.
     /// </summary>
     /// <param name="beatmaps"></param>
-    public void SetBeatmapList(List<Beatmap> beatmaps)
+    public List<Beatmap> BeatmapList
     {
-        beatmapsList = beatmaps;
-        UpdateContainerItem();
+        get => beatmapsList;
+        set => beatmapsList = value;
     }
 
     /// <summary>
@@ -295,8 +293,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
 /// </summary>
 public partial class BeatmapSelectionSwiperContainer : Container
 {
-    private Texture texture;
-    private Colour4 boxColor;
+    private Sprite textureSprite;
     private readonly Box box;
     private readonly Container mainContainer;
 
@@ -314,8 +311,7 @@ public partial class BeatmapSelectionSwiperContainer : Container
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                RelativeSizeAxes = Axes.Both,
-                Colour = boxColor
+                RelativeSizeAxes = Axes.Both
             },
             mainContainer = new Container()
             {
@@ -327,13 +323,12 @@ public partial class BeatmapSelectionSwiperContainer : Container
                 CornerRadius = 10,
                 Children = new Drawable[]
                 {
-                    new Sprite()
+                    textureSprite = new Sprite()
                     {
                         Anchor = Anchor.Centre,
                         Origin = Anchor.Centre,
                         RelativeSizeAxes = Axes.Both,
                         FillMode = FillMode.Fill,
-                        Texture = texture
                     }
                 }
             }
@@ -346,7 +341,7 @@ public partial class BeatmapSelectionSwiperContainer : Container
     /// <param name="texture">The texture that will be set</param>
     public void SetTexture(Texture texture)
     {
-        this.texture = texture;
+        textureSprite.Texture = texture;
         mainContainer.Alpha = 1;
     }
 
@@ -356,7 +351,7 @@ public partial class BeatmapSelectionSwiperContainer : Container
     /// <param name="color">The color that will be set</param>
     public void SetBoxColor(Colour4 color)
     {
-        boxColor = color;
+        box.Colour = color;
         box.Alpha = 1;
     }
 
@@ -366,7 +361,7 @@ public partial class BeatmapSelectionSwiperContainer : Container
     public void ClearContainer()
     {
         box.Alpha = 0;
-        texture = null;
+        textureSprite.Texture = null;
         mainContainer.Alpha = 0;
     }
 }

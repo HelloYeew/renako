@@ -12,7 +12,7 @@ public partial class RenakoScreenStack : ScreenStack
 
     protected override bool OnKeyDown(KeyDownEvent e)
     {
-        if (e.Key == Key.Escape && CurrentScreen is not MainMenuScreen && CurrentScreen is not WarningScreen)
+        if (e.Key == Key.Escape && CurrentScreen is not MainMenuScreen && CurrentScreen is not WarningScreen && CurrentScreen is not SongSelectionScreen)
             CurrentScreen?.Exit();
 
         return base.OnKeyDown(e);
