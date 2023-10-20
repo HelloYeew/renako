@@ -26,6 +26,11 @@ public class Beatmap
     public string DifficultyName { get; set; }
 
     /// <summary>
+    /// The difficulty level of the beatmap that's roughly based from rating.
+    /// </summary>
+    public DifficultyLevel DifficultyLevel { get; set; }
+
+    /// <summary>
     /// The calculated difficulty rating of the beatmap.
     /// </summary>
     public double DifficultyRating { get; set; }
@@ -37,7 +42,7 @@ public class Beatmap
 
     public override string ToString()
     {
-        return $"{BeatmapSet.Title} [{DifficultyName}] ({DifficultyRating})";
+        return $"{BeatmapSet.Title} [{DifficultyName}]";
     }
 
     public override bool Equals(object obj)
@@ -47,17 +52,18 @@ public class Beatmap
                EqualityComparer<BeatmapSet>.Default.Equals(BeatmapSet, beatmap.BeatmapSet) &&
                Creator == beatmap.Creator &&
                DifficultyName == beatmap.DifficultyName &&
+               DifficultyLevel == beatmap.DifficultyLevel &&
                DifficultyRating == beatmap.DifficultyRating &&
                BackgroundPath == beatmap.BackgroundPath;
     }
 
     protected bool Equals(Beatmap other)
     {
-        return ID == other.ID && Equals(BeatmapSet, other.BeatmapSet) && Creator == other.Creator && DifficultyName == other.DifficultyName && DifficultyRating.Equals(other.DifficultyRating) && BackgroundPath == other.BackgroundPath;
+        return ID == other.ID && Equals(BeatmapSet, other.BeatmapSet) && Creator == other.Creator && DifficultyName == other.DifficultyName && DifficultyLevel == other.DifficultyLevel && DifficultyRating.Equals(other.DifficultyRating) && BackgroundPath == other.BackgroundPath;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(ID, BeatmapSet, Creator, DifficultyName, DifficultyRating, BackgroundPath);
+        return HashCode.Combine(ID, BeatmapSet, Creator, DifficultyName, (int)DifficultyLevel, DifficultyRating, BackgroundPath);
     }
 }
