@@ -195,7 +195,6 @@ public class BeatmapTestUtility
                     ID = incrementID,
                     BeatmapSet = beatmapSet,
                     Creator = GetRandomCreatorName(),
-                    DifficultyLevel = difficultyLevel,
                     DifficultyName = difficultyLevel.ToString(),
                     DifficultyRating = random.NextDouble() * 10,
                     BackgroundPath = beatmapSet.BackgroundPath
