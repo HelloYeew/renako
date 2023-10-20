@@ -22,7 +22,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     private BeatmapSelectionSwiperContainer rightContainer2;
     private BeatmapSelectionSwiperContainer rightContainer3;
 
-    public List<Beatmap> BeatmapsList { get; set; } = new List<Beatmap>();
+    private List<Beatmap> beatmapsList { get; set; } = new List<Beatmap>();
 
     private Texture texture;
 
@@ -91,7 +91,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     /// </summary>
     public void Next()
     {
-        if (currentIndex.Value + 1 < BeatmapsList.Count)
+        if (currentIndex.Value + 1 < beatmapsList.Count)
         {
             currentIndex.Value++;
         }
@@ -114,7 +114,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
         }
         else
         {
-            currentIndex.Value = BeatmapsList.Count - 1;
+            currentIndex.Value = beatmapsList.Count - 1;
         }
 
         UpdateContainerItem();
@@ -135,7 +135,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     /// <param name="beatmap">The beatmap that will be added.</param>
     public void AddBeatmap(Beatmap beatmap)
     {
-        BeatmapsList.Add(beatmap);
+        beatmapsList.Add(beatmap);
         UpdateContainerItem();
     }
 
@@ -145,7 +145,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     /// <param name="beatmap">The beatmap that will be removed.</param>
     public void RemoveBeatmap(Beatmap beatmap)
     {
-        BeatmapsList.Remove(beatmap);
+        beatmapsList.Remove(beatmap);
         UpdateContainerItem();
     }
 
@@ -166,9 +166,9 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     /// <param name="beatmap">The item that will be set.</param>
     public void SetItem(Beatmap beatmap)
     {
-        for (int i = 0; i < BeatmapsList.Count; i++)
+        for (int i = 0; i < beatmapsList.Count; i++)
         {
-            if (BeatmapsList[i].Equals(beatmap))
+            if (beatmapsList[i].Equals(beatmap))
             {
                 currentIndex.Value = i;
                 UpdateContainerItem();
@@ -187,6 +187,16 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     }
 
     /// <summary>
+    /// Replace the current <see cref="Beatmap"/> list with the specified list.
+    /// </summary>
+    /// <param name="beatmaps"></param>
+    public void SetBeatmapList(List<Beatmap> beatmaps)
+    {
+        beatmapsList = beatmaps;
+        UpdateContainerItem();
+    }
+
+    /// <summary>
     /// Update the container item in the swiper.
     /// </summary>
     public void UpdateContainerItem()
@@ -200,7 +210,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
         else
         {
             leftContainer3.SetTexture(texture);
-            leftContainer3.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value - 3].DifficultyRating));
+            leftContainer3.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value - 3].DifficultyRating));
         }
 
         // Update the left container 2.
@@ -212,7 +222,7 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
         else
         {
             leftContainer2.SetTexture(texture);
-            leftContainer2.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value - 2].DifficultyRating));
+            leftContainer2.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value - 2].DifficultyRating));
         }
 
         // Update the left container 1.
@@ -224,50 +234,50 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
         else
         {
             leftContainer1.SetTexture(texture);
-            leftContainer1.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value - 1].DifficultyRating));
+            leftContainer1.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value - 1].DifficultyRating));
         }
 
         // Update the center container.
         centerContainer.SetTexture(texture);
-        centerContainer.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value].DifficultyRating));
+        centerContainer.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value].DifficultyRating));
 
         // Update the right container 1.
         // If current index + 1 is more than the BeatmapsList count, set as blank container
-        if (currentIndex.Value + 1 >= BeatmapsList.Count)
+        if (currentIndex.Value + 1 >= beatmapsList.Count)
         {
             rightContainer1.ClearContainer();
         }
         else
         {
             rightContainer1.SetTexture(texture);
-            rightContainer1.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value + 1].DifficultyRating));
+            rightContainer1.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value + 1].DifficultyRating));
         }
 
         // Update the right container 2.
         // If current index + 2 is more than the BeatmapsList count, set as blank container
-        if (currentIndex.Value + 2 >= BeatmapsList.Count)
+        if (currentIndex.Value + 2 >= beatmapsList.Count)
         {
             rightContainer2.ClearContainer();
         }
         else
         {
             rightContainer2.SetTexture(texture);
-            rightContainer2.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value + 2].DifficultyRating));
+            rightContainer2.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value + 2].DifficultyRating));
         }
 
         // Update the right container 2.
         // If current index + 2 is more than the BeatmapsList count, set as blank container
-        if (currentIndex.Value + 3 >= BeatmapsList.Count)
+        if (currentIndex.Value + 3 >= beatmapsList.Count)
         {
             rightContainer3.ClearContainer();
         }
         else
         {
             rightContainer3.SetTexture(texture);
-            rightContainer3.SetBoxColor(RenakoColour.ForDifficultyLevel(BeatmapsList[currentIndex.Value + 3].DifficultyRating));
+            rightContainer3.SetBoxColor(RenakoColour.ForDifficultyLevel(beatmapsList[currentIndex.Value + 3].DifficultyRating));
         }
 
-        CurrentItem.Value = BeatmapsList[currentIndex.Value];
+        CurrentItem.Value = beatmapsList[currentIndex.Value];
     }
 
     /// <summary>
