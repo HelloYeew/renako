@@ -6,9 +6,9 @@
 
 ## Project status
 
-(under constant development, gameplay finalized, styling is mostly finalized but still need to be polished, under working on the game's foundation like base styling, story and codebase)
+The game is currently under heavy developpement, most gameplay elements have been designed but still need polishing but aren't nowhere usable for now.
 
-(with project management resource here)
+Current developper plans are available here:
 
 - [Rough plan of development](https://github.com/users/HelloYeew/projects/5)
 - [Design task](https://github.com/users/HelloYeew/projects/7)
@@ -29,7 +29,7 @@ The following items are required to be installed on your computer in order to de
 - [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download)
 - The use of a C# IDE (Rider, Visual Studio) is highly recommended to browse through the codebase.
 
-For mobile platform, you will need to run `sudo dotnet workload restore` to install Android and iOS workloads to build the project in mobile platforms.
+For mobile platforms, you will need to run `sudo dotnet workload restore` to install Android and iOS workloads to build the project in mobile platforms.
 
 Getting started with developing Renako is as follows:
 
@@ -74,7 +74,7 @@ dotnet test
 
 ## Contributing
 
-(contribution on code via pull request, suggestion or bug report via issue is welcome. If want to contribute to the game's design, contact HelloYeew (me@helloyeew.dev))
+Contributing in the form of pull request, suggestions or bug reports via issues are welcome. If interested to touch on the game's design as most things are already designed, please contact HelloYeew (me@helloyeew.dev)) beforehand working on designing.
 
 ## License
 
