@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
+using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Stores;
 

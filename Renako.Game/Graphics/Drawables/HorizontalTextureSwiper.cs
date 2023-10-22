@@ -72,7 +72,8 @@ public partial class HorizontalTextureSwiper<T> : CompositeDrawable
     {
         base.LoadComplete();
 
-        UpdateContainerItem();
+        if (Items.Count > 0)
+            UpdateContainerItem();
     }
 
     /// <summary>

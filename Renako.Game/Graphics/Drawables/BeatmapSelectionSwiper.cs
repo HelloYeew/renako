@@ -71,7 +71,8 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     {
         base.LoadComplete();
 
-        UpdateContainerItem();
+        if (beatmapsList.Count > 0)
+            UpdateContainerItem();
     }
 
     /// <summary>
@@ -191,7 +192,12 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     public List<Beatmap> BeatmapList
     {
         get => beatmapsList;
-        set => beatmapsList = value;
+        set
+        {
+            beatmapsList = value;
+            if (beatmapsList.Count > 0)
+                UpdateContainerItem();
+        }
     }
 
     /// <summary>

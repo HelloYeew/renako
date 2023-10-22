@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Renako.Game.Beatmaps;
 using Renako.Game.Utilities;
 
-namespace Renako.Game.Stores;
+namespace Renako.Game.Beatmaps;
 
 /// <summary>
 /// A class that stores all beatmap and the operations related to it.
@@ -28,10 +27,18 @@ public class BeatmapsCollection
     /// Compare using the ID of <see cref="BeatmapSet"/> and the <see cref="Beatmap.BeatmapSet"/> property.
     /// </summary>
     /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the <see cref="Beatmap"/> from</param>
+    /// <param name="sortByDifficulty">Sort the <see cref="Beatmap"/> by difficulty rating or not</param>
     /// <returns>Array of <see cref="Beatmap"/></returns>
-    public Beatmap[] GetBeatmapsFromBeatmapSet(BeatmapSet beatmapSet)
+    public Beatmap[] GetBeatmapsFromBeatmapSet(BeatmapSet beatmapSet, bool sortByDifficulty = true)
     {
-        return Beatmaps.FindAll((e) => e.BeatmapSet.ID == beatmapSet.ID).ToArray();
+        Beatmap[] beatmaps = Beatmaps.FindAll((e) => e.BeatmapSet.ID == beatmapSet.ID).ToArray();
+
+        if (sortByDifficulty)
+        {
+            beatmaps = beatmaps.OrderBy((e) => e.DifficultyRating).ToArray();
+        }
+
+        return beatmaps;
     }
 
     /// <summary>
