@@ -129,6 +129,8 @@ public partial class PlayMenuScreen : Screen
     {
         if (e.Key == Key.P)
             toggleSinglePlayerButton();
+        else if (e.Key == Key.Escape)
+            this.Exit();
 
         return base.OnKeyDown(e);
     }
