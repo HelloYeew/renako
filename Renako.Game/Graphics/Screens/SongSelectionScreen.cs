@@ -433,7 +433,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 Origin = Anchor.BottomCentre,
                 RelativeSizeAxes = Axes.X,
                 Size = new Vector2(1, 150),
-                Position = new Vector2(0, 600),
+                Position = new Vector2(2000, -115),
                 Children = new Drawable[]
                 {
                     new Box()
@@ -577,22 +577,17 @@ public partial class SongSelectionScreen : RenakoScreen
 
         currentScreenState.BindValueChanged(e =>
         {
-            switch (e.NewValue)
+            if (e.OldValue == e.NewValue) return;
+
+            if (e.OldValue == SongSelectionScreenState.SongList && e.NewValue == SongSelectionScreenState.BeatmapSelection)
             {
-                case SongSelectionScreenState.SongList:
-                    songListContainer.MoveToY(-115, 750, Easing.OutBack);
-                    beatmapSelectionContainer.MoveToY(600, 750, Easing.OutQuart);
-                    break;
-
-                case SongSelectionScreenState.BeatmapSelection:
-                    songListContainer.MoveToY(600, 750, Easing.OutQuart);
-                    beatmapSelectionContainer.MoveToY(-115, 750, Easing.OutBack);
-                    break;
-
-                case SongSelectionScreenState.LastSetting:
-                    songListContainer.MoveToY(600, 750, Easing.OutQuart);
-                    beatmapSelectionContainer.MoveToY(600, 750, Easing.OutQuart);
-                    break;
+                songListContainer.MoveToX(-2000, 500, Easing.OutQuart);
+                beatmapSelectionContainer.MoveToX(0, 500, Easing.OutQuart);
+            }
+            else if (e.OldValue == SongSelectionScreenState.BeatmapSelection && e.NewValue == SongSelectionScreenState.SongList)
+            {
+                beatmapSelectionContainer.MoveToX(2000, 500, Easing.OutQuart);
+                songListContainer.MoveToX(0, 500, Easing.OutQuart);
             }
         }, true);
     }
