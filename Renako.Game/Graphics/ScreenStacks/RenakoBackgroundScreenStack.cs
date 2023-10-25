@@ -1,8 +1,10 @@
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Screens;
+using osuTK;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 
@@ -18,6 +20,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Texture mainBackgroundTexture;
     private Texture playMenuBackgroundTexture;
     private Texture fallbackBeatmapBackground;
+    private BufferedContainer backgroundBufferedContainer;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -34,21 +37,32 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
         fallbackBeatmapBackground = textureStore.Get("Screen/fallback-beatmap-background.jpg");
 
-        AddInternal(ImageSpriteDown = new Sprite()
+        AddInternal(backgroundBufferedContainer = new BufferedContainer()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both,
             FillMode = FillMode.Fill,
-            Alpha = 0
-        });
-        AddInternal(ImageSpriteUp = new Sprite()
-        {
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            RelativeSizeAxes = Axes.Both,
-            FillMode = FillMode.Fill,
-            Alpha = 0
+            BlurSigma = new Vector2(0),
+            Children = new Drawable[]
+            {
+                ImageSpriteDown = new Sprite()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    FillMode = FillMode.Fill,
+                    Alpha = 0
+                },
+                ImageSpriteUp = new Sprite()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    FillMode = FillMode.Fill,
+                    Alpha = 0
+                }
+            }
         });
 
         mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeBackgroundByMainScreen(e.OldValue, e.NewValue));
