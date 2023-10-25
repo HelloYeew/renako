@@ -52,6 +52,8 @@ public partial class SongSelectionScreen : RenakoScreen
     private Box beatmapInfoBox;
     private SpriteIcon beatmapDifficultySpriteIcon;
     private SpriteText beatmapDifficultyRatingText;
+    private SpriteIcon beatmapLevelNameSpriteIcon;
+    private SpriteText beatmapLevelNameText;
     private readonly StopwatchClock beatmapChangeTimer = new StopwatchClock();
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
@@ -398,6 +400,21 @@ public partial class SongSelectionScreen : RenakoScreen
                                                     Origin = Anchor.CentreLeft,
                                                     Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, song_description_font_size),
                                                     Colour = Color4Extensions.FromHex("170C10")
+                                                },
+                                                beatmapLevelNameSpriteIcon = new SpriteIcon()
+                                                {
+                                                    Anchor = Anchor.CentreLeft,
+                                                    Origin = Anchor.CentreLeft,
+                                                    Size = new Vector2(icon_size),
+                                                    Icon = FontAwesome.Solid.Music,
+                                                    Colour = Color4Extensions.FromHex("593145")
+                                                },
+                                                beatmapLevelNameText = new SpriteText()
+                                                {
+                                                    Anchor = Anchor.CentreLeft,
+                                                    Origin = Anchor.CentreLeft,
+                                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, song_description_font_size),
+                                                    Colour = Color4Extensions.FromHex("170C10")
                                                 }
                                             }
                                         }
@@ -651,6 +668,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 beatmapInfoBox.FadeColour(RenakoColour.ForDifficultyLevel(item.NewValue.DifficultyRating), 500, Easing.OutQuart);
                 beatmapDifficultyRatingText.FadeColour(RenakoColour.ForDifficultyLevel(item.NewValue.DifficultyRating).Darken(2f), 500, Easing.OutQuart);
                 beatmapDifficultySpriteIcon.FadeColour(RenakoColour.ForDifficultyLevel(item.NewValue.DifficultyRating).Darken(2f), 500, Easing.OutQuart);
+                beatmapLevelNameText.FadeColour(RenakoColour.ForDifficultyLevel(item.NewValue.DifficultyRating).Darken(2f), 500, Easing.OutQuart);
+                beatmapLevelNameSpriteIcon.FadeColour(RenakoColour.ForDifficultyLevel(item.NewValue.DifficultyRating).Darken(2f), 500, Easing.OutQuart);
+                beatmapLevelNameText.Text = item.NewValue.DifficultyName;
                 beatmapDifficultyRatingText.Text = $"{item.NewValue.DifficultyRating:0.00}";
             });
 

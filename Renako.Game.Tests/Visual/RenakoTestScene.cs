@@ -42,12 +42,12 @@ namespace Renako.Game.Tests.Visual
         public void SetUpSteps()
         {
             if (MuteTrackOnStart)
-                AddStep("Mute track", MuteTrack);
+                AddStep("toggle mute", ToggleMuteTrack);
         }
 
-        public void MuteTrack()
+        public void ToggleMuteTrack()
         {
-            frameworkAudioManager.VolumeTrack.Value = 0;
+            frameworkAudioManager.VolumeTrack.Value = frameworkAudioManager.VolumeTrack.Value == 0 ? 1 : 0;
         }
     }
 }

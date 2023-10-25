@@ -26,7 +26,7 @@ public class WorkingBeatmap
 
     public WorkingBeatmap()
     {
-        BindableWorkingBeatmap.BindValueChanged((e) => Logger.Log($"Working beatmap changed to {e.NewValue}"));
-        BindableWorkingBeatmapSet.BindValueChanged((e) => Logger.Log($"Working beatmap set changed to {e.NewValue}"));
+        BindableWorkingBeatmap.BindValueChanged((e) => Logger.Log($"🎵 Working beatmap changed to {e.NewValue}"));
+        BindableWorkingBeatmapSet.BindValueChanged((e) => Logger.Log($"🎶 Working beatmap set changed to {e.NewValue}"));
     }
 }
