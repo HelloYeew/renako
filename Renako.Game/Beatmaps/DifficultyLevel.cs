@@ -5,5 +5,6 @@ public enum DifficultyLevel
     Basic,
     Advance,
     Expert,
-    Master
+    Master,
+    Virtuoso
 }

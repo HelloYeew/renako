@@ -17,7 +17,7 @@ public partial class RenakoAudioManager : CompositeDrawable
     public Track Track;
     private ITrackStore trackStore;
 
-    private double mainThemeDuration = 0;
+    private double mainThemeDuration;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -28,8 +28,8 @@ public partial class RenakoAudioManager : CompositeDrawable
     [BackgroundDependencyLoader]
     private void load(AudioManager audioManagerSource)
     {
-        mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeTrackOnScreenChanged(e.OldValue, e.NewValue));
-        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((e) => changeTrackOnBeatmapSetChanged(e.OldValue, e.NewValue));
+        mainScreenStack.BindableCurrentScreen.BindValueChanged(e => changeTrackOnScreenChanged(e.OldValue, e.NewValue));
+        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged(e => changeTrackOnBeatmapSetChanged(e.OldValue, e.NewValue));
 
         trackStore = audioManagerSource.Tracks;
         Track = trackStore.Get("theme/main-theme.mp3");

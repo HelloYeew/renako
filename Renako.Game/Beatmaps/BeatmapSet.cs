@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Renako.Game.Beatmaps;
+﻿namespace Renako.Game.Beatmaps;
 
 /// <summary>
 /// The beatmap set
@@ -114,33 +112,5 @@ public class BeatmapSet
                TrackPath == beatmapSet.TrackPath &&
                BackgroundPath == beatmapSet.BackgroundPath &&
                VideoPath == beatmapSet.VideoPath;
-    }
-
-    protected bool Equals(BeatmapSet other)
-    {
-        return ID == other.ID && Title == other.Title && TitleUnicode == other.TitleUnicode && Artist == other.Artist && ArtistUnicode == other.ArtistUnicode && Source == other.Source && SourceUnicode == other.SourceUnicode && TotalLength == other.TotalLength && PreviewTime == other.PreviewTime && BPM.Equals(other.BPM) && Creator == other.Creator && HasVideo == other.HasVideo && UseLocalSource == other.UseLocalSource && CoverPath == other.CoverPath && TrackPath == other.TrackPath && BackgroundPath == other.BackgroundPath && VideoPath == other.VideoPath;
-    }
-
-    public override int GetHashCode()
-    {
-        HashCode hashCode = new HashCode();
-        hashCode.Add(ID);
-        hashCode.Add(Title);
-        hashCode.Add(TitleUnicode);
-        hashCode.Add(Artist);
-        hashCode.Add(ArtistUnicode);
-        hashCode.Add(Source);
-        hashCode.Add(SourceUnicode);
-        hashCode.Add(TotalLength);
-        hashCode.Add(PreviewTime);
-        hashCode.Add(BPM);
-        hashCode.Add(Creator);
-        hashCode.Add(HasVideo);
-        hashCode.Add(UseLocalSource);
-        hashCode.Add(CoverPath);
-        hashCode.Add(TrackPath);
-        hashCode.Add(BackgroundPath);
-        hashCode.Add(VideoPath);
-        return hashCode.ToHashCode();
     }
 }

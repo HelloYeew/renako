@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Renako.Game.Beatmaps;
 
@@ -55,15 +54,5 @@ public class Beatmap
                DifficultyLevel == beatmap.DifficultyLevel &&
                DifficultyRating == beatmap.DifficultyRating &&
                BackgroundPath == beatmap.BackgroundPath;
-    }
-
-    protected bool Equals(Beatmap other)
-    {
-        return ID == other.ID && Equals(BeatmapSet, other.BeatmapSet) && Creator == other.Creator && DifficultyName == other.DifficultyName && DifficultyLevel == other.DifficultyLevel && DifficultyRating.Equals(other.DifficultyRating) && BackgroundPath == other.BackgroundPath;
-    }
-
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(ID, BeatmapSet, Creator, DifficultyName, (int)DifficultyLevel, DifficultyRating, BackgroundPath);
     }
 }

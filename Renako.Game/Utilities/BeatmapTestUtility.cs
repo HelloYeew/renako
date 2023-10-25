@@ -18,7 +18,7 @@ public class BeatmapTestUtility
 
     public DifficultyLevel[] AllDifficultyLevels = Enum.GetValues(typeof(DifficultyLevel)).Cast<DifficultyLevel>().ToArray();
 
-    public string[] RandomNameList = new string[]
+    public string[] RandomNameList =
     {
         "HelloYeew",
         "Renako",
@@ -190,14 +190,16 @@ public class BeatmapTestUtility
         {
             foreach (DifficultyLevel difficultyLevel in AllDifficultyLevels)
             {
+                double difficultyRating = random.NextDouble() * 18;
+
                 beatmaps.Add(new Beatmap()
                 {
                     ID = incrementID,
                     BeatmapSet = beatmapSet,
                     Creator = GetRandomCreatorName(),
-                    DifficultyLevel = difficultyLevel,
-                    DifficultyName = difficultyLevel.ToString(),
-                    DifficultyRating = random.NextDouble() * 18,
+                    DifficultyLevel = BeatmapUtility.CalculateDifficultyLevel(difficultyRating),
+                    DifficultyName = BeatmapUtility.CalculateDifficultyLevel(difficultyRating) + " " + difficultyLevel,
+                    DifficultyRating = difficultyRating,
                     BackgroundPath = beatmapSet.BackgroundPath
                 });
                 incrementID++;
