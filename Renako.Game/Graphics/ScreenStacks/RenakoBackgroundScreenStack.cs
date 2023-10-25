@@ -42,7 +42,6 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both,
-            FillMode = FillMode.Fill,
             BlurSigma = new Vector2(0),
             Children = new Drawable[]
             {
