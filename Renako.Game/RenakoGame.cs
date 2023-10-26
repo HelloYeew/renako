@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Logging;
+using osu.Framework.Platform;
 using osu.Framework.Threading;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
@@ -41,6 +42,20 @@ namespace Renako.Game
             base.LoadComplete();
 
             mainScreenStack.Push(new WarningScreen());
+        }
+
+        public override void SetHost(GameHost host)
+        {
+            base.SetHost(host);
+
+            if (host.Window != null)
+            {
+                host.Window.DragDrop += path =>
+                {
+                    // TODO: Add import function here
+                    Logger.Log($"Got file drag and drop: {path}");
+                };
+            }
         }
 
         private Task asyncLoadStream;
