@@ -21,4 +21,11 @@ public partial class TestSceneMenuTitleWithTexture : GameDrawableTestScene
         });
         menuTitleWithTexture.Texture = textures.Get("Beatmaps/Album/courage.jpg");
     }
+
+    [Test]
+    public void TestMenuTitleWithTexture()
+    {
+        AddStep("show texture", () => menuTitleWithTexture.ShowTexture());
+        AddStep("hide texture", () => menuTitleWithTexture.HideTexture());
+    }
 }

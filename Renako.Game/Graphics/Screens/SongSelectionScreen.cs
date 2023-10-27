@@ -706,7 +706,17 @@ public partial class SongSelectionScreen : RenakoScreen
                 beatmapInfoContainer.MoveToX(-600, 500, Easing.OutQuart);
                 beatmapInfoContainer.FadeOut(500, Easing.OutQuart);
             }
+            else if (e.OldValue == SongSelectionScreenState.BeatmapSelection && e.NewValue == SongSelectionScreenState.LastSetting)
+            {
+                songTitle.ShowTexture();
+            }
+            else if (e.OldValue == SongSelectionScreenState.LastSetting && e.NewValue == SongSelectionScreenState.BeatmapSelection)
+            {
+                songTitle.HideTexture();
+            }
         }, true);
+
+        songTitle.HideTexture();
     }
 
     protected override void LoadComplete()

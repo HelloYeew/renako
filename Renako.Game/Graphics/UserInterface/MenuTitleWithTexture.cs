@@ -28,6 +28,7 @@ public partial class MenuTitleWithTexture : CompositeDrawable
     private Box backgroundBox;
     private SpriteText titleSpriteText;
     private SpriteText descriptionSpriteText;
+    private Container textureContainer;
     private Sprite textureSprite;
 
     public string Title
@@ -82,17 +83,20 @@ public partial class MenuTitleWithTexture : CompositeDrawable
                     Top = CONTAINER_PADDING,
                     Bottom = CONTAINER_PADDING
                 },
-                Spacing = new Vector2(20, 0),
                 Direction = FillDirection.Horizontal,
                 Children = new Drawable[]
                 {
-                    new Container()
+                    textureContainer = new Container()
                     {
                         Anchor = Anchor.CentreLeft,
                         Origin = Anchor.CentreLeft,
                         Size = new Vector2(60),
                         Masking = true,
                         CornerRadius = 10,
+                        Margin = new MarginPadding()
+                        {
+                            Right = 20
+                        },
                         Child = textureSprite = new Sprite()
                         {
                             Anchor = Anchor.CentreLeft,
@@ -138,5 +142,21 @@ public partial class MenuTitleWithTexture : CompositeDrawable
         {
             descriptionSpriteText.Text = value.NewValue;
         }, true);
+    }
+
+    /// <summary>
+    /// Hide the texture container.
+    /// </summary>
+    public void HideTexture()
+    {
+        textureContainer.ScaleTo(0, 200, Easing.OutQuint);
+    }
+
+    /// <summary>
+    /// Show the texture container.
+    /// </summary>
+    public void ShowTexture()
+    {
+        textureContainer.ScaleTo(1, 200, Easing.OutQuint);
     }
 }
