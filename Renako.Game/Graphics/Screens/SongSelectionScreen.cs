@@ -42,7 +42,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
     private List<Beatmap> beatmapList;
-    private MenuTitle songTitle;
+    private MenuTitleWithTexture songTitle;
     private SpriteText sourceText;
     private SpriteText totalBeatmapSetDifficultyText;
     private SpriteText bpmText;
@@ -172,7 +172,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         }
                     },
                     // Song title
-                    songTitle = new MenuTitle()
+                    songTitle = new MenuTitleWithTexture()
                     {
                         ButtonWidth = 0.3375f,
                         BackgroundColor = Color4Extensions.FromHex("F2DFE9"),
@@ -661,6 +661,7 @@ public partial class SongSelectionScreen : RenakoScreen
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
+            songTitle.Texture = textureStore.Get(item.NewValue.CoverPath);
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
             isBeatmapChanged = true;
