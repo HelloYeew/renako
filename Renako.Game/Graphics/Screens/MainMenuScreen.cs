@@ -1,6 +1,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
+using osu.Framework.Development;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -122,6 +123,14 @@ public partial class MainMenuScreen : RenakoScreen
                     Description = "Get ready for fight!",
                     Action = () => settingsScreenStack.ToggleVisibility()
                 }
+            },
+            new RenakoSpriteText()
+            {
+                Anchor = Anchor.BottomRight,
+                Origin = Anchor.BottomRight,
+                Text = DebugUtils.IsDebugBuild ? "Development build".ToUpper() : $"Version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}".ToUpper(),
+                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
+                Colour = Color4Extensions.FromHex("82767E")
             }
         };
 

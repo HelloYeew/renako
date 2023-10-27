@@ -9,7 +9,6 @@ public partial class TestSceneMainMenuScreen : GameDrawableTestScene
     [Test]
     public void TestMainMenuScreen()
     {
-        AddStep("move logo to main menu position", () => LogoScreenStack.LogoScreenObject.MoveToMainMenu());
         AddStep("add main menu screen", () => MainScreenStack.Push(new MainMenuScreen()));
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is MainMenuScreen);
         AddStep("rerun", () => {
