@@ -17,8 +17,50 @@ public partial class RightBottomButton : Button
     public ColourInfo BackgroundColor { get; set; } = Color4Extensions.FromHex("ECC1C1");
     public ColourInfo IconColor { get; set; } = Color4Extensions.FromHex("4B2828");
     public ColourInfo TextColor { get; set; } = Color4Extensions.FromHex("753F3F");
-    public IconUsage Icon { get; set; } = FontAwesome.Solid.ArrowLeft;
-    public string Text { get; set; } = "Back";
+    private IconUsage icon = FontAwesome.Solid.ArrowLeft;
+    private string text = "Back";
+    private readonly SpriteIcon iconSprite;
+    private readonly SpriteText textSprite;
+
+    public IconUsage Icon
+    {
+        get => icon;
+        set
+        {
+            icon = value;
+            iconSprite.Icon = value;
+        }
+    }
+
+    public string Text
+    {
+        get => text;
+        set
+        {
+            text = value;
+            textSprite.Text = value.ToUpper();
+        }
+    }
+
+    public RightBottomButton()
+    {
+        iconSprite = new SpriteIcon()
+        {
+            Anchor = Anchor.CentreRight,
+            Origin = Anchor.CentreRight,
+            Size = new Vector2(25),
+            Icon = Icon,
+            Colour = IconColor
+        };
+        textSprite = new RenakoSpriteText()
+        {
+            Anchor = Anchor.CentreRight,
+            Origin = Anchor.CentreRight,
+            Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 35f, RenakoFont.FontWeight.Bold),
+            Text = Text.ToUpper(),
+            Colour = TextColor
+        };
+    }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -53,22 +95,8 @@ public partial class RightBottomButton : Button
                 Direction = FillDirection.Horizontal,
                 Children = new Drawable[]
                 {
-                    new SpriteIcon()
-                    {
-                        Anchor = Anchor.CentreRight,
-                        Origin = Anchor.CentreRight,
-                        Size = new Vector2(25),
-                        Icon = Icon,
-                        Colour = IconColor
-                    },
-                    new SpriteText()
-                    {
-                        Anchor = Anchor.CentreRight,
-                        Origin = Anchor.CentreRight,
-                        Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 35f, RenakoFont.FontWeight.Bold),
-                        Text = Text.ToUpper(),
-                        Colour = TextColor
-                    }
+                    iconSprite,
+                    textSprite
                 }
             }
         };

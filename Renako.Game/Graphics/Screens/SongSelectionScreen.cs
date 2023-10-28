@@ -55,6 +55,9 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteIcon beatmapLevelNameSpriteIcon;
     private SpriteText beatmapLevelNameText;
     private readonly StopwatchClock beatmapChangeTimer = new StopwatchClock();
+
+    private RightBottomButton rightBottomButton;
+
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
 
@@ -121,11 +124,12 @@ public partial class SongSelectionScreen : RenakoScreen
                 Origin = Anchor.Centre,
                 Action = toggleBackButton
             },
-            new RightBottomButton()
+            rightBottomButton = new RightBottomButton()
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
                 Icon = FontAwesome.Solid.ArrowRight,
+                Width = 200,
                 Text = "Go!",
                 Action = toggleGoButton
             },
@@ -708,11 +712,25 @@ public partial class SongSelectionScreen : RenakoScreen
             }
             else if (e.OldValue == SongSelectionScreenState.BeatmapSelection && e.NewValue == SongSelectionScreenState.LastSetting)
             {
+                beatmapSelectionContainer.MoveToX(-2000, 500, Easing.OutQuart);
+                beatmapSelectionContainer.FadeOut(500, Easing.OutQuart);
+
                 songTitle.ShowTexture();
+
+                rightBottomButton.Text = "Let's start!";
+                rightBottomButton.Icon = FontAwesome.Solid.Rocket;
+                rightBottomButton.ResizeWidthTo(275, 200, Easing.OutQuart);
             }
             else if (e.OldValue == SongSelectionScreenState.LastSetting && e.NewValue == SongSelectionScreenState.BeatmapSelection)
             {
+                beatmapSelectionContainer.MoveToX(0, 500, Easing.OutQuart);
+                beatmapSelectionContainer.FadeIn(500, Easing.OutQuart);
+
                 songTitle.HideTexture();
+
+                rightBottomButton.Text = "Go!";
+                rightBottomButton.Icon = FontAwesome.Solid.ArrowRight;
+                rightBottomButton.ResizeWidthTo(200, 200, Easing.OutQuart);
             }
         }, true);
 
