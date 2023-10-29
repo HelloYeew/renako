@@ -15,6 +15,7 @@ using osu.Framework.Localisation;
 using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Configurations;
+using Renako.Game.Database;
 using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Graphics.Containers;
@@ -28,6 +29,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     private FillFlowContainer timeContainer;
     private SpriteText currentTimeText;
     private SpriteText runningTimeText;
+    private InternalBeatmapImporter internalBeatmapImporter;
 
     private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
 
@@ -42,6 +44,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
     private void load(RenakoConfigManager renakoConfigManager, FrameworkConfigManager frameworkConfigManager, Storage storage, GameHost host, AudioManager audioManager)
     {
         IWindow window = host.Window;
+        internalBeatmapImporter = new InternalBeatmapImporter(audioManager, host);
 
         if (window != null)
         {
@@ -294,6 +297,17 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 {
                                     Action = () => storage.PresentExternally(),
                                     Text = "Open Renako folder",
+                                    Width = 300,
+                                    Height = 30
+                                },
+                                new BasicButton()
+                                {
+                                    Action = () =>
+                                    {
+                                        internalBeatmapImporter.Import();
+                                        storage.PresentExternally();
+                                    },
+                                    Text = "Import beatmap",
                                     Width = 300,
                                     Height = 30
                                 }

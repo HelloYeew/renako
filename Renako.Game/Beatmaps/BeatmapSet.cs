@@ -66,6 +66,7 @@ public class BeatmapSet
 
     /// <summary>
     /// Whether this beatmap get the file from local source (use game's storage) or not.
+    /// TODO: This need to be removed to reduce complexity.
     /// </summary>
     public bool UseLocalSource { get; set; }
 
