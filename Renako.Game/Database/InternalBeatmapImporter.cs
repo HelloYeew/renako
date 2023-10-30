@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using osu.Framework.Audio;
+using osu.Framework.Graphics.Textures;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using Renako.Game.Beatmaps;
@@ -17,14 +18,16 @@ public class InternalBeatmapImporter
 {
     private readonly Storage gameStorage;
     private readonly AudioManager audioManager;
+    private readonly TextureStore textureStore;
     private readonly BeatmapTestUtility beatmapTestUtility = new BeatmapTestUtility();
 
     public string BeatmapFolderName = "beatmaps";
 
-    public InternalBeatmapImporter(AudioManager audioManager, GameHost host)
+    public InternalBeatmapImporter(AudioManager audioManager, TextureStore textureStore, GameHost host)
     {
         gameStorage = host.Storage.GetStorageForDirectory(BeatmapFolderName);
         this.audioManager = audioManager;
+        this.textureStore = textureStore;
     }
 
     public void Import()
@@ -39,17 +42,31 @@ public class InternalBeatmapImporter
 
             Logger.Log("Importing beatmap set: " + folderName, LoggingTarget.Database);
             // track
-            Stream trackStream = audioManager.GetTrackStore().GetStream($"{beatmapSet.TrackPath}");
+            Stream sourceStream = audioManager.GetTrackStore().GetStream($"{beatmapSet.TrackPath}");
             Stream writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapSet.TrackPath.Split("/")[1]}");
-            trackStream.CopyTo(writeStream);
-            trackStream.Close();
+            sourceStream.CopyTo(writeStream);
+            sourceStream.Close();
             writeStream.Close();
 
             // album cover and background
+            sourceStream = textureStore.GetStream($"{beatmapSet.CoverPath}");
+            writeStream = gameStorage.CreateFileSafely($"{folderName}/cover.jpg");
+            sourceStream.CopyTo(writeStream);
+            sourceStream.Close();
+            writeStream.Close();
+            sourceStream = textureStore.GetStream($"{beatmapSet.BackgroundPath}");
+            writeStream = gameStorage.CreateFileSafely($"{folderName}/background.jpg");
+            sourceStream.CopyTo(writeStream);
+            sourceStream.Close();
+            writeStream.Close();
 
             // beatmapset info
+            BeatmapSet copyBeatmapSet = beatmapSet.Clone();
+            copyBeatmapSet.BackgroundPath = "background.jpg";
+            copyBeatmapSet.CoverPath = "cover.jpg";
+            copyBeatmapSet.TrackPath = beatmapSet.TrackPath.Split("/")[1];
             writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapSetFileName}.rks");
-            string beatmapSetJsonSeting = JsonSerializer.Serialize(beatmapSet);
+            string beatmapSetJsonSeting = JsonSerializer.Serialize(copyBeatmapSet);
             byte[] beatmapSetJsonBytes = Encoding.UTF8.GetBytes(beatmapSetJsonSeting);
             writeStream.Write(beatmapSetJsonBytes);
             writeStream.Close();

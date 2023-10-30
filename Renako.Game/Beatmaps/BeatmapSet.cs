@@ -144,4 +144,13 @@ public class BeatmapSet
         hashCode.Add(VideoPath);
         return hashCode.ToHashCode();
     }
+
+    /// <summary>
+    /// Create a deep copy of the beatmap set.
+    /// </summary>
+    /// <returns>A deep copy of the beatmap set</returns>
+    public BeatmapSet Clone()
+    {
+        return (BeatmapSet)MemberwiseClone();
+    }
 }
