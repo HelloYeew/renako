@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Text.Json;
 using osu.Framework.Audio;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
@@ -33,22 +35,23 @@ public class InternalBeatmapImporter
         foreach (BeatmapSet beatmapSet in beatmapSets)
         {
             string folderName = BeatmapUtility.GetFolderName(beatmapSet);
+            string beatmapSetFileName = BeatmapUtility.GetBeatmapSetFileName(beatmapSet);
 
-            // List all file in track store
-            foreach (var file in audioManager.GetTrackStore().GetAvailableResources())
-            {
-                Logger.Log($"File: {file}");
-            }
-
-            // Export track to folder
-            // Get stream from track
-            Stream track = audioManager.GetTrackStore().GetStream($"{beatmapSet.TrackPath}");
-            // Create file in game storage
+            Logger.Log("Importing beatmap set: " + folderName, LoggingTarget.Database);
+            // track
+            Stream trackStream = audioManager.GetTrackStore().GetStream($"{beatmapSet.TrackPath}");
             Stream writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapSet.TrackPath.Split("/")[1]}");
-            // Copy stream to file
-            track.CopyTo(writeStream);
-            // Close stream
-            track.Close();
+            trackStream.CopyTo(writeStream);
+            trackStream.Close();
+            writeStream.Close();
+
+            // album cover and background
+
+            // beatmapset info
+            writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapSetFileName}.rks");
+            string beatmapSetJsonSeting = JsonSerializer.Serialize(beatmapSet);
+            byte[] beatmapSetJsonBytes = Encoding.UTF8.GetBytes(beatmapSetJsonSeting);
+            writeStream.Write(beatmapSetJsonBytes);
             writeStream.Close();
         }
     }
