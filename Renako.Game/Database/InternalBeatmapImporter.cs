@@ -66,7 +66,10 @@ public class InternalBeatmapImporter
             copyBeatmapSet.CoverPath = "cover.jpg";
             copyBeatmapSet.TrackPath = beatmapSet.TrackPath.Split("/")[1];
             writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapSetFileName}.rks");
-            string beatmapSetJsonSeting = JsonSerializer.Serialize(copyBeatmapSet);
+            string beatmapSetJsonSeting = JsonSerializer.Serialize(copyBeatmapSet, new JsonSerializerOptions()
+            {
+                WriteIndented = true
+            });
             byte[] beatmapSetJsonBytes = Encoding.UTF8.GetBytes(beatmapSetJsonSeting);
             writeStream.Write(beatmapSetJsonBytes);
             writeStream.Close();
