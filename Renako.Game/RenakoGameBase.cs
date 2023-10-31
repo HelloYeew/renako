@@ -6,11 +6,13 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
 using osu.Framework.IO.Stores;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osuTK;
 using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
+using Renako.Game.Database;
 using Renako.Game.Stores;
 using Renako.Resources;
 
@@ -37,6 +39,10 @@ namespace Renako.Game
         protected RenakoAudioManager RenakoAudioManager;
 
         private Bindable<bool> fpsDisplayVisible;
+
+        private InternalBeatmapImporter internalBeatmapImporter;
+
+        private BeatmapCollectionReader beatmapCollectionReader;
 
         protected BeatmapsCollection BeatmapsCollection;
 
@@ -81,23 +87,47 @@ namespace Renako.Game
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Compatibility");
 
-            // Host.Storage.PresentExternally();
-
             ResourceStore<byte[]> trackResourceStore = new ResourceStore<byte[]>();
             trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Tracks"));
+            trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(new RenakoStore(Host.Storage), "beatmaps"));
 
-            dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"))));
+            ResourceStore<byte[]> textureResourceStore = new ResourceStore<byte[]>();
+            textureResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"));
+            textureResourceStore.AddStore(new NamespacedResourceStore<byte[]>(new RenakoStore(Host.Storage), "beatmaps"));
+
+            foreach (var beatmap in trackResourceStore.GetAvailableResources())
+            {
+                Logger.Log($"Available track : {beatmap}");
+            }
+
+            foreach (var beatmap in textureResourceStore.GetAvailableResources())
+            {
+                Logger.Log($"Available texture : {beatmap}");
+            }
+
+            dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(textureResourceStore)));
             dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
             dependencies.CacheAs(RenakoAudioManager = new RenakoAudioManager());
             dependencies.CacheAs(LocalConfig);
             dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
             dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
+
+            internalBeatmapImporter = new InternalBeatmapImporter(audioManager, textureStore, Host);
+
+            if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport))
+            {
+                internalBeatmapImporter.Import();
+                LocalConfig.SetValue(RenakoSetting.FirstImport, true);
+            }
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
+            beatmapCollectionReader.Read();
 
             fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
             fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };

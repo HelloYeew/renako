@@ -21,11 +21,11 @@ public class InternalBeatmapImporter
     private readonly TextureStore textureStore;
     private readonly BeatmapTestUtility beatmapTestUtility = new BeatmapTestUtility();
 
-    public string BeatmapFolderName = "beatmaps";
+    public const string BEATMAP_FOLDER_NAME = "beatmaps";
 
     public InternalBeatmapImporter(AudioManager audioManager, TextureStore textureStore, GameHost host)
     {
-        gameStorage = host.Storage.GetStorageForDirectory(BeatmapFolderName);
+        gameStorage = host.Storage.GetStorageForDirectory(BEATMAP_FOLDER_NAME);
         this.audioManager = audioManager;
         this.textureStore = textureStore;
     }

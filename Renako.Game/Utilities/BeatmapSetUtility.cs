@@ -1,4 +1,6 @@
-﻿using Renako.Game.Beatmaps;
+﻿using System.IO;
+using System.Text.Json;
+using Renako.Game.Beatmaps;
 
 namespace Renako.Game.Utilities;
 
@@ -16,5 +18,25 @@ public class BeatmapSetUtility
     {
         int totalMilliseconds = beatmapSet.TotalLength;
         return $"{totalMilliseconds / 60000:00}:{totalMilliseconds / 1000 % 60:00}";
+    }
+
+    /// <summary>
+    /// Deserialize a <see cref="BeatmapSet"/> from a <see cref="string"/>
+    /// </summary>
+    /// <param name="json">The <see cref="string"/> to deserialize from</param>
+    /// <returns>The deserialized <see cref="BeatmapSet"/></returns>
+    public static BeatmapSet Deserialize(string json)
+    {
+        return JsonSerializer.Deserialize<BeatmapSet>(json);
+    }
+
+    /// <summary>
+    /// Deserialize a <see cref="BeatmapSet"/> from a beatmapset file <see cref="Stream"/>
+    /// </summary>
+    /// <param name="stream">The <see cref="Stream"/> to deserialize from</param>
+    /// <returns>The deserialized <see cref="BeatmapSet"/></returns>
+    public static BeatmapSet Deserialize(Stream stream)
+    {
+        return JsonSerializer.Deserialize<BeatmapSet>(new StreamReader(stream).ReadToEnd());
     }
 }

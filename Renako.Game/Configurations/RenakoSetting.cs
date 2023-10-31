@@ -7,5 +7,6 @@ public enum RenakoSetting
     ShowFPSCounter,
 
     LatestBeatmapSetID,
-    LatestBeatmapID
+    LatestBeatmapID,
+    FirstImport
 }

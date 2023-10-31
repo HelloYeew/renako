@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Renako.Game.Beatmaps;
 
@@ -66,8 +67,8 @@ public class BeatmapSet
 
     /// <summary>
     /// Whether this beatmap get the file from local source (use game's storage) or not.
-    /// TODO: This need to be removed to reduce complexity.
     /// </summary>
+    [JsonIgnore]
     public bool UseLocalSource { get; set; }
 
     /// <summary>

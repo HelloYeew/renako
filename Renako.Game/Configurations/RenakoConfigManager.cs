@@ -14,7 +14,10 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
     {
         SetDefault(RenakoSetting.UseUnicodeInfo, false);
         SetDefault(RenakoSetting.ShowFPSCounter, false);
+
+        // Game state
         SetDefault(RenakoSetting.LatestBeatmapSetID, 0);
         SetDefault(RenakoSetting.LatestBeatmapID, 0);
+        SetDefault(RenakoSetting.FirstImport, false);
     }
 }
