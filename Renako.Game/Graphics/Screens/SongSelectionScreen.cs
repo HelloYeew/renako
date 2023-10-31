@@ -13,6 +13,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input.Events;
+using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
@@ -37,6 +38,9 @@ public partial class SongSelectionScreen : RenakoScreen
 
     [Resolved]
     private WorkingBeatmap workingBeatmap { get; set; }
+
+    [Resolved]
+    private GameHost host { get; set; }
 
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
@@ -102,10 +106,23 @@ public partial class SongSelectionScreen : RenakoScreen
 
         foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
         {
+            Texture texture;
+
+            if (beatmapSet.UseLocalSource)
+            {
+                texture = textureStore.Get(beatmapSet.CoverPath);
+            }
+            else
+            {
+                // TODO: Create texture atlas dedicate for stream
+                string searchPath = "beatmaps/" + BeatmapSetUtility.GetFolderName(beatmapSet) + "/" + beatmapSet.CoverPath;
+                texture = textureStore.Get(searchPath) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(searchPath));
+            }
+
             beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
             {
                 Item = beatmapSet,
-                Texture = textureStore.Get(beatmapSet.CoverPath)
+                Texture = texture
             });
         }
 

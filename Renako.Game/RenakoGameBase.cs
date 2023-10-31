@@ -89,20 +89,20 @@ namespace Renako.Game
 
             ResourceStore<byte[]> trackResourceStore = new ResourceStore<byte[]>();
             trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Tracks"));
-            trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(new RenakoStore(Host.Storage), "beatmaps"));
+            trackResourceStore.AddStore(new ResourceStore<byte[]>(new RenakoStore(Host.Storage)));
+
+            foreach (var track in trackResourceStore.GetAvailableResources())
+            {
+                Logger.Log($"Available track : {track}");
+            }
 
             ResourceStore<byte[]> textureResourceStore = new ResourceStore<byte[]>();
             textureResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Textures"));
-            textureResourceStore.AddStore(new NamespacedResourceStore<byte[]>(new RenakoStore(Host.Storage), "beatmaps"));
+            textureResourceStore.AddStore(new ResourceStore<byte[]>(new RenakoStore(Host.Storage)));
 
-            foreach (var beatmap in trackResourceStore.GetAvailableResources())
+            foreach (var texture in textureResourceStore.GetAvailableResources())
             {
-                Logger.Log($"Available track : {beatmap}");
-            }
-
-            foreach (var beatmap in textureResourceStore.GetAvailableResources())
-            {
-                Logger.Log($"Available texture : {beatmap}");
+                Logger.Log($"Available texture : {texture}");
             }
 
             dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(textureResourceStore)));

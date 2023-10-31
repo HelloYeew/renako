@@ -2,10 +2,13 @@
 using osu.Framework.Audio;
 using osu.Framework.Audio.Track;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Logging;
+using osu.Framework.Platform;
 using osu.Framework.Screens;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
+using Renako.Game.Utilities;
 
 namespace Renako.Game.Audio;
 
@@ -16,6 +19,7 @@ public partial class RenakoAudioManager : CompositeDrawable
 {
     public Track Track;
     private ITrackStore trackStore;
+    private AudioManager audioManager;
 
     private double mainThemeDuration;
 
@@ -25,6 +29,9 @@ public partial class RenakoAudioManager : CompositeDrawable
     [Resolved]
     private WorkingBeatmap workingBeatmap { get; set; }
 
+    [Resolved]
+    private GameHost host { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(AudioManager audioManagerSource)
     {
@@ -33,6 +40,12 @@ public partial class RenakoAudioManager : CompositeDrawable
 
         trackStore = audioManagerSource.Tracks;
         Track = trackStore.Get("theme/main-theme.mp3");
+        audioManager = audioManagerSource;
+
+        foreach (var source in trackStore.GetAvailableResources())
+        {
+            Logger.Log("track :" + source, LoggingTarget.Runtime, LogLevel.Debug);
+        }
     }
 
     /// <summary>
@@ -100,7 +113,15 @@ public partial class RenakoAudioManager : CompositeDrawable
 
         Track?.Stop();
         Track?.Dispose();
-        Track = trackStore.Get(newBeatmapSet.TrackPath);
+
+        if (newBeatmapSet.UseLocalSource)
+            Track = trackStore.Get(newBeatmapSet.TrackPath);
+        else
+        {
+            string path = "beatmaps/" + BeatmapSetUtility.GetFolderName(newBeatmapSet) + "/" + newBeatmapSet.TrackPath;
+            Track = trackStore.Get(path);
+        }
+
         Track.Looping = true;
         Track.Seek(newBeatmapSet.PreviewTime);
         Track.RestartPoint = newBeatmapSet.PreviewTime;

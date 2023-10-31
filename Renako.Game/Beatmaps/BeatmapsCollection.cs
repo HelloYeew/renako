@@ -49,6 +49,16 @@ public class BeatmapsCollection
     public Dictionary<string, int> GetMixMaxDifficultyLevel(BeatmapSet beatmapSet)
     {
         Beatmap[] beatmaps = GetBeatmapsFromBeatmapSet(beatmapSet);
+
+        if (beatmaps.Length == 0)
+        {
+            return new Dictionary<string, int>()
+            {
+                { "min", 0 },
+                { "max", 0 }
+            };
+        }
+
         double min = beatmaps.Min((e) => e.DifficultyRating);
         double max = beatmaps.Max((e) => e.DifficultyRating);
         return new Dictionary<string, int>()

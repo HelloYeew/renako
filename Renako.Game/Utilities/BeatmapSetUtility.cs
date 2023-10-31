@@ -39,4 +39,14 @@ public class BeatmapSetUtility
     {
         return JsonSerializer.Deserialize<BeatmapSet>(new StreamReader(stream).ReadToEnd());
     }
+
+    /// <summary>
+    /// Returns the folder name of the beatmap set in game storage (Format: {ID} {Title} - {Artist})
+    /// </summary>
+    /// <param name="beatmapSet"></param>
+    /// <returns></returns>
+    public static string GetFolderName(BeatmapSet beatmapSet)
+    {
+        return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
+    }
 }

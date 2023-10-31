@@ -37,7 +37,7 @@ public class InternalBeatmapImporter
 
         foreach (BeatmapSet beatmapSet in beatmapSets)
         {
-            string folderName = BeatmapUtility.GetFolderName(beatmapSet);
+            string folderName = BeatmapSetUtility.GetFolderName(beatmapSet);
             string beatmapSetFileName = BeatmapUtility.GetBeatmapSetFileName(beatmapSet);
 
             Logger.Log("Importing beatmap set: " + folderName, LoggingTarget.Database);

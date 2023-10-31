@@ -205,6 +205,19 @@ public partial class BeatmapSelectionSwiper : CompositeDrawable
     /// </summary>
     public void UpdateContainerItem()
     {
+        if (beatmapsList.Count == 0)
+        {
+            // Clear all the container if the beatmaps list is empty.
+            leftContainer3.ClearContainer();
+            leftContainer2.ClearContainer();
+            leftContainer1.ClearContainer();
+            centerContainer.ClearContainer();
+            rightContainer1.ClearContainer();
+            rightContainer2.ClearContainer();
+            rightContainer3.ClearContainer();
+            return;
+        }
+
         // Update the left container 3.
         // If current index - 3 is less than 0, set as blank container
         if (currentIndex.Value - 3 < 0)

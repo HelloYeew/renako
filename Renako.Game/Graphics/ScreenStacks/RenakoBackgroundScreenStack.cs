@@ -3,10 +3,12 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
+using Renako.Game.Utilities;
 
 namespace Renako.Game.Graphics.ScreenStacks;
 
@@ -27,6 +29,9 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
 
     [Resolved]
     private WorkingBeatmap workingBeatmap { get; set; }
+
+    [Resolved]
+    private GameHost host { get; set; }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
@@ -115,7 +120,15 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
 
         if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
 
-        Texture newBackgroundTexture = textureStore.Get(newBeatmapSet.BackgroundPath);
+        Texture newBackgroundTexture;
+
+        if (newBeatmapSet.UseLocalSource)
+            newBackgroundTexture = textureStore.Get(newBeatmapSet.BackgroundPath);
+        else
+        {
+            string searchPath = "beatmaps/" + BeatmapSetUtility.GetFolderName(newBeatmapSet) + "/" + newBeatmapSet.BackgroundPath;
+            newBackgroundTexture = textureStore.Get(searchPath) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(searchPath));
+        }
 
         ChangeBackground(newBackgroundTexture ?? fallbackBeatmapBackground);
     }
