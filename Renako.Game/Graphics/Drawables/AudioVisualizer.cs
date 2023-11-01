@@ -17,8 +17,8 @@ public partial class AudioVisualizer : CompositeDrawable
     [Resolved]
     private RenakoAudioManager audioManager { get; set; }
 
-    private Colour4 barColour = Colour4.White;
-    private float barAlpha = 1;
+    private readonly Colour4 barColour = Colour4.White;
+    private readonly float barAlpha = 1;
 
     public Colour4 BarColour
     {
