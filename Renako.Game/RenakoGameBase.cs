@@ -86,6 +86,7 @@ namespace Renako.Game
             AddFont(Resources, @"Fonts/Noto/Noto-Hangul");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Basic");
             AddFont(Resources, @"Fonts/Noto/Noto-CJK-Compatibility");
+            AddFont(Resources, @"Fonts/Noto/Noto-Thai");
 
             ResourceStore<byte[]> trackResourceStore = new ResourceStore<byte[]>();
             trackResourceStore.AddStore(new NamespacedResourceStore<byte[]>(Resources, "Tracks"));
