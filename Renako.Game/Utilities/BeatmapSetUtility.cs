@@ -50,4 +50,24 @@ public class BeatmapSetUtility
         // TODO: Sometime the o!f storage object don't detect some beatmap that title have symbol (+, -, etc.) in it, this need some fix.
         return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
     }
+
+    /// <summary>
+    /// Return the path of the cover image of <see cref="BeatmapSet"/>.
+    /// </summary>
+    /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the cover path from</param>
+    /// <returns>The path of the cover image</returns>
+    public static string GetCoverPath(BeatmapSet beatmapSet)
+    {
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.CoverPath;
+    }
+
+    /// <summary>
+    /// Return the path of the background image of <see cref="BeatmapSet"/>.
+    /// </summary>
+    /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the background path from</param>
+    /// <returns>The path of the background image</returns>
+    public static string GetBackgroundPath(BeatmapSet beatmapSet)
+    {
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.BackgroundPath;
+    }
 }

@@ -126,8 +126,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             newBackgroundTexture = textureStore.Get(newBeatmapSet.BackgroundPath);
         else
         {
-            string searchPath = "beatmaps/" + BeatmapSetUtility.GetFolderName(newBeatmapSet) + "/" + newBeatmapSet.BackgroundPath;
-            newBackgroundTexture = textureStore.Get(searchPath) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(searchPath));
+            newBackgroundTexture = textureStore.Get(BeatmapSetUtility.GetBackgroundPath(newBeatmapSet)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetBackgroundPath(newBeatmapSet)));
         }
 
         ChangeBackground(newBackgroundTexture ?? fallbackBeatmapBackground);

@@ -115,8 +115,7 @@ public partial class SongSelectionScreen : RenakoScreen
             else
             {
                 // TODO: Create texture atlas dedicate for stream
-                string searchPath = "beatmaps/" + BeatmapSetUtility.GetFolderName(beatmapSet) + "/" + beatmapSet.CoverPath;
-                texture = textureStore.Get(searchPath) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(searchPath));
+                texture = textureStore.Get(BeatmapSetUtility.GetCoverPath(beatmapSet)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetCoverPath(beatmapSet)));
             }
 
             beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
@@ -682,7 +681,7 @@ public partial class SongSelectionScreen : RenakoScreen
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
-            songTitle.Texture = textureStore.Get(item.NewValue.CoverPath);
+            songTitle.Texture = textureStore.Get(BeatmapSetUtility.GetCoverPath(item.NewValue)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetCoverPath(item.NewValue)));
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
             isBeatmapChanged = true;
