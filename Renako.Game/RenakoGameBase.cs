@@ -32,17 +32,15 @@ namespace Renako.Game
 
         private DependencyContainer dependencies;
 
-        private RenakoTextureStore textureStore;
+        protected RenakoTextureStore TextureStore;
 
-        private AudioManager audioManager;
+        protected AudioManager AudioManager;
 
         protected RenakoAudioManager RenakoAudioManager;
 
         private Bindable<bool> fpsDisplayVisible;
 
-        private InternalBeatmapImporter internalBeatmapImporter;
-
-        private BeatmapCollectionReader beatmapCollectionReader;
+        protected BeatmapCollectionReader beatmapCollectionReader;
 
         protected BeatmapsCollection BeatmapsCollection;
 
@@ -106,29 +104,18 @@ namespace Renako.Game
                 Logger.Log($"Available texture : {texture}");
             }
 
-            dependencies.Cache(textureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(textureResourceStore)));
-            dependencies.Cache(audioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
+            dependencies.Cache(TextureStore = new RenakoTextureStore(Host.Renderer, Host.CreateTextureLoaderStore(textureResourceStore)));
+            dependencies.Cache(AudioManager = new AudioManager(Host.AudioThread, trackResourceStore, new NamespacedResourceStore<byte[]>(Resources, "Samples")));
             dependencies.CacheAs(RenakoAudioManager = new RenakoAudioManager());
             dependencies.CacheAs(LocalConfig);
             dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
             dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
-
-            internalBeatmapImporter = new InternalBeatmapImporter(audioManager, textureStore, Host);
-
-            if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport))
-            {
-                internalBeatmapImporter.Import();
-                LocalConfig.SetValue(RenakoSetting.FirstImport, true);
-            }
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
-
-            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
-            beatmapCollectionReader.Read();
 
             fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
             fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };

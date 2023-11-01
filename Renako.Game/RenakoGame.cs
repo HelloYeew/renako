@@ -2,10 +2,13 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using osu.Framework.Allocation;
+using osu.Framework.Development;
 using osu.Framework.Graphics;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Threading;
+using Renako.Game.Configurations;
+using Renako.Game.Database;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 
@@ -19,6 +22,7 @@ namespace Renako.Game
         private SettingsScreenStack settingsScreenStack;
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
+        private InternalBeatmapImporter internalBeatmapImporter;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -40,6 +44,17 @@ namespace Renako.Game
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            internalBeatmapImporter = new InternalBeatmapImporter(AudioManager, TextureStore, Host);
+
+            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
+            beatmapCollectionReader.Read();
+
+            if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport) && DebugUtils.IsNUnitRunning)
+            {
+                internalBeatmapImporter.Import();
+                LocalConfig.SetValue(RenakoSetting.FirstImport, true);
+            }
 
             mainScreenStack.Push(new WarningScreen());
         }
