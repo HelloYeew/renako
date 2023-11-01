@@ -42,6 +42,7 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private GameHost host { get; set; }
 
+    private AudioVisualizer audioVisualizer;
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
@@ -134,6 +135,14 @@ public partial class SongSelectionScreen : RenakoScreen
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
+            audioVisualizer = new AudioVisualizer()
+            {
+                Anchor = Anchor.BottomLeft,
+                Origin = Anchor.BottomLeft,
+                RelativeSizeAxes = Axes.Both,
+                BarColour = Color4Extensions.FromHex("FBE3E3"),
+                Alpha = 0.2f
+            },
             new BackButton()
             {
                 Anchor = Anchor.Centre,
