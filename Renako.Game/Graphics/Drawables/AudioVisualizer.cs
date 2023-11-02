@@ -19,6 +19,7 @@ public partial class AudioVisualizer : CompositeDrawable
 
     private readonly Colour4 barColour = Colour4.White;
     private readonly float barAlpha = 1;
+    private ReadOnlyMemory<float> readOnlyMemory;
 
     public Colour4 BarColour
     {
@@ -71,19 +72,22 @@ public partial class AudioVisualizer : CompositeDrawable
             RelativeSizeAxes = Axes.Both,
             Children = frequencyAmplitudesBox
         };
+
+        Scheduler.AddDelayed(() =>
+        {
+            updateFrequencyAmplitudes();
+        }, 50, true);
     }
 
-    protected override void Update()
+    private void updateFrequencyAmplitudes()
     {
-        base.Update();
-
         if (audioManager.Track == null)
             return;
 
-        ReadOnlyMemory<float> readOnlyMemory = audioManager.Track.CurrentAmplitudes.FrequencyAmplitudes;
-
         if (audioManager.Track.IsRunning)
         {
+            readOnlyMemory = audioManager.Track.CurrentAmplitudes.FrequencyAmplitudes;
+
             for (int i = 0; i < 150; i++)
             {
                 frequencyAmplitudesBox[i].ResizeTo(new Vector2(0.0065f, readOnlyMemory.Span[i] / 2), 50, Easing.OutQuint);
