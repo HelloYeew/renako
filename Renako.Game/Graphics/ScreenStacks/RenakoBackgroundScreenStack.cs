@@ -1,3 +1,4 @@
+using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -126,7 +127,15 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             newBackgroundTexture = textureStore.Get(newBeatmapSet.BackgroundPath);
         else
         {
-            newBackgroundTexture = textureStore.Get(BeatmapSetUtility.GetBackgroundPath(newBeatmapSet)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetBackgroundPath(newBeatmapSet)));
+            string coverPath = BeatmapSetUtility.GetBackgroundPath(newBeatmapSet);
+            newBackgroundTexture = textureStore.Get(coverPath);
+
+            if (newBackgroundTexture == null)
+            {
+                Stream backgroundTextureStream = host.Storage.GetStream(coverPath);
+                newBackgroundTexture = Texture.FromStream(host.Renderer, backgroundTextureStream);
+                backgroundTextureStream?.Close();
+            }
         }
 
         ChangeBackground(newBackgroundTexture ?? fallbackBeatmapBackground);

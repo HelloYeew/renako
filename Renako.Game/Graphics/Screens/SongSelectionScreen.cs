@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
@@ -115,8 +116,15 @@ public partial class SongSelectionScreen : RenakoScreen
             }
             else
             {
-                // TODO: Create texture atlas dedicate for stream
-                texture = textureStore.Get(BeatmapSetUtility.GetCoverPath(beatmapSet)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetCoverPath(beatmapSet)));
+                string coverPath = BeatmapSetUtility.GetCoverPath(beatmapSet);
+                texture = textureStore.Get(coverPath);
+
+                if (texture == null)
+                {
+                    Stream coverTextureStream = host.Storage.GetStream(coverPath);
+                    texture = Texture.FromStream(host.Renderer, coverTextureStream);
+                    coverTextureStream?.Close();
+                }
             }
 
             beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
@@ -690,7 +698,24 @@ public partial class SongSelectionScreen : RenakoScreen
             Dictionary<string, int> calculatedMinMix = beatmapsCollection.GetMixMaxDifficultyLevel(item.NewValue);
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
-            songTitle.Texture = textureStore.Get(BeatmapSetUtility.GetCoverPath(item.NewValue)) ?? Texture.FromStream(host.Renderer, host.Storage.GetStream(BeatmapSetUtility.GetCoverPath(item.NewValue)));
+
+            if (item.NewValue.UseLocalSource)
+                songTitle.Texture = textureStore.Get(item.NewValue.CoverPath);
+            else
+            {
+                string coverPath = BeatmapSetUtility.GetCoverPath(item.NewValue);
+
+                Texture coverTexture = textureStore.Get(coverPath);
+
+                if (coverTexture == null)
+                {
+                    Stream coverTextureStream = host.Storage.GetStream(coverPath);
+                    coverTexture = Texture.FromStream(host.Renderer, coverTextureStream);
+                    coverTextureStream?.Close();
+                }
+
+                songTitle.Texture = coverTexture;
+            }
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
             isBeatmapChanged = true;
