@@ -114,13 +114,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         Track?.Stop();
         Track?.Dispose();
 
-        if (newBeatmapSet.UseLocalSource)
-            Track = trackStore.Get(newBeatmapSet.TrackPath);
-        else
-        {
-            string path = "beatmaps/" + BeatmapSetUtility.GetFolderName(newBeatmapSet) + "/" + newBeatmapSet.TrackPath;
-            Track = trackStore.Get(path);
-        }
+        Track = trackStore.Get(newBeatmapSet.UseLocalSource ? newBeatmapSet.TrackPath : BeatmapSetUtility.GetTrackPath(newBeatmapSet));
 
         Track.Looping = true;
         Track.Seek(newBeatmapSet.PreviewTime);

@@ -70,4 +70,14 @@ public class BeatmapSetUtility
     {
         return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.BackgroundPath;
     }
+
+    /// <summary>
+    /// Return the path of the track of <see cref="BeatmapSet"/>.
+    /// </summary>
+    /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the track path from</param>
+    /// <returns>The path of the track</returns>
+    public static string GetTrackPath(BeatmapSet beatmapSet)
+    {
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.TrackPath;
+    }
 }
