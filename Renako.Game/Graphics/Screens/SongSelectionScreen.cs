@@ -699,6 +699,8 @@ public partial class SongSelectionScreen : RenakoScreen
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMix["min"]} - {calculatedMinMix["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
 
+            songTitle.Texture?.Dispose();
+
             if (item.NewValue.UseLocalSource)
                 songTitle.Texture = textureStore.Get(item.NewValue.CoverPath);
             else
