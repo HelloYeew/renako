@@ -50,8 +50,9 @@ namespace Renako.Game
             beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
             beatmapCollectionReader.Read();
 
-            if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport) && DebugUtils.IsNUnitRunning)
+            if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport) && !DebugUtils.IsNUnitRunning)
             {
+                Logger.Log("First time import detected, importing internal beatmaps...");
                 internalBeatmapImporter.Import();
                 LocalConfig.SetValue(RenakoSetting.FirstImport, true);
             }
