@@ -6,6 +6,6 @@
     <ProjectReference Include="..\Renako.Resources\Renako.Resources.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ppy.osu.Framework" Version="2023.1201.1" />
+    <PackageReference Include="ppy.osu.Framework" Version="2023.1227.1" />
   </ItemGroup>
 </Project>
