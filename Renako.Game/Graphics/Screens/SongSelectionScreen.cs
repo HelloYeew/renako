@@ -721,6 +721,11 @@ public partial class SongSelectionScreen : RenakoScreen
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
             isBeatmapChanged = true;
+
+            if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length >= 1)
+            {
+                workingBeatmap.Beatmap = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue)[0];
+            }
         }, true);
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
