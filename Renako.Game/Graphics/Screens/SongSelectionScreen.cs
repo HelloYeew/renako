@@ -909,7 +909,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 toggleBackButton();
                 break;
 
-            case Key.Enter:
+            case Key.Enter or Key.P:
                 toggleGoButton();
                 break;
         }
