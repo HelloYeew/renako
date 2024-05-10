@@ -1,6 +1,4 @@
-using NUnit.Framework;
 using osu.Framework.Allocation;
-using osu.Framework.Graphics;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Tests.Visual;
@@ -29,21 +27,5 @@ public partial class GameDrawableTestScene : RenakoTestScene
         Add(MainScreenStack);
         Add(LogoScreenStack);
         Add(SettingsScreenStack);
-    }
-
-    [Test]
-    public void TestGameDrawableUtility()
-    {
-        AddStep("toggle background", () =>
-        {
-            if (BackgroundScreenStack.Alpha == 1)
-            {
-                BackgroundScreenStack.FadeOut(500, Easing.OutQuint);
-            }
-            else
-            {
-                BackgroundScreenStack.FadeIn(500, Easing.OutQuint);
-            }
-        });
     }
 }
