@@ -318,6 +318,15 @@ public partial class SettingsContainer : FocusedOverlayContainer
                 }
             }
         };
+
+        // Sync the audio volume settings with the framework settings.
+        audioManager.Volume.Value = frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeUniversal).Value;
+        audioManager.VolumeSample.Value = frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeEffect).Value;
+        audioManager.VolumeTrack.Value = frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeMusic).Value;
+
+        audioManager.Volume.BindValueChanged(v => frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeUniversal).Value = v.NewValue);
+        audioManager.VolumeSample.BindValueChanged(v => frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeEffect).Value = v.NewValue);
+        audioManager.VolumeTrack.BindValueChanged(v => frameworkConfigManager.GetBindable<double>(FrameworkSetting.VolumeMusic).Value = v.NewValue);
     }
 
     /// <summary>
