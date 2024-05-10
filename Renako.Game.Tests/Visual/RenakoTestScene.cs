@@ -37,17 +37,5 @@ namespace Renako.Game.Tests.Visual
 
             public void RunTestBlocking(TestScene test) => runner.RunTestBlocking(test);
         }
-
-        [SetUpSteps]
-        public void SetUpSteps()
-        {
-            if (MuteTrackOnStart)
-                AddStep("toggle mute", ToggleMuteTrack);
-        }
-
-        public void ToggleMuteTrack()
-        {
-            frameworkAudioManager.VolumeTrack.Value = frameworkAudioManager.VolumeTrack.Value == 0 ? 1 : 0;
-        }
     }
 }

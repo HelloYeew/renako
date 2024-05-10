@@ -43,7 +43,6 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private GameHost host { get; set; }
 
-    private AudioVisualizer audioVisualizer;
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
@@ -143,14 +142,6 @@ public partial class SongSelectionScreen : RenakoScreen
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
-            audioVisualizer = new AudioVisualizer()
-            {
-                Anchor = Anchor.BottomLeft,
-                Origin = Anchor.BottomLeft,
-                RelativeSizeAxes = Axes.Both,
-                BarColour = Color4Extensions.FromHex("FBE3E3"),
-                Alpha = 0.2f
-            },
             new BackButton()
             {
                 Anchor = Anchor.Centre,
@@ -904,21 +895,23 @@ public partial class SongSelectionScreen : RenakoScreen
 
     protected override bool OnKeyDown(KeyDownEvent e)
     {
-        if (e.Key == Key.Right)
+        switch (e.Key)
         {
-            toggleNextButton();
-        }
-        else if (e.Key == Key.Left)
-        {
-            togglePreviousButton();
-        }
-        else if (e.Key == Key.Escape)
-        {
-            toggleBackButton();
-        }
-        else if (e.Key == Key.Enter)
-        {
-            toggleGoButton();
+            case Key.Right:
+                toggleNextButton();
+                break;
+
+            case Key.Left:
+                togglePreviousButton();
+                break;
+
+            case Key.Escape:
+                toggleBackButton();
+                break;
+
+            case Key.Enter or Key.P:
+                toggleGoButton();
+                break;
         }
 
         return base.OnKeyDown(e);
