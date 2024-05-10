@@ -23,7 +23,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Texture mainBackgroundTexture;
     private Texture playMenuBackgroundTexture;
     private Texture fallbackBeatmapBackground;
-    private BufferedContainer backgroundBufferedContainer;
+    private Container backgroundContainer;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -43,12 +43,11 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
         fallbackBeatmapBackground = textureStore.Get("Screen/fallback-beatmap-background.jpg");
 
-        AddInternal(backgroundBufferedContainer = new BufferedContainer()
+        AddInternal(backgroundContainer = new Container()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both,
-            BlurSigma = new Vector2(0),
             Children = new Drawable[]
             {
                 ImageSpriteDown = new Sprite()
