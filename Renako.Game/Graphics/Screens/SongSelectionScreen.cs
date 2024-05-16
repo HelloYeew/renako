@@ -62,6 +62,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private readonly StopwatchClock beatmapChangeTimer = new StopwatchClock();
 
     private RightBottomButton rightBottomButton;
+    private BackButton backButton;
 
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
@@ -142,7 +143,7 @@ public partial class SongSelectionScreen : RenakoScreen
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
-            new BackButton()
+            backButton = new BackButton()
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
@@ -722,13 +723,18 @@ public partial class SongSelectionScreen : RenakoScreen
             if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length < 1)
             {
                 rightBottomButton.Enabled.Value = false;
+                rightBottomButton.ClearTransforms();
                 workingBeatmap.Beatmap = null;
                 Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, 0));
             }
             else
             {
                 rightBottomButton.Enabled.Value = true;
+                rightBottomButton.FlashBackground(60000 / item.NewValue.BPM, true);
             }
+
+            // Flash back button with speed using beatmapset's BPM
+            backButton.FlashBackground(60000 / item.NewValue.BPM, true);
         }, true);
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {

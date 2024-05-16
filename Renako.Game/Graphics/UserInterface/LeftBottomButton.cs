@@ -22,6 +22,8 @@ public partial class LeftBottomButton : Button
     public IconUsage Icon { get; set; } = FontAwesome.Solid.ArrowLeft;
     public string Text { get; set; } = "Back";
 
+    public const int HOVER_MOVE_DISTANCE = 10;
+
     private Sample hoverSample;
     private Sample clickSample;
 
@@ -98,12 +100,16 @@ public partial class LeftBottomButton : Button
     protected override bool OnHover(HoverEvent e)
     {
         if (Enabled.Value)
-        {
-            backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
             hoverSample?.Play();
-        }
+        this.MoveToX(X + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
 
         return base.OnHover(e);
+    }
+
+    protected override void OnHoverLost(HoverLostEvent e)
+    {
+        base.OnHoverLost(e);
+        this.MoveToX(X - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
     }
 
     protected override bool OnClick(ClickEvent e)
@@ -112,5 +118,20 @@ public partial class LeftBottomButton : Button
             clickSample?.Play();
 
         return base.OnClick(e);
+    }
+
+    /// <summary>
+    /// Flash the background of the button
+    /// </summary>
+    /// <param name="duration">Flash duration</param>
+    /// <param name="loop">Loop the flash animation</param>
+    public void FlashBackground(double duration, bool loop = false)
+    {
+        backgroundBox.ClearTransforms();
+        backgroundBox.Colour = BackgroundColor;
+        if (loop)
+            backgroundBox.FlashColour(Colour4.White, duration, Easing.OutCubic).Loop();
+        else
+            backgroundBox.FlashColour(Colour4.White, duration, Easing.OutCubic);
     }
 }
