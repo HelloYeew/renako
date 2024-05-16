@@ -717,6 +717,9 @@ public partial class SongSelectionScreen : RenakoScreen
             {
                 workingBeatmap.Beatmap = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue)[0];
             }
+
+            // Disable the right bottom button if there is no beatmap in the beatmap set.
+            rightBottomButton.Enabled.Value = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length >= 1;
         }, true);
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
@@ -871,6 +874,9 @@ public partial class SongSelectionScreen : RenakoScreen
 
     private void toggleGoButton()
     {
+        if (beatmapsCollection.GetBeatmapsFromBeatmapSet(workingBeatmap.BeatmapSet).Length < 1)
+            return;
+
         switch (currentScreenState.Value)
         {
             case SongSelectionScreenState.SongList:
