@@ -13,6 +13,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
+using osu.Framework.Input;
 using osu.Framework.Input.Events;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
@@ -936,6 +937,30 @@ public partial class SongSelectionScreen : RenakoScreen
         }
 
         return base.OnKeyDown(e);
+    }
+
+    protected override bool OnJoystickPress(JoystickPressEvent e)
+    {
+        switch (e.Button)
+        {
+            case JoystickButton.FirstHatRight:
+                toggleNextButton();
+                break;
+
+            case JoystickButton.FirstHatLeft:
+                togglePreviousButton();
+                break;
+
+            case JoystickButton.Button9 or JoystickButton.GamePadB:
+                toggleBackButton();
+                break;
+
+            case JoystickButton.Button10 or JoystickButton.GamePadA:
+                toggleGoButton();
+                break;
+        }
+
+        return base.OnJoystickPress(e);
     }
 
     protected override bool OnScroll(ScrollEvent e)
