@@ -719,7 +719,16 @@ public partial class SongSelectionScreen : RenakoScreen
             }
 
             // Disable the right bottom button if there is no beatmap in the beatmap set.
-            rightBottomButton.Enabled.Value = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length >= 1;
+            if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length < 1)
+            {
+                rightBottomButton.Enabled.Value = false;
+                workingBeatmap.Beatmap = null;
+                Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, 0));
+            }
+            else
+            {
+                rightBottomButton.Enabled.Value = true;
+            }
         }, true);
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
