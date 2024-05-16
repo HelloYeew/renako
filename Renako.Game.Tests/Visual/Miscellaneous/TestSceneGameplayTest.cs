@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework.Internal;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -37,10 +36,10 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private const int fade_in_time = 500;
     private const int move_time = 750;
 
-    private StopwatchClock stopwatchClock = new StopwatchClock();
+    private readonly StopwatchClock stopwatchClock = new StopwatchClock();
 
-    private static BeatmapNote[] beatmap_notes;
-    private static PlayfieldNote[] playfield_notes;
+    private static BeatmapNote[] beatmapNotes;
+    private static PlayfieldNote[] playfieldNotes;
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
@@ -166,8 +165,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             });
         }
 
-        beatmap_notes = beatmapNotesTemp.ToArray();
-        playfield_notes = beatmap_notes.Select(PlayfieldNote.FromBeatmapNote).ToArray();
+        beatmapNotes = beatmapNotesTemp.ToArray();
+        playfieldNotes = beatmapNotes.Select(PlayfieldNote.FromBeatmapNote).ToArray();
     }
 
     protected override void LoadComplete()
@@ -208,7 +207,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     {
         base.Update();
 
-        foreach (var note in playfield_notes)
+        foreach (var note in playfieldNotes)
         {
             // Count missed note
             if (!note.IsHit && stopwatchClock.CurrentTime - note.Time > 200)
@@ -328,7 +327,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
     private void processHit(Lane lane)
     {
-        PlayfieldNote[] notes = playfield_notes.Where(n => !n.IsHit && n.Lane == lane && Math.Abs(stopwatchClock.CurrentTime - n.Time) <= 200).ToArray();
+        PlayfieldNote[] notes = playfieldNotes.Where(n => !n.IsHit && n.Lane == lane && Math.Abs(stopwatchClock.CurrentTime - n.Time) <= 200).ToArray();
 
         if (notes.Length == 0)
             return;
