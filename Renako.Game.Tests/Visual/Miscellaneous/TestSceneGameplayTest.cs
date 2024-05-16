@@ -362,6 +362,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         hitResult hitResultDrawable = hitResultPool.Get(hitResultObject =>
         {
             hitResultObject.Scale = new Vector2(0.5f);
+            hitResultObject.LifetimeEnd = Clock.CurrentTime + 1000;
 
             switch (result)
             {
