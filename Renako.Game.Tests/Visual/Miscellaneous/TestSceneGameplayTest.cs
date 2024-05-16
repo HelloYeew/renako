@@ -14,7 +14,6 @@ using osu.Framework.Utils;
 using osuTK;
 using osuTK.Input;
 using Renako.Game.Graphics;
-using Logger = osu.Framework.Logging.Logger;
 
 namespace Renako.Game.Tests.Visual.Miscellaneous;
 
@@ -35,6 +34,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
     private const int fade_in_time = 500;
     private const int move_time = 750;
+
+    private const int playerY = 75;
 
     private readonly StopwatchClock stopwatchClock = new StopwatchClock();
 
@@ -83,9 +84,9 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                 {
                     Anchor = Anchor.BottomCentre,
                     Origin = Anchor.BottomCentre,
-                    Size = new Vector2(20),
+                    Size = new Vector2(60),
                     Colour = Color4Extensions.FromHex("DAB4E7"),
-                    Position = new Vector2(125, 0)
+                    Position = new Vector2(125, playerY)
                 }
             }
         });
@@ -180,22 +181,22 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         switch (e.Key)
         {
             case Key.D:
-                player.MoveTo(new Vector2(-125, 0), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane1), playerY), 100, Easing.Out);
                 processHit(Lane.Lane1);
                 break;
 
             case Key.F:
-                player.MoveTo(new Vector2(-40, 0), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane2), playerY), 100, Easing.Out);
                 processHit(Lane.Lane2);
                 break;
 
             case Key.J:
-                player.MoveTo(new Vector2(40, 0), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane3), playerY), 100, Easing.Out);
                 processHit(Lane.Lane3);
                 break;
 
             case Key.K:
-                player.MoveTo(new Vector2(125, 0), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane4), playerY), 100, Easing.Out);
                 processHit(Lane.Lane4);
                 break;
         }
@@ -222,7 +223,6 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
             if (stopwatchClock.CurrentTime >= note.Time - move_time - fade_in_time)
             {
-                Logger.Log($"Adding note at {note.Time} (current time: {stopwatchClock.CurrentTime})");
                 addNote(note);
                 note.IsDrawn = true;
             }
