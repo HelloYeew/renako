@@ -31,11 +31,17 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private RenakoSpriteText clockText;
 
     private DrawablePool<note> notePool;
+    private DrawablePool<indicator> indicatorPool;
+
+    private Container lane1;
+    private Container lane2;
+    private Container lane3;
+    private Container lane4;
 
     private const int fade_in_time = 500;
     private const int move_time = 750;
 
-    private const int playerY = 75;
+    private const int player_y = 50;
 
     private readonly StopwatchClock stopwatchClock = new StopwatchClock();
 
@@ -46,6 +52,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private void load(TextureStore textureStore)
     {
         Add(notePool = new DrawablePool<note>(50));
+        Add(indicatorPool = new DrawablePool<indicator>(20));
 
         BackgroundScreenStack.ChangeBackground(textureStore.Get("Screen/fallback-beatmap-background.jpg"));
         BackgroundScreenStack.AdjustMaskAlpha(0.5f);
@@ -66,10 +73,10 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                     Spacing = new Vector2(75, 0),
                     Children = new Drawable[]
                     {
-                        createLane(),
-                        createLane(),
-                        createLane(),
-                        createLane()
+                        lane1 = createLane(),
+                        lane2 = createLane(),
+                        lane3 = createLane(),
+                        lane4 = createLane()
                     }
                 },
                 new Box()
@@ -86,7 +93,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                     Origin = Anchor.BottomCentre,
                     Size = new Vector2(60),
                     Colour = Color4Extensions.FromHex("DAB4E7"),
-                    Position = new Vector2(125, playerY)
+                    Position = new Vector2(125, player_y)
                 }
             }
         });
@@ -181,23 +188,27 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         switch (e.Key)
         {
             case Key.D:
-                player.MoveTo(new Vector2(getLaneX(Lane.Lane1), playerY), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane1), player_y), 100, Easing.Out);
                 processHit(Lane.Lane1);
+                addHitAnimation(Lane.Lane1);
                 break;
 
             case Key.F:
-                player.MoveTo(new Vector2(getLaneX(Lane.Lane2), playerY), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane2), player_y), 100, Easing.Out);
                 processHit(Lane.Lane2);
+                addHitAnimation(Lane.Lane2);
                 break;
 
             case Key.J:
-                player.MoveTo(new Vector2(getLaneX(Lane.Lane3), playerY), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane3), player_y), 100, Easing.Out);
                 processHit(Lane.Lane3);
+                addHitAnimation(Lane.Lane3);
                 break;
 
             case Key.K:
-                player.MoveTo(new Vector2(getLaneX(Lane.Lane4), playerY), 100, Easing.Out);
+                player.MoveTo(new Vector2(getLaneX(Lane.Lane4), player_y), 100, Easing.Out);
                 processHit(Lane.Lane4);
+                addHitAnimation(Lane.Lane4);
                 break;
         }
 
@@ -285,6 +296,45 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
          .Then()
          .MoveTo(new Vector2(x, 400), 250)
          .FadeOut(250);
+    }
+
+    /// <summary>
+    /// Add hit animation to the lane on every user click.
+    /// </summary>
+    /// <param name="lane">The lane to add hit animation.</param>
+    private void addHitAnimation(Lane lane)
+    {
+        if (!indicatorPool.IsLoaded)
+            return;
+
+        indicator indicatorDrawable = indicatorPool.Get(indicatorObject =>
+        {
+            indicatorObject.Position = new Vector2(getLaneX(lane), 200);
+            indicatorObject.LifetimeEnd = Clock.CurrentTime + 500;
+            indicatorObject.Size = new Vector2(25);
+        });
+
+        drawablePlayfield.Add(indicatorDrawable);
+        indicatorDrawable.FadeIn(50).Then().ResizeTo(new Vector2(75), 150, Easing.OutCubic).FadeOut(150);
+
+        switch (lane)
+        {
+            case Lane.Lane1:
+                lane1.FlashColour(Color4Extensions.FromHex("8D90D0"), 200, Easing.OutCubic);
+                break;
+
+            case Lane.Lane2:
+                lane2.FlashColour(Color4Extensions.FromHex("8D90D0"), 200, Easing.OutCubic);
+                break;
+
+            case Lane.Lane3:
+                lane3.FlashColour(Color4Extensions.FromHex("8D90D0"), 200, Easing.OutCubic);
+                break;
+
+            case Lane.Lane4:
+                lane4.FlashColour(Color4Extensions.FromHex("8D90D0"), 200, Easing.OutCubic);
+                break;
+        }
     }
 
     private enum Lane
@@ -390,7 +440,24 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                 Colour = Color4Extensions.FromHex("D9D9D9")
             };
         }
+    }
 
-        public PlayfieldNote PlayfieldNote { get; set; }
+    private partial class indicator : PoolableDrawable
+    {
+        public indicator()
+        {
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
+            Size = new Vector2(25);
+            Alpha = 0;
+            InternalChild = new Circle()
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Size = Vector2.One,
+                RelativeSizeAxes = Axes.Both,
+                Colour = Color4Extensions.FromHex("8D90D0")
+            };
+        }
     }
 }
