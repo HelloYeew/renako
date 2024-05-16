@@ -17,6 +17,9 @@ using Renako.Game.Graphics;
 
 namespace Renako.Game.Tests.Visual.Miscellaneous;
 
+/// <summary>
+/// A test scene for gameplay POC, will remove this later when implemented in the game.
+/// </summary>
 public partial class TestSceneGameplayTest : GameDrawableTestScene
 {
     private Container playfield;
@@ -32,6 +35,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
     private DrawablePool<note> notePool;
     private DrawablePool<indicator> indicatorPool;
+    private DrawablePool<hitResult> hitResultPool;
 
     private Container lane1;
     private Container lane2;
@@ -53,6 +57,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     {
         Add(notePool = new DrawablePool<note>(50));
         Add(indicatorPool = new DrawablePool<indicator>(20));
+        Add(hitResultPool = new DrawablePool<hitResult>(20));
 
         BackgroundScreenStack.ChangeBackground(textureStore.Get("Screen/fallback-beatmap-background.jpg"));
         BackgroundScreenStack.AdjustMaskAlpha(0.5f);
@@ -175,6 +180,17 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
         beatmapNotes = beatmapNotesTemp.ToArray();
         playfieldNotes = beatmapNotes.Select(PlayfieldNote.FromBeatmapNote).ToArray();
+
+        // drawablePlayfield.Add(new RenakoSpriteText()
+        // {
+        //     Anchor = Anchor.Centre,
+        //     Origin = Anchor.Centre,
+        //     Text = "Critical".ToUpper(),
+        //     Position = new Vector2(0, -100),
+        //     Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 75, RenakoFont.FontWeight.Bold),
+        //     Spacing = new Vector2(5),
+        //     Colour = Color4Extensions.FromHex("C8F1D4")
+        // });
     }
 
     protected override void LoadComplete()
@@ -226,6 +242,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             {
                 note.IsHit = true;
                 stats.Miss++;
+                addHitResultAnimation(HitResult.Miss);
                 updateScoreText();
             }
 
@@ -337,12 +354,55 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         }
     }
 
+    private void addHitResultAnimation(HitResult result)
+    {
+        if (!hitResultPool.IsLoaded)
+            return;
+
+        hitResult hitResultDrawable = hitResultPool.Get(hitResultObject =>
+        {
+            hitResultObject.Scale = new Vector2(0.5f);
+
+            switch (result)
+            {
+                case HitResult.Critical:
+                    hitResultObject.setCritical();
+                    break;
+
+                case HitResult.Break:
+                    hitResultObject.setBreak();
+                    break;
+
+                case HitResult.Hit:
+                    hitResultObject.setHit();
+                    break;
+
+                case HitResult.Miss:
+                    hitResultObject.setMiss();
+                    break;
+            }
+        });
+
+        hitResultDrawable.FadeIn(50).Then().FadeOut(500, Easing.OutCirc);
+        hitResultDrawable.SpriteText.FadeIn(50).Then().ScaleTo(new Vector2(1.5f), 500, Easing.OutCirc).FadeOut(500, Easing.OutCirc);
+
+        drawablePlayfield.Add(hitResultDrawable);
+    }
+
     private enum Lane
     {
         Lane1,
         Lane2,
         Lane3,
         Lane4
+    }
+
+    private enum HitResult
+    {
+        Critical,
+        Break,
+        Hit,
+        Miss
     }
 
     private static float getLaneX(Lane lane)
@@ -389,13 +449,25 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             double diff = Math.Abs(stopwatchClock.CurrentTime - note.Time);
 
             if (diff < 50)
+            {
                 stats.Critical++;
+                addHitResultAnimation(HitResult.Critical);
+            }
             else if (diff < 100)
+            {
                 stats.Break++;
+                addHitResultAnimation(HitResult.Break);
+            }
             else if (diff < 200)
+            {
                 stats.Hit++;
+                addHitResultAnimation(HitResult.Hit);
+            }
             else
+            {
                 stats.Miss++;
+                addHitResultAnimation(HitResult.Miss);
+            }
 
             stats.Score = stats.Score + 1000 - diff;
             updateScoreText();
@@ -458,6 +530,50 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                 RelativeSizeAxes = Axes.Both,
                 Colour = Color4Extensions.FromHex("8D90D0")
             };
+        }
+    }
+
+    private partial class hitResult : PoolableDrawable
+    {
+        public RenakoSpriteText SpriteText;
+
+        public hitResult()
+        {
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
+            Size = new Vector2(50);
+            Position = new Vector2(0, -100);
+            InternalChild = SpriteText = new RenakoSpriteText()
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Spacing = new Vector2(5),
+                Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 75, RenakoFont.FontWeight.Bold)
+            };
+        }
+
+        public void setCritical()
+        {
+            SpriteText.Text = "Critical".ToUpper();
+            SpriteText.Colour = Color4Extensions.FromHex("C8F1D4");
+        }
+
+        public void setBreak()
+        {
+            SpriteText.Text = "Break".ToUpper();
+            SpriteText.Colour = Color4Extensions.FromHex("FDE798");
+        }
+
+        public void setHit()
+        {
+            SpriteText.Text = "Hit".ToUpper();
+            SpriteText.Colour = Color4Extensions.FromHex("F0E0E0");
+        }
+
+        public void setMiss()
+        {
+            SpriteText.Text = "Miss".ToUpper();
+            SpriteText.Colour = Color4Extensions.FromHex("F6F3E6");
         }
     }
 }
