@@ -5,6 +5,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
+using osu.Framework.Utils;
 using osuTK;
 using osuTK.Input;
 
@@ -13,6 +14,7 @@ namespace Renako.Game.Tests.Visual.Miscellaneous;
 public partial class TestSceneGameplayTest : GameDrawableTestScene
 {
     private Container playfield;
+    private Container drawablePlayfield;
     private Circle player;
 
     [BackgroundDependencyLoader]
@@ -60,6 +62,24 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                     Position = new Vector2(125, 0)
                 }
             }
+        });
+
+        Add(drawablePlayfield = new Container()
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            Size = new Vector2(800, 500)
+        });
+
+        AddStep("create note on lane 1", () => addNote(Lane.Lane1));
+        AddStep("create note on lane 2", () => addNote(Lane.Lane2));
+        AddStep("create note on lane 3", () => addNote(Lane.Lane3));
+        AddStep("create note on lane 4", () => addNote(Lane.Lane4));
+        AddStep("create random note", () => addNote((Lane)RNG.Next(0, 4)));
+        AddSliderStep("scale", 0, 1, 1f, scale =>
+        {
+            playfield.Scale = new Vector2(scale);
+            drawablePlayfield.Scale = new Vector2(scale);
         });
     }
 
@@ -117,6 +137,51 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
                     Colour = Color4Extensions.FromHex("E8DEEE")
                 }
             }
+        };
+    }
+
+    private void addNote(Lane lane)
+    {
+        Circle note;
+        float x = getLaneX(lane);
+
+        drawablePlayfield.Add(note = new Circle()
+        {
+            Anchor = Anchor.Centre,
+            Origin = Anchor.Centre,
+            Size = new Vector2(50),
+            Colour = Color4Extensions.FromHex("D9D9D9"),
+            Position = new Vector2(x, -200),
+            Scale = Vector2.Zero,
+            Alpha = 0
+        });
+
+        note.ScaleTo(new Vector2(1), 500, Easing.Out);
+        note.FadeIn(500)
+            .Then()
+            .MoveTo(new Vector2(x, 200), 750)
+            .Then()
+            .MoveTo(new Vector2(x, 400), 250)
+            .FadeOut(250);
+    }
+
+    private enum Lane
+    {
+        Lane1,
+        Lane2,
+        Lane3,
+        Lane4
+    }
+
+    private float getLaneX(Lane lane)
+    {
+        return lane switch
+        {
+            Lane.Lane1 => -127.5f,
+            Lane.Lane2 => -42.5f,
+            Lane.Lane3 => 42.5f,
+            Lane.Lane4 => 127.5f,
+            _ => 0
         };
     }
 }
