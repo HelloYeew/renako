@@ -2,6 +2,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Pooling;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
@@ -17,9 +18,13 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private Container drawablePlayfield;
     private Circle player;
 
+    private DrawablePool<note> notePool;
+
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
+        Add(notePool = new DrawablePool<note>(50));
+
         BackgroundScreenStack.ChangeBackground(textureStore.Get("Screen/fallback-beatmap-background.jpg"));
         BackgroundScreenStack.AdjustMaskAlpha(0.5f);
 
@@ -68,7 +73,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
-            Size = new Vector2(800, 500)
+            Size = new Vector2(800, 500),
+            Name = "drawablePlayfield"
         });
 
         AddStep("create note on lane 1", () => addNote(Lane.Lane1));
@@ -142,27 +148,25 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
     private void addNote(Lane lane)
     {
-        Circle note;
-        float x = getLaneX(lane);
+        if (!notePool.IsLoaded)
+            return;
 
-        drawablePlayfield.Add(note = new Circle()
+        float x = getLaneX(lane);
+        note n = notePool.Get(noteObject =>
         {
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            Size = new Vector2(50),
-            Colour = Color4Extensions.FromHex("D9D9D9"),
-            Position = new Vector2(x, -200),
-            Scale = Vector2.Zero,
-            Alpha = 0
+            noteObject.Position = new Vector2(x, -200);
+            noteObject.LifetimeEnd = Clock.CurrentTime + 2000;
         });
 
-        note.ScaleTo(new Vector2(1), 500, Easing.Out);
-        note.FadeIn(500)
-            .Then()
-            .MoveTo(new Vector2(x, 200), 750)
-            .Then()
-            .MoveTo(new Vector2(x, 400), 250)
-            .FadeOut(250);
+        drawablePlayfield.Add(n);
+
+        n.ScaleTo(new Vector2(1), 500, Easing.OutCubic)
+         .FadeIn(500)
+         .Then()
+         .MoveTo(new Vector2(x, 200), 750)
+         .Then()
+         .MoveTo(new Vector2(x, 400), 250)
+         .FadeOut(250);
     }
 
     private enum Lane
@@ -173,7 +177,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         Lane4
     }
 
-    private float getLaneX(Lane lane)
+    private static float getLaneX(Lane lane)
     {
         return lane switch
         {
@@ -183,5 +187,26 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             Lane.Lane4 => 127.5f,
             _ => 0
         };
+    }
+
+    private partial class note : PoolableDrawable
+    {
+        public note()
+        {
+            Anchor = Anchor.Centre;
+            Origin = Anchor.Centre;
+            Size = new Vector2(50);
+            Position = new Vector2(0, -200);
+            Scale = Vector2.Zero;
+            Alpha = 0;
+            InternalChild = new Circle()
+            {
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Size = Vector2.One,
+                RelativeSizeAxes = Axes.Both,
+                Colour = Color4Extensions.FromHex("D9D9D9")
+            };
+        }
     }
 }
