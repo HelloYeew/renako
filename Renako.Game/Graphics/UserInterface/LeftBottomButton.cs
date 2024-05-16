@@ -81,19 +81,35 @@ public partial class LeftBottomButton : Button
 
         hoverSample = audioManager.Samples.Get("UI/hover");
         clickSample = audioManager.Samples.Get("UI/click-back");
+
+        Enabled.BindValueChanged(enabled =>
+        {
+            if (!enabled.NewValue)
+            {
+                backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint);
+            }
+            else
+            {
+                backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint);
+            }
+        }, true);
     }
 
     protected override bool OnHover(HoverEvent e)
     {
-        backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
-        hoverSample?.Play();
+        if (Enabled.Value)
+        {
+            backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+            hoverSample?.Play();
+        }
 
         return base.OnHover(e);
     }
 
     protected override bool OnClick(ClickEvent e)
     {
-        clickSample?.Play();
+        if (Enabled.Value)
+            clickSample?.Play();
 
         return base.OnClick(e);
     }

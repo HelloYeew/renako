@@ -106,12 +106,27 @@ public partial class RightBottomButton : Button
         };
 
         hoverSample = audioManager.Samples.Get("UI/hover");
+
+        Enabled.BindValueChanged(enabled =>
+        {
+            if (!enabled.NewValue)
+            {
+                backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint);
+            }
+            else
+            {
+                backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint);
+            }
+        }, true);
     }
 
     protected override bool OnHover(HoverEvent e)
     {
-        backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
-        hoverSample?.Play();
+        if (Enabled.Value)
+        {
+            backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+            hoverSample?.Play();
+        }
 
         return base.OnHover(e);
     }

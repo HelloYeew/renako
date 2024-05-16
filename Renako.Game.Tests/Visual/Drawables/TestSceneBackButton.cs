@@ -9,10 +9,14 @@ public partial class TestSceneBackButton : GameDrawableTestScene
 {
     public TestSceneBackButton()
     {
-        Add(new BackButton()
+        BackButton backButton;
+        Add(backButton = new BackButton()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre
         });
+
+        AddStep("Enable or disable button", () => backButton.Enabled.Value = !backButton.Enabled.Value);
     }
 }
+        
