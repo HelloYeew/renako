@@ -254,7 +254,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             if (stopwatchClock.CurrentTime >= note.Time - move_time - fade_in_time)
             {
                 Logger.Log($"Drawing note at {note.Time}");
-                addNote(note);
+                note.DrawableNote = addNote(note);
                 note.IsDrawn = true;
             }
         }
@@ -295,10 +295,10 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         };
     }
 
-    private void addNote(PlayfieldNote playfieldNote)
+    private note addNote(PlayfieldNote playfieldNote)
     {
         if (!notePool.IsLoaded)
-            return;
+            return null;
 
         float x = getLaneX(playfieldNote.Lane);
         note n = notePool.Get(noteObject =>
@@ -319,6 +319,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
          .FadeOut(fade_in_time)
          .Then()
          .Delay(250);
+
+        return n;
     }
 
     /// <summary>
@@ -433,6 +435,9 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private class PlayfieldNote
     {
         public Lane Lane { get; set; }
+
+        public note DrawableNote { get; set; }
+
         public double Time { get; set; }
         public bool IsDrawn { get; set; }
 
@@ -455,6 +460,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
             double diff = Math.Abs(stopwatchClock.CurrentTime - note.Time);
 
+            bool playHitAnimation = true;
+
             if (diff < 50)
             {
                 stats.Critical++;
@@ -474,10 +481,17 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
             {
                 stats.Miss++;
                 addHitResultAnimation(HitResult.Miss);
+                playHitAnimation = false;
             }
 
             stats.Score = stats.Score + 1000 - diff;
             updateScoreText();
+
+            if (playHitAnimation && note.DrawableNote != null)
+            {
+                note.DrawableNote.ClearTransforms();
+                note.DrawableNote.FadeOut(fade_in_time, Easing.OutCubic);
+            }
         }
     }
 
