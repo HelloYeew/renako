@@ -130,8 +130,8 @@ public partial class LeftBottomButton : Button
         backgroundBox.ClearTransforms();
         backgroundBox.Colour = BackgroundColor;
         if (loop)
-            backgroundBox.FlashColour(Colour4.White, duration, Easing.OutCubic).Loop();
+            backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic).Loop();
         else
-            backgroundBox.FlashColour(Colour4.White, duration, Easing.OutCubic);
+            backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic);
     }
 }
