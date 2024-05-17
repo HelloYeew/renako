@@ -37,11 +37,11 @@ public class BeatmapsCollection
     /// <returns>Array of <see cref="Beatmap"/></returns>
     public Beatmap[] GetBeatmapsFromBeatmapSet(BeatmapSet beatmapSet, bool sortByDifficulty = true)
     {
-        Beatmap[] beatmaps = Beatmaps.FindAll((e) => e.BeatmapSet.ID == beatmapSet.ID).ToArray();
+        Beatmap[] beatmaps = Beatmaps.FindAll(e => e.BeatmapSet.ID == beatmapSet.ID).ToArray();
 
         if (sortByDifficulty)
         {
-            beatmaps = beatmaps.OrderBy((e) => e.DifficultyRating).ToArray();
+            beatmaps = beatmaps.OrderBy(e => e.DifficultyRating).ToArray();
         }
 
         return beatmaps;
@@ -65,8 +65,8 @@ public class BeatmapsCollection
             };
         }
 
-        double min = beatmaps.Min((e) => e.DifficultyRating);
-        double max = beatmaps.Max((e) => e.DifficultyRating);
+        double min = beatmaps.Min(e => e.DifficultyRating);
+        double max = beatmaps.Max(e => e.DifficultyRating);
         return new Dictionary<string, int>()
         {
             { "min", (int)min },
@@ -81,7 +81,7 @@ public class BeatmapsCollection
     /// <returns>The <see cref="BeatmapSet"/></returns>
     public BeatmapSet GetBeatmapSetByID(int id)
     {
-        return BeatmapSets.Find((e) => e.ID == id);
+        return BeatmapSets.Find(e => e.ID == id);
     }
 
     /// <summary>
@@ -91,6 +91,15 @@ public class BeatmapsCollection
     /// <returns>The <see cref="Beatmap"/></returns>
     public Beatmap GetBeatmapByID(int id)
     {
-        return Beatmaps.Find((e) => e.ID == id);
+        return Beatmaps.Find(e => e.ID == id);
+    }
+
+    /// <summary>
+    /// Clear <see cref="BeatmapSets"/> and <see cref="Beatmaps"/> list.
+    /// </summary>
+    public void Clear()
+    {
+        BeatmapSets.Clear();
+        Beatmaps.Clear();
     }
 }

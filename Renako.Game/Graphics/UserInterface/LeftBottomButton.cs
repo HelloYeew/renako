@@ -88,11 +88,11 @@ public partial class LeftBottomButton : Button
         {
             if (!enabled.NewValue)
             {
-                backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint);
+                Scheduler.Add(() => backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint));
             }
             else
             {
-                backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint);
+                Scheduler.Add(() => backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint));
             }
         }, true);
     }
@@ -127,11 +127,14 @@ public partial class LeftBottomButton : Button
     /// <param name="loop">Loop the flash animation</param>
     public void FlashBackground(double duration, bool loop = false)
     {
-        backgroundBox.ClearTransforms();
-        backgroundBox.Colour = BackgroundColor;
-        if (loop)
-            backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic).Loop();
-        else
-            backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic);
+        Scheduler.Add(() =>
+        {
+            backgroundBox.ClearTransforms();
+            backgroundBox.Colour = BackgroundColor;
+            if (loop)
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic).Loop();
+            else
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic);
+        });
     }
 }

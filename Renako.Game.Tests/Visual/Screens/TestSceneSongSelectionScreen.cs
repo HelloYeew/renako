@@ -1,9 +1,11 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Screens;
 using osuTK.Input;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
+using Renako.Game.Utilities;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
@@ -16,13 +18,16 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
     [SetUp]
-    public new void SetUp() => beatmapsCollection.GenerateTestCollection();
+    protected new void SetUp()
+    {
+        beatmapsCollection.GenerateTestCollection();
+    }
 
     [Test]
     public void TestSongSelectionScreen()
     {
         AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
-        AddWaitStep("wait for screen to load", 1000);
+        WaitForScreen();
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
         AddStep("rerun", rerunScreen);
         Beatmap lastBeatmap = workingBeatmap.Beatmap;
@@ -36,11 +41,29 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     {
         AddStep("clear beatmap sets", () => beatmapsCollection.BeatmapSets.Clear());
         AddStep("add song selection screen", rerunScreen);
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
+    }
+
+    [Test]
+    public void TestSongSelectionScreenBeatmapSetWithNoBeatmaps()
+    {
+        AddStep("clear collection", () => beatmapsCollection.Clear());
+        AddStep("add dummy blank beatmapset", () => beatmapsCollection.BeatmapSets.Add(new BeatmapTestUtility().GetLocalBeatmapSets().First()));
+        AddAssert("beatmapset added", () => beatmapsCollection.BeatmapSets.Count > 0);
+        AddAssert("beatmaps empty", () => beatmapsCollection.Beatmaps.Count == 0);
+        AddStep("add song selection screen", rerunScreen);
+        WaitForScreen();
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
+        AddStep("try click go button", () => PressKeyOnce(Key.Enter));
+        AddAssert("working beatmap still null", () => workingBeatmap.Beatmap == null);
     }
 
     private void rerunScreen()
     {
-        MainScreenStack.CurrentScreen?.Exit();
-        MainScreenStack.Push(new SongSelectionScreen());
+        Scheduler.Add(() =>
+        {
+            MainScreenStack.CurrentScreen?.Exit();
+            MainScreenStack.Push(new SongSelectionScreen());
+        });
     }
 }

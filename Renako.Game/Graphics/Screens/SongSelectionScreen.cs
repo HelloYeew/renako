@@ -724,7 +724,7 @@ public partial class SongSelectionScreen : RenakoScreen
             if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length < 1)
             {
                 rightBottomButton.Enabled.Value = false;
-                rightBottomButton.ClearTransforms();
+                Scheduler.Add(() => rightBottomButton.ClearTransforms());
                 workingBeatmap.Beatmap = null;
                 Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, 0));
             }

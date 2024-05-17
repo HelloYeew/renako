@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using osu.Framework.Development;
 using osu.Framework.Extensions.IEnumerableExtensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -142,9 +143,21 @@ public abstract partial class RenakoManualInputManagerTestScene : RenakoTestScen
 
     private void returnTestInput() => InputManager.UseParentInput = false;
 
+    /// <summary>
+    /// Press key by invoke press and release.
+    /// </summary>
+    /// <param name="key">The key to press.</param>
     protected void PressKeyOnce(Key key)
     {
         InputManager.PressKey(key);
         InputManager.ReleaseKey(key);
+    }
+
+    /// <summary>
+    /// Add wait step for waiting for the screen to be loaded, will take more step on NUnit.
+    /// </summary>
+    protected void WaitForScreen()
+    {
+        AddWaitStep("wait for screen", DebugUtils.IsNUnitRunning ? 1000 : 10);
     }
 }
