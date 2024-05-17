@@ -11,7 +11,4 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Visual\Miscellaneous\" />
-  </ItemGroup>
 </Project>
