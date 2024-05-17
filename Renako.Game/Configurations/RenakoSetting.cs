@@ -8,5 +8,9 @@ public enum RenakoSetting
 
     LatestBeatmapSetID,
     LatestBeatmapID,
-    FirstImport
+    FirstImport,
+
+    // Playfield
+    PlayfieldBackgroundDim,
+    ScrollSpeed
 }

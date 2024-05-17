@@ -19,5 +19,11 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
         SetDefault(RenakoSetting.LatestBeatmapSetID, 0);
         SetDefault(RenakoSetting.LatestBeatmapID, 0);
         SetDefault(RenakoSetting.FirstImport, false);
+
+        // Playfield
+        SetDefault(RenakoSetting.PlayfieldBackgroundDim, 50);
+        // Scroll speed
+        // 1 - 10
+        SetDefault(RenakoSetting.ScrollSpeed, 5);
     }
 }

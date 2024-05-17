@@ -9,6 +9,7 @@ using osu.Framework.Graphics.Pooling;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
+using osu.Framework.Logging;
 using osu.Framework.Timing;
 using osu.Framework.Utils;
 using osuTK;
@@ -42,8 +43,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private Container lane3;
     private Container lane4;
 
-    private const int fade_in_time = 500;
-    private const int move_time = 750;
+    private const int fade_in_time = move_time / 2;
+    private const int move_time = 750; // Best : 750ms
 
     private const int player_y = 50;
 
@@ -169,7 +170,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
         List<BeatmapNote> beatmapNotesTemp = new List<BeatmapNote>();
 
-        for (int i = 0; i < 25; i++)
+        for (int i = 0; i < 100; i++)
         {
             beatmapNotesTemp.Add(new BeatmapNote
             {
@@ -238,8 +239,9 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         foreach (var note in playfieldNotes)
         {
             // Count missed note
-            if (!note.IsHit && stopwatchClock.CurrentTime - note.Time > 200)
+            if (!note.IsHit && stopwatchClock.CurrentTime - note.Time > 200 + move_time)
             {
+                Logger.Log($"Missed note at {note.Time}");
                 note.IsHit = true;
                 stats.Miss++;
                 addHitResultAnimation(HitResult.Miss);
@@ -251,6 +253,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
             if (stopwatchClock.CurrentTime >= note.Time - move_time - fade_in_time)
             {
+                Logger.Log($"Drawing note at {note.Time}");
                 addNote(note);
                 note.IsDrawn = true;
             }
@@ -301,18 +304,21 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         note n = notePool.Get(noteObject =>
         {
             noteObject.Position = new Vector2(x, -200);
-            noteObject.LifetimeEnd = Clock.CurrentTime + 2000;
+            noteObject.LifetimeEnd = Clock.CurrentTime + fade_in_time * 2 + move_time + 250;
         });
 
         drawablePlayfield.Add(n);
 
+        n.ClearTransforms();
         n.ScaleTo(new Vector2(1), fade_in_time, Easing.OutCubic)
-         .FadeIn(500)
+         .FadeIn(fade_in_time)
          .Then()
          .MoveTo(new Vector2(x, 200), move_time)
          .Then()
-         .MoveTo(new Vector2(x, 400), 250)
-         .FadeOut(250);
+         .MoveTo(new Vector2(x, 400), fade_in_time, Easing.OutCubic)
+         .FadeOut(fade_in_time)
+         .Then()
+         .Delay(250);
     }
 
     /// <summary>
@@ -438,7 +444,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
 
     private void processHit(Lane lane)
     {
-        PlayfieldNote[] notes = playfieldNotes.Where(n => !n.IsHit && n.Lane == lane && Math.Abs(stopwatchClock.CurrentTime - n.Time) <= 200).ToArray();
+        PlayfieldNote[] notes = playfieldNotes.Where(n => !n.IsHit && n.Lane == lane && Math.Abs(stopwatchClock.CurrentTime - n.Time) <= 200 + move_time).ToArray();
 
         if (notes.Length == 0)
             return;
