@@ -4,6 +4,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Screens;
 using osuTK.Input;
 using Renako.Game.Beatmaps;
+using Renako.Game.Configurations;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
 
@@ -17,6 +18,9 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Cached]
     private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
+    [Resolved]
+    private RenakoConfigManager configManager { get; set; }
+
     [SetUp]
     protected new void SetUp()
     {
@@ -25,6 +29,15 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
 
     [Test]
     public void TestSongSelectionScreen()
+    {
+        AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
+        WaitForScreen();
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
+        AddStep("rerun", rerunScreen);
+    }
+
+    [Test]
+    public void TestSongSelectionScreenBasicInteraction()
     {
         AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
         WaitForScreen();
@@ -56,6 +69,16 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
         AddStep("try click go button", () => PressKeyOnce(Key.Enter));
         AddAssert("working beatmap still null", () => workingBeatmap.Beatmap == null);
+    }
+
+    [Test]
+    public void TestSongSelectionScreenHaveOldWorkingBeatmapSet()
+    {
+        AddStep("set old working beatmap in config", () => configManager.SetValue(RenakoSetting.LatestBeatmapSetID, 3));
+        AddStep("add song selection screen", rerunScreen);
+        WaitForScreen();
+        AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
+        AddAssert("check working beatmap set", () => workingBeatmap.BeatmapSet.ID == 3);
     }
 
     private void rerunScreen()
