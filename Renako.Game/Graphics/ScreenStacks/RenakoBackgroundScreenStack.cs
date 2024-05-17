@@ -172,8 +172,9 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// </summary>
     /// <param name="alpha">The new alpha value.</param>
     /// <param name="duration">Duration of the fade in and fade out.</param>
-    public void AdjustMaskAlpha(float alpha, int duration = 500)
+    /// <param name="easing">Easing function of the fade in and fade out.</param>
+    public void AdjustMaskAlpha(float alpha, int duration = 500, Easing easing = Easing.OutQuart)
     {
-        maskBox.FadeTo(alpha, duration, Easing.OutCubic);
+        Scheduler.Add(() => maskBox.FadeTo(alpha, duration, easing));
     }
 }

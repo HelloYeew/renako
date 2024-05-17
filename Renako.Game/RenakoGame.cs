@@ -30,6 +30,7 @@ namespace Renako.Game
             dependencies.CacheAs(backgroundScreenStack = new RenakoBackgroundScreenStack());
             dependencies.CacheAs(mainScreenStack = new RenakoScreenStack());
             dependencies.CacheAs(logoScreenStack = new LogoScreenStack());
+            dependencies.CacheAs(logoScreenStack.LogoScreenObject);
             Add(backgroundScreenStack);
             Add(mainScreenStack);
             Add(logoScreenStack);
