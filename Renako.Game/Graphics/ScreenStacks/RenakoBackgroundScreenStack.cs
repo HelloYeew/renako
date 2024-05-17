@@ -2,11 +2,12 @@ using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
-using osuTK;
+using osuTK.Graphics;
 using Renako.Game.Beatmaps;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
@@ -23,7 +24,8 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Texture mainBackgroundTexture;
     private Texture playMenuBackgroundTexture;
     private Texture fallbackBeatmapBackground;
-    private BufferedContainer backgroundBufferedContainer;
+    private Container backgroundContainer;
+    private Box maskBox;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -43,12 +45,11 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
         fallbackBeatmapBackground = textureStore.Get("Screen/fallback-beatmap-background.jpg");
 
-        AddInternal(backgroundBufferedContainer = new BufferedContainer()
+        AddInternal(backgroundContainer = new Container()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
             RelativeSizeAxes = Axes.Both,
-            BlurSigma = new Vector2(0),
             Children = new Drawable[]
             {
                 ImageSpriteDown = new Sprite()
@@ -68,6 +69,13 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                     Alpha = 0
                 }
             }
+        });
+
+        AddInternal(maskBox = new Box()
+        {
+            RelativeSizeAxes = Axes.Both,
+            Colour = Color4.Black,
+            Alpha = 0
         });
 
         mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeBackgroundByMainScreen(e.OldValue, e.NewValue));
@@ -157,5 +165,15 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             ImageSpriteUp.FadeIn(duration, Easing.OutCubic);
             ImageSpriteDown.FadeOut(duration, Easing.OutCubic);
         });
+    }
+
+    /// <summary>
+    /// Adjust the alpha of the mask box.
+    /// </summary>
+    /// <param name="alpha">The new alpha value.</param>
+    /// <param name="duration">Duration of the fade in and fade out.</param>
+    public void AdjustMaskAlpha(float alpha, int duration = 500)
+    {
+        maskBox.FadeTo(alpha, duration, Easing.OutCubic);
     }
 }
