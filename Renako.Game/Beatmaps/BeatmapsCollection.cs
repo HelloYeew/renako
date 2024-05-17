@@ -12,6 +12,12 @@ public class BeatmapsCollection
     public List<BeatmapSet> BeatmapSets { get; set; }
     public List<Beatmap> Beatmaps { get; set; }
 
+    public BeatmapsCollection()
+    {
+        BeatmapSets = new List<BeatmapSet>();
+        Beatmaps = new List<Beatmap>();
+    }
+
     /// <summary>
     /// Set value to <see cref="BeatmapSets"/> and <see cref="Beatmaps"/> by generating random beatmaps.
     /// </summary>

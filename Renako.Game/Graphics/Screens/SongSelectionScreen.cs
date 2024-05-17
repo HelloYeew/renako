@@ -209,8 +209,8 @@ public partial class SongSelectionScreen : RenakoScreen
                         TitleColor = Color4Extensions.FromHex("67344D"),
                         DescriptionColor = Color4Extensions.FromHex("251319"),
                         AutoUpperCaseTitle = false,
-                        Title = "Innocence (TV Size)",
-                        Description = "Eir Aoi"
+                        Title = "No beatmap selected",
+                        Description = "Please add some beatmaps first!"
                     },
                     // Source
                     new Container()

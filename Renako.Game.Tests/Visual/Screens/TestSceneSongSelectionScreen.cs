@@ -7,19 +7,13 @@ using Renako.Game.Graphics.Screens;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-public partial class TestSceneSongSelectionScreen : ManualInputTestScene
+public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnputManagerTestScene
 {
-    [Resolved]
-    private BeatmapsCollection beatmapsCollection { get; set; }
+    [Cached]
+    private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();
 
-    [Resolved]
-    private WorkingBeatmap workingBeatmap { get; set; }
-
-    [BackgroundDependencyLoader]
-    private void load()
-    {
-        beatmapsCollection.GenerateTestCollection();
-    }
+    [Cached]
+    private WorkingBeatmap workingBeatmap = new WorkingBeatmap();
 
     [SetUp]
     public new void SetUp() => beatmapsCollection.GenerateTestCollection();
