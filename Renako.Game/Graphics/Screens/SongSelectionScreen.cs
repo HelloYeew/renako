@@ -97,7 +97,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int default_beatmapset_id = 0;
     private const int default_beatmap_id = 0;
 
-    public const double INTERACTION_TIMEOUT = 30000;
+    public const double INTERACTION_TIMEOUT = 15000;
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
