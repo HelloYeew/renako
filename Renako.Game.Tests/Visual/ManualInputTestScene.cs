@@ -1,5 +1,6 @@
 using osu.Framework.Allocation;
 using osu.Framework.Testing;
+using osuTK.Input;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Tests.Visual;
@@ -28,5 +29,15 @@ public partial class ManualInputTestScene : ManualInputManagerTestScene
         Add(MainScreenStack);
         Add(LogoScreenStack);
         Add(SettingsScreenStack);
+    }
+
+    /// <summary>
+    /// Press and release a key once.
+    /// </summary>
+    /// <param name="key">The key to press and release.</param>
+    public void PressKeyOnce(Key key)
+    {
+        InputManager.PressKey(key);
+        InputManager.ReleaseKey(key);
     }
 }

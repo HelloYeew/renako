@@ -74,6 +74,11 @@ namespace Renako.Game
             }
         }
 
+        public Type GetCurrentScreenType()
+        {
+            return mainScreenStack.CurrentScreen.GetType();
+        }
+
         private Task asyncLoadStream;
 
         /// <summary>
