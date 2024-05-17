@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Platform;
 using Renako.Game.Beatmaps;
@@ -10,9 +9,6 @@ public partial class RenakoGameManualInputManagerTestScene : RenakoManualInputMa
     [Resolved]
     private BeatmapsCollection beatmapsCollection { get; set; }
 
-    [Resolved]
-    private GameHost testGameHost { get; set; }
-
     public RenakoGame TestGame = new RenakoGame();
 
     public void AddTestBeatmapSet()
@@ -20,10 +16,10 @@ public partial class RenakoGameManualInputManagerTestScene : RenakoManualInputMa
         beatmapsCollection.GenerateTestCollection();
     }
 
-    [SetUp]
-    public new void SetUp()
+    [BackgroundDependencyLoader]
+    private void load(GameHost host)
     {
-        TestGame.SetHost(testGameHost);
+        TestGame.SetHost(host);
         AddGame(TestGame);
     }
 }

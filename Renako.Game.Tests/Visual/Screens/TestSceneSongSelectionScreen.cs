@@ -22,6 +22,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     public void TestSongSelectionScreen()
     {
         AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
+        AddWaitStep("wait for screen to load", 1000);
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
         AddStep("rerun", rerunScreen);
         Beatmap lastBeatmap = workingBeatmap.Beatmap;
