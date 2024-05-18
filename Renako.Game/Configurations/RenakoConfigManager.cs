@@ -13,6 +13,8 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
     protected override void InitialiseDefaults()
     {
         SetDefault(RenakoSetting.UseUnicodeInfo, false);
+        SetDefault(RenakoSetting.DisableIdleMode, false);
+
         SetDefault(RenakoSetting.ShowFPSCounter, false);
 
         // Game state

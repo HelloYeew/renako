@@ -942,6 +942,8 @@ public partial class SongSelectionScreen : RenakoScreen
 
         isHiding.BindValueChanged(e =>
         {
+            if (config.Get<bool>(RenakoSetting.DisableIdleMode)) return;
+
             if (e.NewValue)
             {
                 songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
