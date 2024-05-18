@@ -74,6 +74,8 @@ public partial class RightBottomButton : Button
         Anchor = Anchor.BottomRight;
         Origin = Anchor.BottomRight;
         Size = new Vector2(200, 60);
+        Masking = true;
+        CornerRadius = 15;
         Colour = Colour4.White;
         Position = new Vector2(20, -40);
         Children = new Drawable[]
