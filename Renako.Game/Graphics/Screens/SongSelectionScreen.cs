@@ -942,7 +942,7 @@ public partial class SongSelectionScreen : RenakoScreen
 
         isHiding.BindValueChanged(e =>
         {
-            if (config.Get<bool>(RenakoSetting.DisableIdleMode)) return;
+            if (config.GetBindable<bool>(RenakoSetting.DisableIdleMode).Value) return;
 
             if (e.NewValue)
             {
