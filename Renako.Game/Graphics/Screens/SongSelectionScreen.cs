@@ -861,7 +861,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomButton.Enabled.Value = false;
                 Scheduler.Add(() => rightBottomButton.ClearTransforms());
                 workingBeatmap.Beatmap = null;
-                Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, 0));
+                Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, default_beatmap_id));
             }
             else
             {
@@ -951,8 +951,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 backButton.FadeOut(500, Easing.OutQuart);
                 rightBottomButton.FadeOut(500, Easing.OutQuart);
 
-                idleRenakoLogoContainer.FadeIn(500, Easing.OutQuart);
-                idleDetailsContainer.FadeIn(500, Easing.OutQuart);
+                idleRenakoLogoContainer.FadeIn(1000, Easing.OutQuart);
+                idleDetailsContainer.FadeIn(1000, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0.25f);
             }
@@ -965,8 +965,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 backButton.FadeIn(500, Easing.OutQuart);
                 rightBottomButton.FadeIn(500, Easing.OutQuart);
 
-                idleRenakoLogoContainer.FadeOut(500, Easing.OutQuart);
-                idleDetailsContainer.FadeOut(500, Easing.OutQuart);
+                idleRenakoLogoContainer.FadeOut(250, Easing.OutQuart);
+                idleDetailsContainer.FadeOut(250, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0f);
             }
@@ -1019,6 +1019,12 @@ public partial class SongSelectionScreen : RenakoScreen
 
     private void toggleNextButton()
     {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
         if (currentScreenState.Value == SongSelectionScreenState.SongList)
             beatmapSetSwiper.Next();
         else if (currentScreenState.Value == SongSelectionScreenState.BeatmapSelection)
@@ -1028,6 +1034,12 @@ public partial class SongSelectionScreen : RenakoScreen
 
     private void togglePreviousButton()
     {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
         if (currentScreenState.Value == SongSelectionScreenState.SongList)
             beatmapSetSwiper.Previous();
         else if (currentScreenState.Value == SongSelectionScreenState.BeatmapSelection)
@@ -1037,6 +1049,12 @@ public partial class SongSelectionScreen : RenakoScreen
 
     private void toggleBackButton()
     {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
         switch (currentScreenState.Value)
         {
             case SongSelectionScreenState.SongList:
@@ -1061,6 +1079,12 @@ public partial class SongSelectionScreen : RenakoScreen
 
     private void toggleGoButton()
     {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
         if (beatmapsCollection.GetBeatmapsFromBeatmapSet(workingBeatmap.BeatmapSet).Length < 1)
             return;
 
