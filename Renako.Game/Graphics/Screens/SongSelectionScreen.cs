@@ -66,11 +66,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText beatmapLevelNameText;
 
     private Container idleRenakoLogoContainer;
-    private Container idleDetailsContainer;
-    private Sprite idleBeatmapSetCover;
-    private SpriteText idleTitleText;
-    private SpriteText idleArtistText;
-    private SpriteText idleSourceText;
+    private IdleBeatmapSetDetailContainer idleDetailsContainer;
 
     private RightBottomButton rightBottomButton;
     private BackButton backButton;
@@ -679,89 +675,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 {
                     Anchor = Anchor.CentreLeft,
                     Origin = Anchor.CentreLeft
-                },
-            },
-            idleDetailsContainer = new Container()
-            {
-                Anchor = Anchor.BottomRight,
-                Origin = Anchor.BottomRight,
-                Margin = new MarginPadding()
-                {
-                    Right = 20,
-                    Bottom = 20
-                },
-                Size = new Vector2(540, 140),
-                Alpha = 0,
-                Masking = true,
-                CornerRadius = 15,
-                Children = new Drawable[]
-                {
-                    new Box()
-                    {
-                        RelativeSizeAxes = Axes.Both,
-                        Colour = Color4Extensions.FromHex("F2DFE9"),
-                        Alpha = 0.75f
-                    },
-                    new FillFlowContainer()
-                    {
-                        Anchor = Anchor.BottomRight,
-                        Origin = Anchor.BottomRight,
-                        Padding = new MarginPadding(20),
-                        Direction = FillDirection.Horizontal,
-                        Spacing = new Vector2(20, 0),
-                        RelativeSizeAxes = Axes.Both,
-                        Children = new Drawable[]
-                        {
-                            new Container()
-                            {
-                                Anchor = Anchor.CentreRight,
-                                Origin = Anchor.CentreRight,
-                                Size = new Vector2(100),
-                                Masking = true,
-                                CornerRadius = 15,
-                                Child = idleBeatmapSetCover = new Sprite()
-                                {
-                                    Anchor = Anchor.Centre,
-                                    Origin = Anchor.Centre,
-                                    RelativeSizeAxes = Axes.Both
-                                }
-                            },
-                            new FillFlowContainer()
-                            {
-                                Anchor = Anchor.CentreRight,
-                                Origin = Anchor.CentreRight,
-                                Direction = FillDirection.Vertical,
-                                Size = new Vector2(400, 100),
-                                Spacing = new Vector2(5, 0),
-                                Children = new Drawable[]
-                                {
-                                    idleTitleText = new RenakoSpriteText()
-                                    {
-                                        Anchor = Anchor.CentreRight,
-                                        Origin = Anchor.CentreRight,
-                                        Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 35f, RenakoFont.FontWeight.Bold),
-                                        Colour = Color4Extensions.FromHex("67344D")
-                                    },
-                                    idleArtistText = new RenakoSpriteText()
-                                    {
-                                        Anchor = Anchor.CentreRight,
-                                        Origin = Anchor.CentreRight,
-                                        Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, 23f),
-                                        Colour = Color4Extensions.FromHex("251319")
-                                    },
-                                    idleSourceText = new RenakoSpriteText()
-                                    {
-                                        Anchor = Anchor.CentreRight,
-                                        Origin = Anchor.CentreRight,
-                                        Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, song_description_font_size),
-                                        Colour = Color4Extensions.FromHex("251319")
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
-            }
+            },
+            idleDetailsContainer = new IdleBeatmapSetDetailContainer()
         };
 
         useUnicodeInfo = config.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
@@ -773,9 +689,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitle.Description = workingBeatmap.BeatmapSet.ArtistUnicode;
                 sourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
 
-                idleTitleText.Text = workingBeatmap.BeatmapSet.TitleUnicode;
-                idleArtistText.Text = workingBeatmap.BeatmapSet.ArtistUnicode;
-                idleSourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
+                idleDetailsContainer.Title = workingBeatmap.BeatmapSet.TitleUnicode;
+                idleDetailsContainer.Artist = workingBeatmap.BeatmapSet.ArtistUnicode;
+                idleDetailsContainer.Source = workingBeatmap.BeatmapSet.SourceUnicode;
             }
             else
             {
@@ -783,9 +699,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitle.Description = workingBeatmap.BeatmapSet.Artist;
                 sourceText.Text = workingBeatmap.BeatmapSet.Source;
 
-                idleTitleText.Text = workingBeatmap.BeatmapSet.Title;
-                idleArtistText.Text = workingBeatmap.BeatmapSet.Artist;
-                idleSourceText.Text = workingBeatmap.BeatmapSet.Source;
+                idleDetailsContainer.Title = workingBeatmap.BeatmapSet.Title;
+                idleDetailsContainer.Artist = workingBeatmap.BeatmapSet.Artist;
+                idleDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
 
@@ -817,18 +733,18 @@ public partial class SongSelectionScreen : RenakoScreen
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMax["min"]} - {calculatedMinMax["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
 
-            idleTitleText.Text = useUnicodeInfo.Value ? item.NewValue.TitleUnicode : item.NewValue.Title;
-            idleArtistText.Text = useUnicodeInfo.Value ? item.NewValue.ArtistUnicode : item.NewValue.Artist;
-            idleSourceText.Text = useUnicodeInfo.Value ? item.NewValue.SourceUnicode : item.NewValue.Source;
+            idleDetailsContainer.Title = useUnicodeInfo.Value ? item.NewValue.TitleUnicode : item.NewValue.Title;
+            idleDetailsContainer.Artist = useUnicodeInfo.Value ? item.NewValue.ArtistUnicode : item.NewValue.Artist;
+            idleDetailsContainer.Source = useUnicodeInfo.Value ? item.NewValue.SourceUnicode : item.NewValue.Source;
 
             songTitle.Texture?.Dispose();
-            idleBeatmapSetCover.Texture?.Dispose();
+            idleDetailsContainer.CoverImage?.Dispose();
 
             if (item.NewValue.UseLocalSource)
             {
                 Texture texture = textureStore.Get(item.NewValue.CoverPath);
                 songTitle.Texture = texture;
-                idleBeatmapSetCover.Texture = texture;
+                idleDetailsContainer.CoverImage = texture;
             }
             else
             {
@@ -844,7 +760,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 }
 
                 songTitle.Texture = coverTexture;
-                idleBeatmapSetCover.Texture = coverTexture;
+                idleDetailsContainer.CoverImage = coverTexture;
             }
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
