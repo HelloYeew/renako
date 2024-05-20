@@ -25,6 +25,8 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     protected new void SetUp()
     {
         beatmapsCollection.GenerateTestCollection();
+        // Disable idle mode for testing.
+        configManager.SetValue(RenakoSetting.DisableIdleMode, true);
     }
 
     [Test]

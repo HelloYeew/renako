@@ -12,7 +12,6 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
-using osu.Framework.Input.Events;
 using osu.Framework.Localisation;
 using osu.Framework.Platform;
 using osuTK;
