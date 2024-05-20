@@ -9,10 +9,11 @@ namespace Renako.Game.Tests.Visual.Drawables;
 public partial class TestSceneRightBottomButton : GameDrawableTestScene
 {
     private LeftBottomButton leftBottomButton;
+    private RightBottomButton rightBottomButton;
 
     public TestSceneRightBottomButton()
     {
-        Add(new RightBottomButton()
+        Add(rightBottomButton = new RightBottomButton()
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
@@ -24,5 +25,6 @@ public partial class TestSceneRightBottomButton : GameDrawableTestScene
             Origin = Anchor.Centre
         });
         AddStep("Show or hide LeftBottomButton", () => leftBottomButton.Alpha = leftBottomButton.Alpha == 1 ? 0 : 1);
+        AddStep("Enable or disable button", () => rightBottomButton.Enabled.Value = !rightBottomButton.Enabled.Value);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Colour;
@@ -21,6 +23,10 @@ public partial class RightBottomButton : Button
     private string text = "Back";
     private readonly SpriteIcon iconSprite;
     private readonly SpriteText textSprite;
+
+    public const int HOVER_MOVE_DISTANCE = 10;
+
+    private Sample hoverSample;
 
     public IconUsage Icon
     {
@@ -63,11 +69,13 @@ public partial class RightBottomButton : Button
     }
 
     [BackgroundDependencyLoader]
-    private void load()
+    private void load(AudioManager audioManager)
     {
         Anchor = Anchor.BottomRight;
         Origin = Anchor.BottomRight;
         Size = new Vector2(200, 60);
+        Masking = true;
+        CornerRadius = 15;
         Colour = Colour4.White;
         Position = new Vector2(20, -40);
         Children = new Drawable[]
@@ -100,12 +108,52 @@ public partial class RightBottomButton : Button
                 }
             }
         };
+
+        hoverSample = audioManager.Samples.Get("UI/hover");
+
+        Enabled.BindValueChanged(enabled =>
+        {
+            if (!enabled.NewValue)
+            {
+                Scheduler.Add(() => backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint));
+            }
+            else
+            {
+                Scheduler.Add(() => backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint));
+            }
+        }, true);
     }
 
     protected override bool OnHover(HoverEvent e)
     {
-        backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
+        if (Enabled.Value)
+            hoverSample?.Play();
+        this.MoveToX(X - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
 
         return base.OnHover(e);
+    }
+
+    protected override void OnHoverLost(HoverLostEvent e)
+    {
+        base.OnHoverLost(e);
+        this.MoveToX(X + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+    }
+
+    /// <summary>
+    /// Flash the background of the button
+    /// </summary>
+    /// <param name="duration">Flash duration</param>
+    /// <param name="loop">Loop the flash animation</param>
+    public void FlashBackground(double duration, bool loop = false)
+    {
+        Scheduler.Add(() =>
+        {
+            backgroundBox.ClearTransforms();
+            backgroundBox.Colour = BackgroundColor;
+            if (loop)
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic).Loop();
+            else
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic);
+        });
     }
 }

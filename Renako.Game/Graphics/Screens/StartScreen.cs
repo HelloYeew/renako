@@ -57,7 +57,7 @@ public partial class StartScreen : RenakoScreen
             {
                 Anchor = Anchor.BottomRight,
                 Origin = Anchor.BottomRight,
-                Text = "2023 HelloYeew".ToUpper(),
+                Text = "HelloYeew".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
                 Colour = Color4Extensions.FromHex("82767E")
             }

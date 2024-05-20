@@ -1,5 +1,7 @@
 ﻿using osu.Framework.Allocation;
 using osu.Framework.Graphics;
+using osu.Framework.Graphics.Containers;
+using osu.Framework.Input;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK.Input;
@@ -13,7 +15,7 @@ namespace Renako.Game.Graphics.ScreenStacks;
 /// </summary>
 public partial class SettingsScreenStack : ScreenStack
 {
-    private SettingsContainer settingsContainer;
+    private readonly SettingsContainer settingsContainer;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -41,6 +43,20 @@ public partial class SettingsScreenStack : ScreenStack
         return base.OnKeyDown(e);
     }
 
+    protected override bool OnJoystickPress(JoystickPressEvent e)
+    {
+        if (mainScreenStack.CurrentScreen is WarningScreen || mainScreenStack.CurrentScreen is StartScreen) return base.OnJoystickPress(e);
+
+        switch (e.Button)
+        {
+            case JoystickButton.Button13:
+                settingsContainer.ToggleVisibility();
+                break;
+        }
+
+        return base.OnJoystickPress(e);
+    }
+
     /// <summary>
     /// Toggle visibility of settings container.
     /// </summary>
@@ -48,4 +64,9 @@ public partial class SettingsScreenStack : ScreenStack
     {
         settingsContainer.ToggleVisibility();
     }
+
+    /// <summary>
+    /// Whether the settings container is visible.
+    /// </summary>
+    public bool IsSettingsVisible => settingsContainer.State.Value == Visibility.Visible;
 }

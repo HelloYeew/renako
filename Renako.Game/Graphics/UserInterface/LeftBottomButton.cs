@@ -22,6 +22,8 @@ public partial class LeftBottomButton : Button
     public IconUsage Icon { get; set; } = FontAwesome.Solid.ArrowLeft;
     public string Text { get; set; } = "Back";
 
+    public const int HOVER_MOVE_DISTANCE = 10;
+
     private Sample hoverSample;
     private Sample clickSample;
 
@@ -81,20 +83,58 @@ public partial class LeftBottomButton : Button
 
         hoverSample = audioManager.Samples.Get("UI/hover");
         clickSample = audioManager.Samples.Get("UI/click-back");
+
+        Enabled.BindValueChanged(enabled =>
+        {
+            if (!enabled.NewValue)
+            {
+                Scheduler.Add(() => backgroundBox.FadeColour(Color4Extensions.Darken(BackgroundColor, 0.8f), 500, Easing.OutQuint));
+            }
+            else
+            {
+                Scheduler.Add(() => backgroundBox.FadeColour(BackgroundColor, 500, Easing.OutQuint));
+            }
+        }, true);
     }
 
     protected override bool OnHover(HoverEvent e)
     {
-        backgroundBox.FlashColour(Color4Extensions.Lighten(BackgroundColor, 0.8f), 500, Easing.OutBounce);
-        hoverSample?.Play();
+        if (Enabled.Value)
+            hoverSample?.Play();
+        this.MoveToX(X + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
 
         return base.OnHover(e);
     }
 
+    protected override void OnHoverLost(HoverLostEvent e)
+    {
+        base.OnHoverLost(e);
+        this.MoveToX(X - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+    }
+
     protected override bool OnClick(ClickEvent e)
     {
-        clickSample?.Play();
+        if (Enabled.Value)
+            clickSample?.Play();
 
         return base.OnClick(e);
+    }
+
+    /// <summary>
+    /// Flash the background of the button
+    /// </summary>
+    /// <param name="duration">Flash duration</param>
+    /// <param name="loop">Loop the flash animation</param>
+    public void FlashBackground(double duration, bool loop = false)
+    {
+        Scheduler.Add(() =>
+        {
+            backgroundBox.ClearTransforms();
+            backgroundBox.Colour = BackgroundColor;
+            if (loop)
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic).Loop();
+            else
+                backgroundBox.FlashColour(Color4Extensions.FromHex("F3E7EE"), duration, Easing.OutCubic);
+        });
     }
 }

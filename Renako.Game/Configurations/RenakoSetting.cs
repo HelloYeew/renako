@@ -3,10 +3,15 @@ namespace Renako.Game.Configurations;
 public enum RenakoSetting
 {
     UseUnicodeInfo,
+    DisableIdleMode,
 
     ShowFPSCounter,
 
     LatestBeatmapSetID,
     LatestBeatmapID,
-    FirstImport
+    FirstImport,
+
+    // Playfield
+    PlayfieldBackgroundDim,
+    ScrollSpeed
 }

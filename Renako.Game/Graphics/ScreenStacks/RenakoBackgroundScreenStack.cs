@@ -43,7 +43,8 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
 
         mainBackgroundTexture = textureStore.Get("Screen/main-background.jpeg");
         playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
-        fallbackBeatmapBackground = textureStore.Get("Screen/fallback-beatmap-background.jpg");
+        // TODO: Change this to a real fallback background and delete the fallback-beatmap-background.jpg
+        fallbackBeatmapBackground = textureStore.Get("Screen/main-background.jpeg");
 
         AddInternal(backgroundContainer = new Container()
         {
@@ -125,7 +126,13 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// <param name="newBeatmapSet">The new beatmap set that will be changed.</param>
     private void changeBackgroundByBeatmapSet(BeatmapSet oldBeatmapSet, BeatmapSet newBeatmapSet)
     {
-        if (newBeatmapSet == null || Equals(oldBeatmapSet, newBeatmapSet)) return;
+        if (newBeatmapSet == null)
+        {
+            ChangeBackground(fallbackBeatmapBackground);
+            return;
+        }
+
+        if (Equals(oldBeatmapSet, newBeatmapSet)) return;
 
         if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
 
@@ -172,8 +179,9 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// </summary>
     /// <param name="alpha">The new alpha value.</param>
     /// <param name="duration">Duration of the fade in and fade out.</param>
-    public void AdjustMaskAlpha(float alpha, int duration = 500)
+    /// <param name="easing">Easing function of the fade in and fade out.</param>
+    public void AdjustMaskAlpha(float alpha, int duration = 500, Easing easing = Easing.OutQuart)
     {
-        maskBox.FadeTo(alpha, duration, Easing.OutCubic);
+        Scheduler.Add(() => maskBox.FadeTo(alpha, duration, easing));
     }
 }

@@ -188,6 +188,14 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 },
                                 new SpriteText()
                                 {
+                                    Text = "Disable idle mode"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.DisableIdleMode)
+                                },
+                                new SpriteText()
+                                {
                                     Text = "Display".ToUpper(),
                                     Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
                                 },

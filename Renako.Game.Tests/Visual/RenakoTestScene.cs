@@ -6,11 +6,6 @@ namespace Renako.Game.Tests.Visual
 {
     public partial class RenakoTestScene : TestScene
     {
-        /// <summary>
-        /// Set track volume to 0 on start.
-        /// </summary>
-        public bool MuteTrackOnStart { get; set; } = true;
-
         [Resolved]
         private AudioManager frameworkAudioManager { get; set; }
 
