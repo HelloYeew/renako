@@ -1061,6 +1061,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
                 songListContainer.MoveToY(600, 750, Easing.OutQuart);
                 beatmapSelectionContainer.MoveToY(600, 750, Easing.OutQuart);
+                finalSettingsContainer.MoveToY(600, 750, Easing.OutQuart);
 
                 backButton.FadeOut(500, Easing.OutQuart);
                 rightBottomButton.FadeOut(500, Easing.OutQuart);
@@ -1075,6 +1076,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitleContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
                 songListContainer.MoveToY(-115, 750, Easing.OutBack);
                 beatmapSelectionContainer.MoveToY(-115, 750, Easing.OutBack);
+                finalSettingsContainer.MoveToY(-115, 750, Easing.OutBack);
 
                 backButton.FadeIn(500, Easing.OutQuart);
                 rightBottomButton.FadeIn(500, Easing.OutQuart);
@@ -1212,7 +1214,7 @@ public partial class SongSelectionScreen : RenakoScreen
         if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
         {
             finalSettingsSwiper.IncrementCurrentItem();
-            rightClickSample?.Play();
+            leftClickSample?.Play();
         }
     }
 
@@ -1227,7 +1229,7 @@ public partial class SongSelectionScreen : RenakoScreen
         if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
         {
             finalSettingsSwiper.DecrementCurrentItem();
-            leftClickSample?.Play();
+            rightClickSample?.Play();
         }
     }
 
