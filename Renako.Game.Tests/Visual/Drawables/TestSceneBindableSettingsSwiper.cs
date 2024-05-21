@@ -20,10 +20,10 @@ public partial class TestSceneBindableSettingsSwiper : GameDrawableTestScene
     private BindableSettingsSwiper swiper;
     private SpriteText indexText;
 
-    private readonly BindableFloat testFloat1 = new BindableFloat(0);
-    private readonly BindableFloat testFloat2 = new BindableFloat(0);
-    private readonly BindableFloat testFloat3 = new BindableFloat(0);
-    private readonly BindableFloat testFloat4 = new BindableFloat(0);
+    private readonly Bindable<int> testInt1 = new Bindable<int>();
+    private readonly Bindable<int> testInt2 = new Bindable<int>();
+    private readonly Bindable<int> testInt3 = new Bindable<int>();
+    private readonly Bindable<int> testInt4 = new Bindable<int>();
 
     [BackgroundDependencyLoader]
     private void load()
@@ -42,12 +42,13 @@ public partial class TestSceneBindableSettingsSwiper : GameDrawableTestScene
         swiper.BindIndexChangeAction(index => indexText.Text = $"Index: {index.NewValue}");
         swiper.Items = new List<BindableSettingsSwiperItem>()
         {
-            new BindableSettingsSwiperItem("Test 1", testFloat1),
-            new BindableSettingsSwiperItem("Test 2", testFloat2),
-            new BindableSettingsSwiperItem("Test 3", testFloat3),
-            new BindableSettingsSwiperItem("Test 4", testFloat4)
+            new BindableSettingsSwiperItem("Test 1", testInt1),
+            new BindableSettingsSwiperItem("Test 2", testInt2),
+            new BindableSettingsSwiperItem("Test 3", testInt3),
+            new BindableSettingsSwiperItem("Test 4", testInt4)
         };
-        swiper.Items[1].IncrementStep = 1.5f;
+        swiper.Items[1].IncrementStep = 3;
+        swiper.Items[3].IncrementStep = 3;
     }
 
     [Test]
@@ -60,13 +61,13 @@ public partial class TestSceneBindableSettingsSwiper : GameDrawableTestScene
     [Test]
     public void TestChangeBindableValues()
     {
-        AddStep("increment test 1", () => testFloat1.Value++);
-        AddAssert("test 1 value is 1", () => swiper.Items[0].BindableFloat.Value == 1);
+        AddStep("increment test 1", () => testInt1.Value++);
+        AddAssert("test 1 value is 1", () => swiper.Items[0].BindableInt.Value == 1);
         AddStep("increment test 2 using step", () => swiper.Items[1].Increment());
-        AddAssert("test 2 value is 1", () => swiper.Items[1].BindableFloat.Value == 1.5f);
-        AddStep("decrement test 3", () => testFloat3.Value--);
-        AddAssert("test 3 value is -1", () => swiper.Items[2].BindableFloat.Value == -1);
+        AddAssert("test 2 value is 1", () => swiper.Items[1].BindableInt.Value == 3);
+        AddStep("decrement test 3", () => testInt3.Value--);
+        AddAssert("test 3 value is -1", () => swiper.Items[2].BindableInt.Value == -1);
         AddStep("decrement test 4 using step", () => swiper.Items[3].Decrement());
-        AddAssert("test 4 value is -1", () => swiper.Items[3].BindableFloat.Value == -0.1f);
+        AddAssert("test 4 value is -1", () => swiper.Items[3].BindableInt.Value == -3);
     }
 }

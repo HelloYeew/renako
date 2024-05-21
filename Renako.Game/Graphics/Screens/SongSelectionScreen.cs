@@ -34,6 +34,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private FillFlowContainer songTitleContainer;
     private Container songListContainer;
     private Container beatmapSelectionContainer;
+    private Container finalSettingsContainer;
     private readonly Bindable<SongSelectionScreenState> currentScreenState = new Bindable<SongSelectionScreenState>();
 
     [Resolved]
@@ -48,10 +49,14 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
 
+    [Resolved]
+    private RenakoConfigManager config { get; set; }
+
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
     private List<Beatmap> beatmapList;
+    private BindableSettingsSwiper finalSettingsSwiper;
     private MenuTitleWithTexture songTitle;
     private SpriteText sourceText;
     private SpriteText totalBeatmapSetDifficultyText;
@@ -118,6 +123,10 @@ public partial class SongSelectionScreen : RenakoScreen
         beatmapSwiper = new BeatmapSelectionSwiper()
         {
             BeatmapList = beatmapList,
+            Position = new Vector2(0, 0)
+        };
+        finalSettingsSwiper = new BindableSettingsSwiper()
+        {
             Position = new Vector2(0, 0)
         };
 
@@ -734,6 +743,99 @@ public partial class SongSelectionScreen : RenakoScreen
                     beatmapSwiper
                 }
             },
+            // Beatmap selection
+            finalSettingsContainer = new Container()
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.BottomCentre,
+                RelativeSizeAxes = Axes.X,
+                Alpha = 0,
+                Size = new Vector2(1, 150),
+                Position = new Vector2(2000, -115),
+                Children = new Drawable[]
+                {
+                    new Box()
+                    {
+                        Anchor = Anchor.BottomCentre,
+                        Origin = Anchor.BottomCentre,
+                        RelativeSizeAxes = Axes.Both,
+                        Colour = Color4Extensions.FromHex("82767E")
+                    },
+                    new BasicButton()
+                    {
+                        Anchor = Anchor.CentreLeft,
+                        Origin = Anchor.CentreLeft,
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
+                        Position = new Vector2(15, 0),
+                        Colour = Colour4.White,
+                        Action = togglePreviousButton,
+                        Child = new FillFlowContainer()
+                        {
+                            Anchor = Anchor.CentreLeft,
+                            Origin = Anchor.CentreLeft,
+                            RelativeSizeAxes = Axes.Both,
+                            Direction = FillDirection.Horizontal,
+                            Children = new Drawable[]
+                            {
+                                new SpriteIcon()
+                                {
+                                    Anchor = Anchor.CentreLeft,
+                                    Origin = Anchor.CentreLeft,
+                                    Size = new Vector2(20),
+                                    Icon = FontAwesome.Solid.ChevronLeft,
+                                    Colour = Color4Extensions.FromHex("D2C9D8"),
+                                },
+                                new SpriteIcon()
+                                {
+                                    Anchor = Anchor.CentreLeft,
+                                    Origin = Anchor.CentreLeft,
+                                    Size = new Vector2(20),
+                                    Icon = FontAwesome.Solid.ChevronLeft,
+                                    Colour = Color4Extensions.FromHex("D2C9D8"),
+                                }
+                            }
+                        }
+                    },
+                    new BasicButton()
+                    {
+                        Anchor = Anchor.CentreRight,
+                        Origin = Anchor.CentreRight,
+                        RelativeSizeAxes = Axes.Y,
+                        Size = new Vector2(30, 1),
+                        Position = new Vector2(-15, 0),
+                        Colour = Colour4.White,
+                        Action = toggleNextButton,
+                        Child = new FillFlowContainer()
+                        {
+                            Anchor = Anchor.CentreRight,
+                            Origin = Anchor.CentreRight,
+                            RelativeSizeAxes = Axes.Both,
+                            Direction = FillDirection.Horizontal,
+                            Children = new Drawable[]
+                            {
+                                new SpriteIcon()
+                                {
+                                    Anchor = Anchor.CentreRight,
+                                    Origin = Anchor.CentreRight,
+                                    Size = new Vector2(20),
+                                    Icon = FontAwesome.Solid.ChevronRight,
+                                    Colour = Color4Extensions.FromHex("D2C9D8"),
+                                },
+                                new SpriteIcon()
+                                {
+                                    Anchor = Anchor.CentreRight,
+                                    Origin = Anchor.CentreRight,
+                                    Size = new Vector2(20),
+                                    Icon = FontAwesome.Solid.ChevronRight,
+                                    Colour = Color4Extensions.FromHex("D2C9D8"),
+                                }
+                            }
+                        }
+                    },
+                    finalSettingsSwiper
+                }
+            },
             // Idle details
             idleRenakoLogoContainer = new Container()
             {
@@ -780,6 +882,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 idleDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
+
+        #region Beatmap bindable changes
 
         beatmapSetSwiper.CurrentItem.BindValueChanged(_ =>
         {
@@ -890,6 +994,8 @@ public partial class SongSelectionScreen : RenakoScreen
             lastInteractionTime = interactionTimer.CurrentTime;
         }, true);
 
+        #endregion
+
         currentScreenState.BindValueChanged(e =>
         {
             if (e.OldValue == e.NewValue) return;
@@ -926,11 +1032,16 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomButton.Text = "Let's start!";
                 rightBottomButton.Icon = FontAwesome.Solid.Rocket;
                 rightBottomButton.ResizeWidthTo(275, 200, Easing.OutQuart);
+
+                finalSettingsContainer.MoveToX(0, 500, Easing.OutQuart)
+                                      .FadeIn(500, Easing.OutQuart);
             }
             else if (e.OldValue == SongSelectionScreenState.LastSetting && e.NewValue == SongSelectionScreenState.BeatmapSelection)
             {
                 beatmapSelectionContainer.MoveToX(0, 500, Easing.OutQuart)
                                          .FadeIn(500, Easing.OutQuart);
+                finalSettingsContainer.MoveToX(2000, 500, Easing.OutQuart)
+                                      .FadeOut(500, Easing.OutQuart);
 
                 songTitle.HideTexture();
 
@@ -980,6 +1091,12 @@ public partial class SongSelectionScreen : RenakoScreen
         base.LoadComplete();
         songTitle.HideTexture();
         interactionTimer.Start();
+
+        finalSettingsSwiper.Items =
+        [
+            new BindableSettingsSwiperItem("Scroll Speed", config.GetBindable<int>(RenakoSetting.ScrollSpeed)),
+            new BindableSettingsSwiperItem("Background Dim", config.GetBindable<int>(RenakoSetting.PlayfieldBackgroundDim))
+        ];
     }
 
     protected override void Update()
@@ -1031,6 +1148,8 @@ public partial class SongSelectionScreen : RenakoScreen
             beatmapSetSwiper.Next();
         else if (currentScreenState.Value == SongSelectionScreenState.BeatmapSelection)
             beatmapSwiper.Next();
+        else if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
+            finalSettingsSwiper.Next();
         leftClickSample?.Play();
     }
 
@@ -1046,6 +1165,8 @@ public partial class SongSelectionScreen : RenakoScreen
             beatmapSetSwiper.Previous();
         else if (currentScreenState.Value == SongSelectionScreenState.BeatmapSelection)
             beatmapSwiper.Previous();
+        else if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
+            finalSettingsSwiper.Previous();
         rightClickSample?.Play();
     }
 

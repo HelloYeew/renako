@@ -341,8 +341,8 @@ public partial class BindableSettingsContainer : Container
         this.item = item;
         box.Alpha = 1f;
         nameText.Text = item.Name.ToUpper();
-        item.BindableFloat.UnbindAll();
-        item.BindableFloat.BindValueChanged(_ => valueText.Text = item.BindableFloat.Value.ToString("0.00"), true);
+        item.BindableInt.UnbindAll();
+        item.BindableInt.BindValueChanged(_ => valueText.Text = item.BindableInt.Value.ToString("0.00"), true);
     }
 
     /// <summary>
@@ -370,22 +370,22 @@ public partial class BindableSettingsContainer : Container
 public class BindableSettingsSwiperItem
 {
     public string Name { get; }
-    public BindableFloat BindableFloat { get; }
-    public float IncrementStep { get; set; } = 0.1f;
+    public Bindable<int> BindableInt { get; }
+    public int IncrementStep { get; set; } = 1;
 
-    public BindableSettingsSwiperItem(string name, BindableFloat bindableFloat)
+    public BindableSettingsSwiperItem(string name, Bindable<int> bindableInt)
     {
         Name = name;
-        BindableFloat = bindableFloat;
+        BindableInt = bindableInt;
     }
 
     public void Increment()
     {
-        BindableFloat.Value += IncrementStep;
+        BindableInt.Value += IncrementStep;
     }
 
     public void Decrement()
     {
-        BindableFloat.Value -= IncrementStep;
+        BindableInt.Value -= IncrementStep;
     }
 }
