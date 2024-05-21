@@ -15,6 +15,7 @@ using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Input;
 using osu.Framework.Input.Events;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Framework.Timing;
@@ -1200,6 +1201,34 @@ public partial class SongSelectionScreen : RenakoScreen
         backClickSample?.Play();
     }
 
+    private void toggleUpButton()
+    {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
+        if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
+            finalSettingsSwiper.Previous();
+
+        rightClickSample?.Play();
+    }
+
+    private void toggleDownButton()
+    {
+        if (isHiding.Value)
+        {
+            isHiding.Value = false;
+            return;
+        }
+
+        if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
+            finalSettingsSwiper.Next();
+
+        leftClickSample?.Play();
+    }
+
     private void toggleGoButton()
     {
         if (isHiding.Value)
@@ -1252,6 +1281,14 @@ public partial class SongSelectionScreen : RenakoScreen
             case Key.Enter or Key.P:
                 toggleGoButton();
                 break;
+
+            case Key.Up:
+                toggleUpButton();
+                break;
+
+            case Key.Down:
+                toggleDownButton();
+                break;
         }
 
         lastInteractionTime = interactionTimer.CurrentTime;
@@ -1271,16 +1308,26 @@ public partial class SongSelectionScreen : RenakoScreen
                 togglePreviousButton();
                 break;
 
-            case JoystickButton.Button9 or JoystickButton.GamePadB:
+            case JoystickButton.Button9 or JoystickButton.GamePadB or JoystickButton.GamePadBack or JoystickButton.GamePadRightShoulder:
                 toggleBackButton();
                 break;
 
-            case JoystickButton.Button10 or JoystickButton.GamePadA:
+            case JoystickButton.Button10 or JoystickButton.GamePadA or JoystickButton.GamePadStart or JoystickButton.GamePadLeftShoulder:
                 toggleGoButton();
+                break;
+
+            case JoystickButton.FirstHatUp:
+                toggleUpButton();
+                break;
+
+            case JoystickButton.FirstHatDown:
+                toggleDownButton();
                 break;
         }
 
         lastInteractionTime = interactionTimer.CurrentTime;
+
+        Logger.Log($"Joystick button: {e.Button}");
 
         return base.OnJoystickPress(e);
     }

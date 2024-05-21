@@ -245,6 +245,22 @@ public partial class BindableSettingsSwiper : CompositeDrawable
     {
         currentIndex.BindValueChanged(action);
     }
+
+    /// <summary>
+    /// Increment the current item value.
+    /// </summary>
+    public void IncrementCurrentItem()
+    {
+        CurrentItem.Value?.Increment();
+    }
+
+    /// <summary>
+    /// Decrement the current item value.
+    /// </summary>
+    public void DecrementCurrentItem()
+    {
+        CurrentItem.Value?.Decrement();
+    }
 }
 
 public partial class BindableSettingsContainer : Container
