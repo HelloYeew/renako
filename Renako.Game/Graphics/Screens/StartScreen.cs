@@ -87,6 +87,12 @@ public partial class StartScreen : RenakoScreen
         return base.OnKeyDown(e);
     }
 
+    protected override bool OnJoystickPress(JoystickPressEvent e)
+    {
+        goToMainMenu();
+        return base.OnJoystickPress(e);
+    }
+
     private void goToMainMenu()
     {
         if (Clock.CurrentTime < 5000) return;

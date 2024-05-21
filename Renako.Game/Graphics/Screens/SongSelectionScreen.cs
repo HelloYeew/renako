@@ -1210,9 +1210,10 @@ public partial class SongSelectionScreen : RenakoScreen
         }
 
         if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
-            finalSettingsSwiper.Previous();
-
-        rightClickSample?.Play();
+        {
+            finalSettingsSwiper.IncrementCurrentItem();
+            rightClickSample?.Play();
+        }
     }
 
     private void toggleDownButton()
@@ -1224,9 +1225,10 @@ public partial class SongSelectionScreen : RenakoScreen
         }
 
         if (currentScreenState.Value == SongSelectionScreenState.LastSetting)
-            finalSettingsSwiper.Next();
-
-        leftClickSample?.Play();
+        {
+            finalSettingsSwiper.DecrementCurrentItem();
+            leftClickSample?.Play();
+        }
     }
 
     private void toggleGoButton()
@@ -1308,11 +1310,11 @@ public partial class SongSelectionScreen : RenakoScreen
                 togglePreviousButton();
                 break;
 
-            case JoystickButton.Button9 or JoystickButton.GamePadB or JoystickButton.GamePadBack or JoystickButton.GamePadRightShoulder:
+            case JoystickButton.Button9 or JoystickButton.GamePadB or JoystickButton.GamePadBack or JoystickButton.GamePadLeftShoulder:
                 toggleBackButton();
                 break;
 
-            case JoystickButton.Button10 or JoystickButton.GamePadA or JoystickButton.GamePadStart or JoystickButton.GamePadLeftShoulder:
+            case JoystickButton.Button10 or JoystickButton.GamePadA or JoystickButton.GamePadStart or JoystickButton.GamePadRightShoulder:
                 toggleGoButton();
                 break;
 
