@@ -25,6 +25,7 @@ public partial class RightBottomButton : Button
     private readonly SpriteText textSprite;
 
     public const int HOVER_MOVE_DISTANCE = 10;
+    public const int DEFAULT_X_POSITION = 20;
 
     private Sample hoverSample;
 
@@ -77,7 +78,7 @@ public partial class RightBottomButton : Button
         Masking = true;
         CornerRadius = 15;
         Colour = Colour4.White;
-        Position = new Vector2(20, -40);
+        Position = new Vector2(DEFAULT_X_POSITION, -40);
         Children = new Drawable[]
         {
             backgroundBox = new Box()
@@ -128,7 +129,7 @@ public partial class RightBottomButton : Button
     {
         if (Enabled.Value)
             hoverSample?.Play();
-        this.MoveToX(X - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+        this.MoveToX(DEFAULT_X_POSITION - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
 
         return base.OnHover(e);
     }
@@ -136,7 +137,7 @@ public partial class RightBottomButton : Button
     protected override void OnHoverLost(HoverLostEvent e)
     {
         base.OnHoverLost(e);
-        this.MoveToX(X + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+        this.MoveToX(DEFAULT_X_POSITION, 250, Easing.OutCirc);
     }
 
     /// <summary>

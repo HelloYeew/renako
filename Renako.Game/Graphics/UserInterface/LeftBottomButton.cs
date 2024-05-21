@@ -23,6 +23,7 @@ public partial class LeftBottomButton : Button
     public string Text { get; set; } = "Back";
 
     public const int HOVER_MOVE_DISTANCE = 10;
+    public const int DEFAULT_X_POSITION = -20;
 
     private Sample hoverSample;
     private Sample clickSample;
@@ -36,7 +37,7 @@ public partial class LeftBottomButton : Button
         Masking = true;
         CornerRadius = 15;
         Colour = Colour4.White;
-        Position = new Vector2(-20, -40);
+        Position = new Vector2(DEFAULT_X_POSITION, -40);
         Children = new Drawable[]
         {
             backgroundBox = new Box()
@@ -101,7 +102,7 @@ public partial class LeftBottomButton : Button
     {
         if (Enabled.Value)
             hoverSample?.Play();
-        this.MoveToX(X + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+        this.MoveToX(DEFAULT_X_POSITION + HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
 
         return base.OnHover(e);
     }
@@ -109,7 +110,7 @@ public partial class LeftBottomButton : Button
     protected override void OnHoverLost(HoverLostEvent e)
     {
         base.OnHoverLost(e);
-        this.MoveToX(X - HOVER_MOVE_DISTANCE, 250, Easing.OutCirc);
+        this.MoveToX(DEFAULT_X_POSITION, 250, Easing.OutCirc);
     }
 
     protected override bool OnClick(ClickEvent e)
