@@ -1058,8 +1058,10 @@ public partial class SongSelectionScreen : RenakoScreen
 
             if (e.NewValue)
             {
-                songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
-                songListContainer.MoveToY(600, 750, Easing.OutQuart);
+                songTitleContainer.MoveToX(-600, 500, Easing.OutQuart)
+                                  .FadeOut(500, Easing.OutQuart);
+                songListContainer.MoveToY(600, 750, Easing.OutQuart)
+                                 .FadeOut(600, Easing.OutQuart);
                 beatmapSelectionContainer.MoveToY(600, 750, Easing.OutQuart);
                 finalSettingsContainer.MoveToY(600, 750, Easing.OutQuart);
 
@@ -1073,8 +1075,10 @@ public partial class SongSelectionScreen : RenakoScreen
             }
             else
             {
-                songTitleContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart);
-                songListContainer.MoveToY(-115, 750, Easing.OutBack);
+                songTitleContainer.MoveToX(-MenuButton.CONTAINER_PADDING, 500, Easing.OutQuart)
+                                  .FadeIn(500, Easing.OutQuart);
+                songListContainer.MoveToY(-115, 750, Easing.OutBack)
+                                 .FadeIn(750, Easing.OutBack);
                 beatmapSelectionContainer.MoveToY(-115, 750, Easing.OutBack);
                 finalSettingsContainer.MoveToY(-115, 750, Easing.OutBack);
 
