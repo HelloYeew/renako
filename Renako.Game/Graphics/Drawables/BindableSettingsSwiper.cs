@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using osu.Framework.Allocation;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Sample;
 using osu.Framework.Bindables;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -274,6 +276,17 @@ public partial class BindableSettingsContainer : Container
     private readonly Button increaseButton;
     private readonly Button decreaseButton;
 
+    private Sample upClickSample;
+    private Sample downClickSample;
+
+    [BackgroundDependencyLoader]
+    private void load(AudioManager audioManager)
+    {
+        // TODO: CHange this to a better sound
+        upClickSample = audioManager.Samples.Get("UI/click-small-left");
+        downClickSample = audioManager.Samples.Get("UI/click-small-right");
+    }
+
     public BindableSettingsContainer()
     {
         Anchor = Anchor.Centre;
@@ -313,7 +326,11 @@ public partial class BindableSettingsContainer : Container
                         Origin = Anchor.Centre,
                         Size = new Vector2(20, 20),
                         Alpha = 0,
-                        Action = () => item?.Increment(),
+                        Action = () =>
+                        {
+                            item?.Increment();
+                            upClickSample?.Play();
+                        },
                         Child = new SpriteIcon
                         {
                             Anchor = Anchor.Centre,
@@ -337,7 +354,11 @@ public partial class BindableSettingsContainer : Container
                         Origin = Anchor.Centre,
                         Size = new Vector2(20, 20),
                         Alpha = 0,
-                        Action = () => item?.Decrement(),
+                        Action = () =>
+                        {
+                            item?.Decrement();
+                            downClickSample?.Play();
+                        },
                         Child = new SpriteIcon
                         {
                             Anchor = Anchor.Centre,
