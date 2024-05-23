@@ -47,8 +47,7 @@ public class BeatmapSetUtility
     /// <returns></returns>
     public static string GetFolderName(BeatmapSet beatmapSet)
     {
-        // TODO: Sometime the o!f storage object don't detect some beatmap that title have symbol (+, -, etc.) in it, this need some fix.
-        return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
+        return $"{beatmapSet.ID} {StringUtility.CleanFolderName(beatmapSet.Title)} - {StringUtility.CleanFolderName(beatmapSet.Artist)}";
     }
 
     /// <summary>
