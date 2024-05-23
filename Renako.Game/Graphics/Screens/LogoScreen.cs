@@ -71,6 +71,7 @@ public partial class LogoScreen : RenakoScreen
     /// </summary>
     public void MoveToMainMenu()
     {
+        Logo.ClearTransforms();
         Logo.Alpha = 1;
         Logo.RelativePositionAxes = Axes.None;
         Logo.Anchor = Anchor.TopLeft;
