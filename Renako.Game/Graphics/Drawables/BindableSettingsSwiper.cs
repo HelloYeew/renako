@@ -11,6 +11,7 @@ using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.UserInterface;
 using osuTK;
+using Renako.Game.Configurations;
 
 namespace Renako.Game.Graphics.Drawables;
 
@@ -175,7 +176,10 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            leftContainer3.SetItem(items[currentIndex.Value - 3]);
+            if (items[currentIndex.Value - 3].Setting != null)
+                leftContainer3.SetSettingsItem(items[currentIndex.Value - 3], items[currentIndex.Value - 3].Setting);
+            else
+                leftContainer3.SetItem(items[currentIndex.Value - 3]);
         }
 
         // Update the left container 2.
@@ -186,7 +190,10 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            leftContainer2.SetItem(items[currentIndex.Value - 2]);
+            if (items[currentIndex.Value - 2].Setting != null)
+                leftContainer2.SetSettingsItem(items[currentIndex.Value - 2], items[currentIndex.Value - 2].Setting);
+            else
+                leftContainer2.SetItem(items[currentIndex.Value - 2]);
         }
 
         // Update the left container 1.
@@ -197,11 +204,17 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            leftContainer1.SetItem(items[currentIndex.Value - 1]);
+            if (items[currentIndex.Value - 1].Setting != null)
+                leftContainer1.SetSettingsItem(items[currentIndex.Value - 1], items[currentIndex.Value - 1].Setting);
+            else
+                leftContainer1.SetItem(items[currentIndex.Value - 1]);
         }
 
         // Update the center container.
-        centerContainer.SetItem(items[currentIndex.Value]);
+        if (items[currentIndex.Value].Setting != null)
+            centerContainer.SetSettingsItem(items[currentIndex.Value], items[currentIndex.Value].Setting);
+        else
+            centerContainer.SetItem(items[currentIndex.Value]);
 
         // Update the right container 1.
         // If current index + 1 is more than the item count, set as blank container
@@ -211,7 +224,10 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            rightContainer1.SetItem(items[currentIndex.Value + 1]);
+            if (items[currentIndex.Value + 1].Setting != null)
+                rightContainer1.SetSettingsItem(items[currentIndex.Value + 1], items[currentIndex.Value + 1].Setting);
+            else
+                rightContainer1.SetItem(items[currentIndex.Value + 1]);
         }
 
         // Update the right container 2.
@@ -222,7 +238,10 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            rightContainer2.SetItem(items[currentIndex.Value + 2]);
+            if (items[currentIndex.Value + 2].Setting != null)
+                rightContainer2.SetSettingsItem(items[currentIndex.Value + 2], items[currentIndex.Value + 2].Setting);
+            else
+                rightContainer2.SetItem(items[currentIndex.Value + 2]);
         }
 
         // Update the right container 2.
@@ -233,7 +252,10 @@ public partial class BindableSettingsSwiper : CompositeDrawable
         }
         else
         {
-            rightContainer3.SetItem(items[currentIndex.Value + 3]);
+            if (items[currentIndex.Value + 3].Setting != null)
+                rightContainer3.SetSettingsItem(items[currentIndex.Value + 3], items[currentIndex.Value + 3].Setting);
+            else
+                rightContainer3.SetItem(items[currentIndex.Value + 3]);
         }
 
         CurrentItem.Value = items[currentIndex.Value];
@@ -279,12 +301,14 @@ public partial class BindableSettingsContainer : Container
     private Sample upClickSample;
     private Sample downClickSample;
 
+    private RenakoConfigManager config;
+
     [BackgroundDependencyLoader]
-    private void load(AudioManager audioManager)
+    private void load(AudioManager audioManager, RenakoConfigManager configManager)
     {
-        // TODO: CHange this to a better sound
         upClickSample = audioManager.Samples.Get("UI/click-small-left");
         downClickSample = audioManager.Samples.Get("UI/click-small-right");
+        this.config = configManager;
     }
 
     public BindableSettingsContainer()
@@ -376,6 +400,10 @@ public partial class BindableSettingsContainer : Container
         };
     }
 
+    /// <summary>
+    /// Set the <see cref="BindableSettingsSwiperItem"/> to the container.
+    /// </summary>
+    /// <param name="item">The <see cref="BindableSettingsSwiperItem"/> to set.</param>
     public void SetItem(BindableSettingsSwiperItem item)
     {
         this.item = item;
@@ -383,6 +411,25 @@ public partial class BindableSettingsContainer : Container
         nameText.Text = item.Name.ToUpper();
         item.BindableInt.UnbindAll();
         item.BindableInt.BindValueChanged(_ => valueText.Text = item.BindableInt.Value + item.Unit, true);
+    }
+
+    /// <summary>
+    /// Set the <see cref="BindableSettingsSwiperItem"/> with bind the value change to the <see cref="RenakoSetting"/>.
+    /// </summary>
+    /// <param name="item">The <see cref="BindableSettingsSwiperItem"/> to set.</param>
+    /// <param name="setting">The <see cref="RenakoSetting"/> to bind the value change.</param>
+    public void SetSettingsItem(BindableSettingsSwiperItem item, RenakoSetting? setting)
+    {
+        this.item = item;
+        box.Alpha = 1f;
+        nameText.Text = item.Name.ToUpper();
+        item.BindableInt.UnbindAll();
+        item.BindableInt.BindValueChanged(_ =>
+        {
+            valueText.Text = item.BindableInt.Value + item.Unit;
+            if (setting != null)
+                config.SetValue(setting.Value, item.BindableInt.Value);
+        }, true);
     }
 
     /// <summary>
@@ -446,6 +493,7 @@ public class BindableSettingsSwiperItem
     public int MaxValue { get; set; } = int.MaxValue;
     public int MinValue { get; set; } = int.MinValue;
     public string Unit { get; set; } = "";
+    public RenakoSetting? Setting { get; set; }
 
     public BindableSettingsSwiperItem(string name, Bindable<int> bindableInt)
     {

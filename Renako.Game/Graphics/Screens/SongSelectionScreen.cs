@@ -1117,14 +1117,16 @@ public partial class SongSelectionScreen : RenakoScreen
             {
                 MinValue = 1,
                 MaxValue = 20,
-                IncrementStep = 1
+                IncrementStep = 1,
+                Setting = RenakoSetting.ScrollSpeed
             },
             new BindableSettingsSwiperItem("Background Dim", config.GetBindable<int>(RenakoSetting.PlayfieldBackgroundDim))
             {
                 MinValue = 0,
                 MaxValue = 100,
                 IncrementStep = 1,
-                Unit = "%"
+                Unit = "%",
+                Setting = RenakoSetting.PlayfieldBackgroundDim
             }
         ];
     }
