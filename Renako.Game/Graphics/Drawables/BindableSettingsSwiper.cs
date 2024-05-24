@@ -330,6 +330,7 @@ public partial class BindableSettingsContainer : Container
                         {
                             item?.Increment();
                             upClickSample?.Play();
+                            checkButtonStatus();
                         },
                         Child = new SpriteIcon
                         {
@@ -338,7 +339,7 @@ public partial class BindableSettingsContainer : Container
                             Icon = FontAwesome.Solid.ChevronUp,
                             Size = new Vector2(20),
                             Colour = Colour4.Black
-                        },
+                        }
                     },
                     valueText = new SpriteText
                     {
@@ -358,6 +359,8 @@ public partial class BindableSettingsContainer : Container
                         {
                             item?.Decrement();
                             downClickSample?.Play();
+                            // TODO: Maybe better if this is done with action on bindable
+                            checkButtonStatus();
                         },
                         Child = new SpriteIcon
                         {
@@ -379,7 +382,37 @@ public partial class BindableSettingsContainer : Container
         box.Alpha = 1f;
         nameText.Text = item.Name.ToUpper();
         item.BindableInt.UnbindAll();
-        item.BindableInt.BindValueChanged(_ => valueText.Text = item.BindableInt.Value.ToString("0.00"), true);
+        item.BindableInt.BindValueChanged(_ => valueText.Text = item.BindableInt.Value + item.Unit, true);
+    }
+
+    /// <summary>
+    /// Check the button status based on the amount.
+    /// </summary>
+    private void checkButtonStatus()
+    {
+        if (item == null) return;
+
+        if (item.BindableInt.Value > item.MaxValue)
+        {
+            increaseButton.Enabled.Value = false;
+            increaseButton.Alpha = 0.5f;
+        }
+        else
+        {
+            increaseButton.Enabled.Value = true;
+            increaseButton.Alpha = 1;
+        }
+
+        if (item.BindableInt.Value < item.MinValue)
+        {
+            decreaseButton.Enabled.Value = false;
+            decreaseButton.Alpha = 0.5f;
+        }
+        else
+        {
+            decreaseButton.Enabled.Value = true;
+            decreaseButton.Alpha = 1;
+        }
     }
 
     /// <summary>
@@ -410,6 +443,10 @@ public class BindableSettingsSwiperItem
     public Bindable<int> BindableInt { get; }
     public int IncrementStep { get; set; } = 1;
 
+    public int MaxValue { get; set; } = int.MaxValue;
+    public int MinValue { get; set; } = int.MinValue;
+    public string Unit { get; set; } = "";
+
     public BindableSettingsSwiperItem(string name, Bindable<int> bindableInt)
     {
         Name = name;
@@ -418,11 +455,13 @@ public class BindableSettingsSwiperItem
 
     public void Increment()
     {
-        BindableInt.Value += IncrementStep;
+        if (BindableInt.Value + IncrementStep <= MaxValue)
+            BindableInt.Value += IncrementStep;
     }
 
     public void Decrement()
     {
-        BindableInt.Value -= IncrementStep;
+        if (BindableInt.Value - IncrementStep >= MinValue)
+            BindableInt.Value -= IncrementStep;
     }
 }

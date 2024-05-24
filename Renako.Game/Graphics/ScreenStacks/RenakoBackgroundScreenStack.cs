@@ -184,4 +184,14 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     {
         Scheduler.Add(() => maskBox.FadeTo(alpha, duration, easing));
     }
+
+    /// <summary>
+    /// Reset the alpha of the mask box to 0.
+    /// </summary>
+    /// <param name="duration">Duration of the fade in and fade out.</param>
+    /// <param name="easing">Easing function of the fade in and fade out.</param>
+    public void ResetMaskAlpha(int duration = 500, Easing easing = Easing.OutQuart)
+    {
+        AdjustMaskAlpha(0, duration, easing);
+    }
 }

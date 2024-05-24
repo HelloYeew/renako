@@ -859,6 +859,8 @@ public partial class SongSelectionScreen : RenakoScreen
             idleDetailsContainer = new IdleBeatmapSetDetailContainer()
         };
 
+        #region Global settings bindable changes
+
         useUnicodeInfo = config.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
         useUnicodeInfo.ValueChanged += delegate
         {
@@ -883,6 +885,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 idleDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
+
+        #endregion
 
         #region Beatmap bindable changes
 
@@ -997,6 +1001,8 @@ public partial class SongSelectionScreen : RenakoScreen
 
         #endregion
 
+        #region State change action
+
         currentScreenState.BindValueChanged(e =>
         {
             if (e.OldValue == e.NewValue) return;
@@ -1052,6 +1058,10 @@ public partial class SongSelectionScreen : RenakoScreen
             }
         }, true);
 
+        #endregion
+
+        #region Idle mode action
+
         isHiding.BindValueChanged(e =>
         {
             if (config.GetBindable<bool>(RenakoSetting.DisableIdleMode).Value) return;
@@ -1091,6 +1101,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 backgroundScreenStack.AdjustMaskAlpha(0f);
             }
         }, true);
+
+        #endregion
     }
 
     protected override void LoadComplete()
@@ -1101,8 +1113,19 @@ public partial class SongSelectionScreen : RenakoScreen
 
         finalSettingsSwiper.Items =
         [
-            new BindableSettingsSwiperItem("Scroll Speed", config.GetBindable<int>(RenakoSetting.ScrollSpeed)),
+            new BindableSettingsSwiperItem("Scroll Speed", config.GetBindable<int>(RenakoSetting.ScrollSpeed))
+            {
+                MinValue = 1,
+                MaxValue = 20,
+                IncrementStep = 1
+            },
             new BindableSettingsSwiperItem("Background Dim", config.GetBindable<int>(RenakoSetting.PlayfieldBackgroundDim))
+            {
+                MinValue = 0,
+                MaxValue = 100,
+                IncrementStep = 1,
+                Unit = "%"
+            }
         ];
     }
 
