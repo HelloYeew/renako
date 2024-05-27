@@ -68,6 +68,8 @@ public partial class RenakoAudioManager : CompositeDrawable
             return;
         }
 
+        if (oldScreen is PlayerLoadingScreen) return;
+
         // Record the duration of the main theme if old screen is StartScreen or MainMenuScreen.
         if (oldScreen is MainMenuScreen or StartScreen)
         {

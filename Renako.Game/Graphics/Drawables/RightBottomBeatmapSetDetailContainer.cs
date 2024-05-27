@@ -10,16 +10,16 @@ namespace Renako.Game.Graphics.Drawables;
 
 /// <inheritdoc />
 /// <summary>
-/// Right-bottom container that displays the beatmap set details when the screen is idle.
+/// Right-bottom container that displays the beatmap set details.
 /// </summary>
-public partial class IdleBeatmapSetDetailContainer : Container
+public partial class RightBottomBeatmapSetDetailContainer : Container
 {
-    private readonly Sprite idleBeatmapSetCover;
-    private readonly SpriteText idleTitleText;
-    private readonly SpriteText idleArtistText;
-    private readonly SpriteText idleSourceText;
+    private readonly Sprite beatmapSetCover;
+    private readonly SpriteText titleText;
+    private readonly SpriteText artistText;
+    private readonly SpriteText sourceText;
 
-    public IdleBeatmapSetDetailContainer()
+    public RightBottomBeatmapSetDetailContainer()
     {
         Anchor = Anchor.BottomRight;
         Origin = Anchor.BottomRight;
@@ -29,7 +29,6 @@ public partial class IdleBeatmapSetDetailContainer : Container
             Bottom = 20
         };
         Size = new Vector2(540, 140);
-        Alpha = 0;
         Masking = true;
         CornerRadius = 15;
         Children = new Drawable[]
@@ -57,7 +56,7 @@ public partial class IdleBeatmapSetDetailContainer : Container
                         Size = new Vector2(100),
                         Masking = true,
                         CornerRadius = 15,
-                        Child = idleBeatmapSetCover = new Sprite()
+                        Child = beatmapSetCover = new Sprite()
                         {
                             Anchor = Anchor.Centre,
                             Origin = Anchor.Centre,
@@ -73,21 +72,21 @@ public partial class IdleBeatmapSetDetailContainer : Container
                         Spacing = new Vector2(5, 0),
                         Children = new Drawable[]
                         {
-                            idleTitleText = new RenakoSpriteText()
+                            titleText = new RenakoSpriteText()
                             {
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
                                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 35, RenakoFont.FontWeight.Bold),
                                 Colour = Color4Extensions.FromHex("67344D")
                             },
-                            idleArtistText = new RenakoSpriteText()
+                            artistText = new RenakoSpriteText()
                             {
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
                                 Font = RenakoFont.GetFont(RenakoFont.Typeface.MPlus1P, 23),
                                 Colour = Color4Extensions.FromHex("251319")
                             },
-                            idleSourceText = new RenakoSpriteText()
+                            sourceText = new RenakoSpriteText()
                             {
                                 Anchor = Anchor.CentreRight,
                                 Origin = Anchor.CentreRight,
@@ -106,8 +105,8 @@ public partial class IdleBeatmapSetDetailContainer : Container
     /// </summary>
     public Texture CoverImage
     {
-        get => idleBeatmapSetCover.Texture;
-        set => idleBeatmapSetCover.Texture = value;
+        get => beatmapSetCover.Texture;
+        set => beatmapSetCover.Texture = value;
     }
 
     /// <summary>
@@ -115,8 +114,8 @@ public partial class IdleBeatmapSetDetailContainer : Container
     /// </summary>
     public string Title
     {
-        get => idleTitleText.Text.ToString();
-        set => idleTitleText.Text = value;
+        get => titleText.Text.ToString();
+        set => titleText.Text = value;
     }
 
     /// <summary>
@@ -124,8 +123,8 @@ public partial class IdleBeatmapSetDetailContainer : Container
     /// </summary>
     public string Artist
     {
-        get => idleArtistText.Text.ToString();
-        set => idleArtistText.Text = value;
+        get => artistText.Text.ToString();
+        set => artistText.Text = value;
     }
 
     /// <summary>
@@ -133,7 +132,7 @@ public partial class IdleBeatmapSetDetailContainer : Container
     /// </summary>
     public string Source
     {
-        get => idleSourceText.Text.ToString();
-        set => idleSourceText.Text = value;
+        get => sourceText.Text.ToString();
+        set => sourceText.Text = value;
     }
 }
