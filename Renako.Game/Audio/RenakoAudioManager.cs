@@ -68,8 +68,6 @@ public partial class RenakoAudioManager : CompositeDrawable
             return;
         }
 
-        if (oldScreen is PlayerLoadingScreen) return;
-
         // Record the duration of the main theme if old screen is StartScreen or MainMenuScreen.
         if (oldScreen is MainMenuScreen or StartScreen)
         {
@@ -95,7 +93,6 @@ public partial class RenakoAudioManager : CompositeDrawable
         }
         else if (newScreen is SongSelectionScreen)
         {
-            Track?.Start();
             changeTrackOnBeatmapSetChanged(null, workingBeatmap.BeatmapSet);
         }
         else if (newScreen is PlayerLoadingScreen)
