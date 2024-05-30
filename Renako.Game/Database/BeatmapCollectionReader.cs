@@ -61,6 +61,26 @@ public class BeatmapCollectionReader
                         Logger.Log("Beatmap set already exist in collection: " + beatmapSet.ID, LoggingTarget.Database);
                     }
                 }
+                else if (beatmapFile.EndsWith(".rkb"))
+                {
+                    Logger.Log("Reading beatmap file: " + beatmapFile, LoggingTarget.Database);
+                    // Deserialize rkb file using JSON deserializer
+                    Stream stream = gameStorage.GetStream(beatmapFile);
+                    Beatmap beatmap = BeatmapUtility.Deserialize(stream);
+                    stream.Close();
+
+                    // Find beatmap in beatmap collection using ID
+                    if (beatmapsCollection.Beatmaps.FindAll(e => e.ID == beatmap.ID).Count == 0)
+                    {
+                        // Add beatmap to beatmap collection if not found
+                        beatmapsCollection.Beatmaps.Add(beatmap);
+                        Logger.Log("Beatmap added to collection: " + beatmap.ID, LoggingTarget.Database);
+                    }
+                    else
+                    {
+                        Logger.Log("Beatmap already exist in collection: " + beatmap.ID, LoggingTarget.Database);
+                    }
+                }
             }
         }
     }

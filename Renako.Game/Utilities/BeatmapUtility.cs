@@ -1,3 +1,5 @@
+using System.IO;
+using System.Text.Json;
 using Renako.Game.Beatmaps;
 
 namespace Renako.Game.Utilities;
@@ -34,18 +36,28 @@ public class BeatmapUtility
         return CalculateDifficultyLevel(beatmap.DifficultyRating);
     }
 
-    /// <summary>
-    /// Returns the file name of the beatmap set in game storage (Format: {ID} {Title} - {Artist})
-    /// </summary>
-    /// <param name="beatmapSet"></param>
-    /// <returns></returns>
-    public static string GetBeatmapSetFileName(BeatmapSet beatmapSet)
-    {
-        return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
-    }
-
     public static string GetBeatmapFileName(Beatmap beatmap)
     {
         return $"{beatmap.BeatmapSet.ID} {beatmap.BeatmapSet.Title} - {beatmap.BeatmapSet.Artist} [{beatmap.DifficultyName}]";
+    }
+
+    /// <summary>
+    /// Deserialize a <see cref="Beatmap"/> from a <see cref="string"/>
+    /// </summary>
+    /// <param name="json">The <see cref="string"/> to deserialize from</param>
+    /// <returns>The deserialized <see cref="Beatmap"/></returns>
+    public static Beatmap Deserialize(string json)
+    {
+        return JsonSerializer.Deserialize<Beatmap>(json);
+    }
+
+    /// <summary>
+    /// Deserialize a <see cref="Beatmap"/> from a beatmapset file <see cref="Stream"/>
+    /// </summary>
+    /// <param name="stream">The <see cref="Stream"/> to deserialize from</param>
+    /// <returns>The deserialized <see cref="Beatmap"/></returns>
+    public static Beatmap Deserialize(Stream stream)
+    {
+        return JsonSerializer.Deserialize<Beatmap>(new StreamReader(stream).ReadToEnd());
     }
 }
