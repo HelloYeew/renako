@@ -73,6 +73,26 @@ public class InternalBeatmapImporter
             byte[] beatmapSetJsonBytes = Encoding.UTF8.GetBytes(beatmapSetJsonSeting);
             writeStream.Write(beatmapSetJsonBytes);
             writeStream.Close();
+
+            // beatmap info
+            foreach (Beatmap beatmap in beatmaps)
+            {
+                if (beatmap.BeatmapSet.ID == beatmapSet.ID)
+                {
+                    string beatmapFileName = BeatmapUtility.GetBeatmapFileName(beatmap);
+                    Beatmap copyBeatmap = beatmap.Clone();
+                    copyBeatmap.BackgroundPath = "background.jpg";
+                    copyBeatmap.BeatmapSet = copyBeatmapSet;
+                    writeStream = gameStorage.CreateFileSafely($"{folderName}/{beatmapFileName}.rkb");
+                    string beatmapJsonSetting = JsonSerializer.Serialize(copyBeatmap, new JsonSerializerOptions()
+                    {
+                        WriteIndented = true
+                    });
+                    byte[] beatmapJsonBytes = Encoding.UTF8.GetBytes(beatmapJsonSetting);
+                    writeStream.Write(beatmapJsonBytes);
+                    writeStream.Close();
+                }
+            }
         }
     }
 }
