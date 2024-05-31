@@ -38,7 +38,7 @@ public class BeatmapUtility
 
     public static string GetBeatmapFileName(Beatmap beatmap)
     {
-        return $"{beatmap.BeatmapSet.ID} {beatmap.BeatmapSet.Title} - {beatmap.BeatmapSet.Artist} [{beatmap.DifficultyName}]";
+        return $"{beatmap.ID} {beatmap.BeatmapSet.Title} - {beatmap.BeatmapSet.Artist} [{beatmap.DifficultyName}]";
     }
 
     /// <summary>
