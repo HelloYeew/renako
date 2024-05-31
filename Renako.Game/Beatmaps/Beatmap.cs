@@ -43,7 +43,7 @@ public class Beatmap
     /// <summary>
     /// The list of notes in the beatmap.
     /// </summary>
-    public List<BeatmapNote> Notes { get; set; }
+    public BeatmapNote[] Notes { get; set; }
 
     public override string ToString()
     {

@@ -215,7 +215,7 @@ public class BeatmapTestUtility
                     DifficultyName = BeatmapUtility.CalculateDifficultyLevel(difficultyRating) + " " + difficultyLevel,
                     DifficultyRating = difficultyRating,
                     BackgroundPath = beatmapSet.BackgroundPath,
-                    Notes = notes
+                    Notes = notes.ToArray()
                 });
                 incrementID++;
             }
