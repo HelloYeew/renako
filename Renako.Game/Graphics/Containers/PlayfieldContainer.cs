@@ -156,7 +156,7 @@ public partial class PlayfieldContainer : Container
             }
         });
 
-        playfieldNotes = workingBeatmap.Beatmap.Notes.Select(PlayfieldNote.FromBeatmapNote).ToArray();
+        playfieldNotes = workingBeatmap.Beatmap.Notes != null ? workingBeatmap.Beatmap.Notes.Select(PlayfieldNote.FromBeatmapNote).ToArray() : Array.Empty<PlayfieldNote>();
     }
 
     protected override void Update()
