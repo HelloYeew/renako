@@ -43,7 +43,14 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
             audioManager.Track?.Seek(0);
             audioManager.Track?.Start();
             stopwatchClock.Start();
-        }, 3000);
+        }, 2000);
+
+        if (audioManager.Track != null)
+        {
+            audioManager.Track.Looping = false;
+            audioManager.Track.RestartPoint = 0;
+            audioManager.Track.Completed += this.Exit;
+        }
 
         base.LoadComplete();
     }
