@@ -947,6 +947,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 {
                     Stream coverTextureStream = host.Storage.GetStream(coverPath);
                     coverTexture = Texture.FromStream(host.Renderer, coverTextureStream);
+                    beatmapSwiper.SetTexture(coverTexture);
                     coverTextureStream?.Close();
                 }
 
