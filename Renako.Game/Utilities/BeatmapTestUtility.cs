@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using osu.Framework.Utils;
 using Renako.Game.Beatmaps;
 
 namespace Renako.Game.Utilities;
@@ -192,6 +193,19 @@ public class BeatmapTestUtility
             {
                 double difficultyRating = random.NextDouble() * 18;
 
+                List<BeatmapNote> notes = new List<BeatmapNote>();
+
+                for (int i = 0; i < beatmapSet.TotalLength / 1000; i++)
+                {
+                    notes.Add(new BeatmapNote()
+                    {
+                        Lane = (NoteLane)RNG.Next(0, 4),
+                        Type = NoteType.BasicNote,
+                        StartTime = (i + 1) * 1000,
+                        EndTime = (i + 1) * 1000
+                    });
+                }
+
                 beatmaps.Add(new Beatmap()
                 {
                     ID = incrementID,
@@ -200,7 +214,8 @@ public class BeatmapTestUtility
                     DifficultyLevel = BeatmapUtility.CalculateDifficultyLevel(difficultyRating),
                     DifficultyName = BeatmapUtility.CalculateDifficultyLevel(difficultyRating) + " " + difficultyLevel,
                     DifficultyRating = difficultyRating,
-                    BackgroundPath = beatmapSet.BackgroundPath
+                    BackgroundPath = beatmapSet.BackgroundPath,
+                    Notes = notes
                 });
                 incrementID++;
             }
