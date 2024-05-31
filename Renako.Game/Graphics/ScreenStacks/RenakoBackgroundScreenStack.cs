@@ -113,7 +113,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                 ChangeBackground(playMenuBackgroundTexture);
                 break;
 
-            case (SongSelectionScreen):
+            case (SongSelectionScreen or PlayablePlayfieldScreen):
                 changeBackgroundByBeatmapSet(null, workingBeatmap.BeatmapSet);
                 break;
         }

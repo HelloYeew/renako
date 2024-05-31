@@ -10,6 +10,7 @@ using osuTK.Input;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Utilities;
 
 namespace Renako.Game.Graphics.Screens;
@@ -17,6 +18,7 @@ namespace Renako.Game.Graphics.Screens;
 public partial class PlayerLoadingScreen : RenakoScreen
 {
     private bool loadPlayer;
+    private bool isScreenLoaded;
 
     private RightBottomBeatmapSetDetailContainer beatmapSetDetailContainer;
 
@@ -28,6 +30,9 @@ public partial class PlayerLoadingScreen : RenakoScreen
 
     [Resolved]
     private GameHost host { get; set; }
+
+    [Resolved]
+    private RenakoScreenStack mainScreenStack { get; set; }
 
     public PlayerLoadingScreen(bool loadPlayer = false)
     {
@@ -68,13 +73,27 @@ public partial class PlayerLoadingScreen : RenakoScreen
         beatmapSetDetailContainer.CoverImage = coverTexture;
     }
 
+    protected override void LoadComplete()
+    {
+        Scheduler.AddDelayed(() =>
+        {
+            this.Exit();
+            mainScreenStack.Push(new PlayablePlayfieldScreen());
+        }, 1000);
+    }
+
     protected override bool OnKeyDown(KeyDownEvent e)
     {
         switch (e.Key)
         {
             case Key.Escape:
-                this.Exit();
-                return true;
+                if (!isScreenLoaded)
+                {
+                    this.Exit();
+                    return true;
+                }
+
+                break;
         }
 
         return base.OnKeyDown(e);
