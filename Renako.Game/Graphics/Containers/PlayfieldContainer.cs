@@ -195,7 +195,7 @@ public partial class PlayfieldContainer : Container
     /// <param name="lane"></param>
     internal void ReceiveLaneInput(NoteLane lane)
     {
-        player.MoveTo(new Vector2(getLaneX(lane), player_y), 100, Easing.Out);
+        player.MoveTo(new Vector2(GetLaneX(lane), player_y), 100, Easing.Out);
         processHit(lane);
         addHitAnimation(lane);
     }
@@ -238,7 +238,7 @@ public partial class PlayfieldContainer : Container
         if (!notePool.IsLoaded)
             return null;
 
-        float x = getLaneX(playfieldNote.Lane);
+        float x = GetLaneX(playfieldNote.Lane);
         Note n = notePool.Get(noteObject =>
         {
             noteObject.Position = new Vector2(x, -200);
@@ -272,7 +272,7 @@ public partial class PlayfieldContainer : Container
 
         Indicator indicatorDrawable = indicatorPool.Get(indicatorObject =>
         {
-            indicatorObject.Position = new Vector2(getLaneX(lane), 200);
+            indicatorObject.Position = new Vector2(GetLaneX(lane), 200);
             indicatorObject.LifetimeEnd = Clock.CurrentTime + 500;
             indicatorObject.Size = new Vector2(25);
         });
@@ -401,7 +401,7 @@ public partial class PlayfieldContainer : Container
         Miss
     }
 
-    private static float getLaneX(NoteLane lane)
+    public static float GetLaneX(NoteLane lane)
     {
         return lane switch
         {
