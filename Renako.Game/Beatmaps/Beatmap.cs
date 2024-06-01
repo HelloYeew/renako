@@ -40,6 +40,11 @@ public class Beatmap
     /// </summary>
     public string BackgroundPath { get; set; }
 
+    /// <summary>
+    /// The list of notes in the beatmap.
+    /// </summary>
+    public BeatmapNote[] Notes { get; set; }
+
     public override string ToString()
     {
         return $"{BeatmapSet.Title} [{DifficultyName}] by {Creator} ({DifficultyRating:0.00})";
@@ -65,5 +70,14 @@ public class Beatmap
     public override int GetHashCode()
     {
         return HashCode.Combine(ID, BeatmapSet, Creator, DifficultyName, (int)DifficultyLevel, DifficultyRating, BackgroundPath);
+    }
+
+    /// <summary>
+    /// Create a deep copy of the beatmap
+    /// </summary>
+    /// <returns>A deep copy of the beatmap</returns>
+    public Beatmap Clone()
+    {
+        return (Beatmap)MemberwiseClone();
     }
 }

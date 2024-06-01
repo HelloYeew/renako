@@ -36,7 +36,6 @@ namespace Renako.Game
             Add(logoScreenStack);
             Add(RenakoAudioManager);
             loadComponentSingleFile(settingsScreenStack = new SettingsScreenStack(), Add, true);
-            BeatmapsCollection.GenerateTestCollection();
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) =>
@@ -48,15 +47,16 @@ namespace Renako.Game
 
             internalBeatmapImporter = new InternalBeatmapImporter(AudioManager, TextureStore, Host);
 
-            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
-            beatmapCollectionReader.Read();
-
             if (!LocalConfig.Get<bool>(RenakoSetting.FirstImport) && !DebugUtils.IsNUnitRunning)
             {
                 Logger.Log("First time import detected, importing internal beatmaps...");
+                BeatmapsCollection.GenerateTestCollection();
                 internalBeatmapImporter.Import();
                 LocalConfig.SetValue(RenakoSetting.FirstImport, true);
             }
+
+            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
+            beatmapCollectionReader.Read();
 
             mainScreenStack.Push(new WarningScreen());
         }

@@ -95,6 +95,10 @@ public partial class RenakoAudioManager : CompositeDrawable
         {
             changeTrackOnBeatmapSetChanged(null, workingBeatmap.BeatmapSet);
         }
+        else if (newScreen is PlayerLoadingScreen)
+        {
+            Track?.Stop();
+        }
     }
 
     /// <summary>

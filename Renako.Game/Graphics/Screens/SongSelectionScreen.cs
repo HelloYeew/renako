@@ -53,6 +53,9 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private RenakoConfigManager config { get; set; }
 
+    [Resolved]
+    private RenakoScreenStack mainScreenStack { get; set; }
+
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
@@ -76,7 +79,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private Box beatmapNoteCountBox;
 
     private Container idleRenakoLogoContainer;
-    private IdleBeatmapSetDetailContainer idleDetailsContainer;
+    private RightBottomBeatmapSetDetailContainer rightBottomDetailsContainer;
 
     private RightBottomButton rightBottomButton;
     private BackButton backButton;
@@ -856,7 +859,10 @@ public partial class SongSelectionScreen : RenakoScreen
                     Origin = Anchor.CentreLeft
                 }
             },
-            idleDetailsContainer = new IdleBeatmapSetDetailContainer()
+            rightBottomDetailsContainer = new RightBottomBeatmapSetDetailContainer()
+            {
+                Alpha = 0
+            }
         };
 
         #region Global settings bindable changes
@@ -870,9 +876,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitle.Description = workingBeatmap.BeatmapSet.ArtistUnicode;
                 sourceText.Text = workingBeatmap.BeatmapSet.SourceUnicode;
 
-                idleDetailsContainer.Title = workingBeatmap.BeatmapSet.TitleUnicode;
-                idleDetailsContainer.Artist = workingBeatmap.BeatmapSet.ArtistUnicode;
-                idleDetailsContainer.Source = workingBeatmap.BeatmapSet.SourceUnicode;
+                rightBottomDetailsContainer.Title = workingBeatmap.BeatmapSet.TitleUnicode;
+                rightBottomDetailsContainer.Artist = workingBeatmap.BeatmapSet.ArtistUnicode;
+                rightBottomDetailsContainer.Source = workingBeatmap.BeatmapSet.SourceUnicode;
             }
             else
             {
@@ -880,9 +886,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 songTitle.Description = workingBeatmap.BeatmapSet.Artist;
                 sourceText.Text = workingBeatmap.BeatmapSet.Source;
 
-                idleDetailsContainer.Title = workingBeatmap.BeatmapSet.Title;
-                idleDetailsContainer.Artist = workingBeatmap.BeatmapSet.Artist;
-                idleDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
+                rightBottomDetailsContainer.Title = workingBeatmap.BeatmapSet.Title;
+                rightBottomDetailsContainer.Artist = workingBeatmap.BeatmapSet.Artist;
+                rightBottomDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
 
@@ -918,18 +924,18 @@ public partial class SongSelectionScreen : RenakoScreen
             totalBeatmapSetDifficultyText.Text = $"{calculatedMinMax["min"]} - {calculatedMinMax["max"]}";
             bpmText.Text = item.NewValue.BPM.ToString(CultureInfo.InvariantCulture);
 
-            idleDetailsContainer.Title = useUnicodeInfo.Value ? item.NewValue.TitleUnicode : item.NewValue.Title;
-            idleDetailsContainer.Artist = useUnicodeInfo.Value ? item.NewValue.ArtistUnicode : item.NewValue.Artist;
-            idleDetailsContainer.Source = useUnicodeInfo.Value ? item.NewValue.SourceUnicode : item.NewValue.Source;
+            rightBottomDetailsContainer.Title = useUnicodeInfo.Value ? item.NewValue.TitleUnicode : item.NewValue.Title;
+            rightBottomDetailsContainer.Artist = useUnicodeInfo.Value ? item.NewValue.ArtistUnicode : item.NewValue.Artist;
+            rightBottomDetailsContainer.Source = useUnicodeInfo.Value ? item.NewValue.SourceUnicode : item.NewValue.Source;
 
             songTitle.Texture?.Dispose();
-            idleDetailsContainer.CoverImage?.Dispose();
+            rightBottomDetailsContainer.CoverImage?.Dispose();
 
             if (item.NewValue.UseLocalSource)
             {
                 Texture texture = textureStore.Get(item.NewValue.CoverPath);
                 songTitle.Texture = texture;
-                idleDetailsContainer.CoverImage = texture;
+                rightBottomDetailsContainer.CoverImage = texture;
             }
             else
             {
@@ -941,11 +947,12 @@ public partial class SongSelectionScreen : RenakoScreen
                 {
                     Stream coverTextureStream = host.Storage.GetStream(coverPath);
                     coverTexture = Texture.FromStream(host.Renderer, coverTextureStream);
+                    beatmapSwiper.SetTexture(coverTexture);
                     coverTextureStream?.Close();
                 }
 
                 songTitle.Texture = coverTexture;
-                idleDetailsContainer.CoverImage = coverTexture;
+                rightBottomDetailsContainer.CoverImage = coverTexture;
             }
 
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapSetID, item.NewValue.ID));
@@ -1079,7 +1086,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomButton.FadeOut(500, Easing.OutQuart);
 
                 idleRenakoLogoContainer.FadeIn(1000, Easing.OutQuart);
-                idleDetailsContainer.FadeIn(1000, Easing.OutQuart);
+                rightBottomDetailsContainer.FadeIn(1000, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0.25f);
             }
@@ -1096,7 +1103,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomButton.FadeIn(500, Easing.OutQuart);
 
                 idleRenakoLogoContainer.FadeOut(250, Easing.OutQuart);
-                idleDetailsContainer.FadeOut(250, Easing.OutQuart);
+                rightBottomDetailsContainer.FadeOut(250, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0f);
             }
@@ -1166,6 +1173,19 @@ public partial class SongSelectionScreen : RenakoScreen
         songListContainer.MoveToY(600, 750, Easing.OutQuart);
 
         return base.OnExiting(e);
+    }
+
+    public override void OnSuspending(ScreenTransitionEvent e)
+    {
+        interactionTimer.Stop();
+        base.OnSuspending(e);
+    }
+
+    public override void OnResuming(ScreenTransitionEvent e)
+    {
+        base.OnResuming(e);
+        interactionTimer.Start();
+        backgroundScreenStack.AdjustMaskAlpha(0f);
     }
 
     private void toggleNextButton()
@@ -1284,7 +1304,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 break;
 
             case SongSelectionScreenState.LastSetting:
-                // TODO: Go to gameplay loading screen
+                mainScreenStack?.Push(new PlayerLoadingScreen());
+                backgroundScreenStack.AdjustMaskAlpha(0.5f);
                 break;
 
             default:

@@ -79,4 +79,14 @@ public class BeatmapSetUtility
     {
         return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.TrackPath;
     }
+
+    /// <summary>
+    /// Returns the file name of the beatmap set in game storage (Format: {ID} {Title} - {Artist})
+    /// </summary>
+    /// <param name="beatmapSet"></param>
+    /// <returns></returns>
+    public static string GetBeatmapSetFileName(BeatmapSet beatmapSet)
+    {
+        return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
+    }
 }
