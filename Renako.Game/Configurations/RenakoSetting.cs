@@ -4,6 +4,7 @@ public enum RenakoSetting
 {
     UseUnicodeInfo,
     DisableIdleMode,
+    DisableVideoPreview,
 
     ShowFPSCounter,
 

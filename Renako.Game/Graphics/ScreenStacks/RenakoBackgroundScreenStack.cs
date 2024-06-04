@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -5,6 +6,7 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK.Graphics;
@@ -218,16 +220,35 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         {
             videoContainer.FadeOut(500, Easing.OutCubic);
             videoContainer.Clear();
-            videoContainer.Add(video = new LoopableVideo(host.Storage.GetFullPath(videoPath))
+
+            try
             {
-                RelativeSizeAxes = Axes.Both,
-                FillMode = FillMode.Fill
-            });
+                videoContainer.Add(video = new LoopableVideo(host.Storage.GetFullPath(videoPath))
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    FillMode = FillMode.Fill
+                });
+            }
+            catch (Exception e)
+            {
+                Logger.Log($"Failed to load video: {e.Message}", LoggingTarget.Runtime, LogLevel.Error);
+                return;
+            }
+
             video.RestartTime = startTime;
             video.Seek(startTime);
             video.LoopToRestartTime = true;
             videoContainer.FadeIn(500, Easing.OutCubic);
         });
+    }
+
+    /// <summary>
+    /// Seek the background video to the specified time.
+    /// </summary>
+    /// <param name="time">The time to seek to.</param>
+    public void SeekBackgroundVideo(double time)
+    {
+        Scheduler.Add(() => video?.Seek(time));
     }
 
     /// <summary>

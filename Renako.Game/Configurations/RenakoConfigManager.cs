@@ -14,6 +14,7 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
     {
         SetDefault(RenakoSetting.UseUnicodeInfo, false);
         SetDefault(RenakoSetting.DisableIdleMode, false);
+        SetDefault(RenakoSetting.DisableVideoPreview, false);
 
         SetDefault(RenakoSetting.ShowFPSCounter, false);
 

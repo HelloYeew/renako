@@ -21,6 +21,7 @@ using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
 using osuTK.Input;
+using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
@@ -109,7 +110,7 @@ public partial class SongSelectionScreen : RenakoScreen
     public const double INTERACTION_TIMEOUT = 15000;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
+    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager, RenakoAudioManager renakoAudioManager)
     {
         leftClickSample = audioManager.Samples.Get("UI/click-small-left");
         rightClickSample = audioManager.Samples.Get("UI/click-small-right");
@@ -891,6 +892,20 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
+        config.GetBindable<bool>(RenakoSetting.DisableVideoPreview).ValueChanged += delegate
+        {
+            Logger.Log($"Video preview is now {(config.Get<bool>(RenakoSetting.DisableVideoPreview) ? "disabled" : "enabled")}");
+
+            if (workingBeatmap.BeatmapSet.HasVideo && workingBeatmap.BeatmapSet.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
+            {
+                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), workingBeatmap.BeatmapSet.PreviewTime);
+                backgroundScreenStack.SeekBackgroundVideo(renakoAudioManager.Track.CurrentTime);
+            }
+            else
+            {
+                backgroundScreenStack.HideBackgroundVideo(true);
+            }
+        };
 
         #endregion
 
@@ -964,7 +979,7 @@ public partial class SongSelectionScreen : RenakoScreen
             }
 
             // Video background
-            if (item.NewValue.HasVideo && item.NewValue.VideoPath != null)
+            if (item.NewValue.HasVideo && item.NewValue.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
             {
                 backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(item.NewValue), item.NewValue.PreviewTime);
             }
@@ -1181,6 +1196,8 @@ public partial class SongSelectionScreen : RenakoScreen
         this.FadeOut(500, Easing.OutQuart);
         songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
         songListContainer.MoveToY(600, 750, Easing.OutQuart);
+
+        backgroundScreenStack.HideBackgroundVideo(true);
 
         return base.OnExiting(e);
     }
