@@ -9,6 +9,8 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK.Graphics;
 using Renako.Game.Beatmaps;
+using Renako.Game.Configurations;
+using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
 
@@ -26,6 +28,9 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Texture fallbackBeatmapBackground;
     private Container backgroundContainer;
     private Box maskBox;
+    private Container videoContainer;
+
+    private LoopableVideo video;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -37,7 +42,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private GameHost host { get; set; }
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore)
+    private void load(TextureStore textureStore, RenakoConfigManager configManager)
     {
         this.textureStore = textureStore;
 
@@ -67,6 +72,13 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     FillMode = FillMode.Fill,
+                    Alpha = 0
+                },
+                videoContainer = new Container()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Alpha = 0
                 }
             }
@@ -193,5 +205,42 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     public void ResetMaskAlpha(int duration = 500, Easing easing = Easing.OutQuart)
     {
         AdjustMaskAlpha(0, duration, easing);
+    }
+
+    /// <summary>
+    /// Change the background video.
+    /// </summary>
+    /// <param name="videoPath">The path of the video file in game storage.</param>
+    /// <param name="startTime">The start time of the video.</param>
+    public void ChangeBackgroundVideo(string videoPath, double startTime = 0)
+    {
+        Scheduler.Add(() =>
+        {
+            videoContainer.FadeOut(500, Easing.OutCubic);
+            videoContainer.Clear();
+            videoContainer.Add(video = new LoopableVideo(host.Storage.GetFullPath(videoPath))
+            {
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fill
+            });
+            video.RestartTime = startTime;
+            video.Seek(startTime);
+            video.LoopToRestartTime = true;
+            videoContainer.FadeIn(500, Easing.OutCubic);
+        });
+    }
+
+    /// <summary>
+    /// Hide the background video.
+    /// </summary>
+    /// <param name="dispose">Whether to dispose the video on hide.</param>
+    public void HideBackgroundVideo(bool dispose = false)
+    {
+        Scheduler.Add(() =>
+        {
+            if (dispose)
+                video = null;
+            videoContainer.FadeOut(500, Easing.OutCubic);
+        });
     }
 }

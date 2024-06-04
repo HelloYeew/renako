@@ -89,4 +89,17 @@ public class BeatmapSetUtility
     {
         return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
     }
+
+    /// <summary>
+    /// Return the path of the video of <see cref="BeatmapSet"/>, will return empty string if the beatmap set doesn't have a video.
+    /// </summary>
+    /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the video path from</param>
+    /// <returns></returns>
+    public static string GetVideoPath(BeatmapSet beatmapSet)
+    {
+        if (!beatmapSet.HasVideo)
+            return "";
+
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.VideoPath;
+    }
 }

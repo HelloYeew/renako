@@ -75,11 +75,14 @@ public partial class PlayerLoadingScreen : RenakoScreen
 
     protected override void LoadComplete()
     {
-        Scheduler.AddDelayed(() =>
+        if (loadPlayer)
         {
-            this.Exit();
-            mainScreenStack.Push(new PlayablePlayfieldScreen());
-        }, 1000);
+            Scheduler.AddDelayed(() =>
+            {
+                this.Exit();
+                mainScreenStack.Push(new PlayablePlayfieldScreen());
+            }, 1000);
+        }
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
