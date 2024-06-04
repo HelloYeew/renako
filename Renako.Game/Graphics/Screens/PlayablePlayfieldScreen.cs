@@ -1,3 +1,4 @@
+using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
@@ -35,58 +36,72 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
             RelativeSizeAxes = Axes.Both
         });
         // Dummy button for testing on touch screen
+        if (RuntimeInfo.IsMobile)
+        {
+            AddInternal(new BasicButton()
+            {
+                Text = "1",
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane1),
+                Size = new Vector2(100),
+                BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
+                Alpha = 0.25f,
+                Masking = true,
+                CornerRadius = 25,
+                Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane1), 200)
+            });
+            AddInternal(new BasicButton()
+            {
+                Text = "2",
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane2),
+                Size = new Vector2(100),
+                BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
+                Alpha = 0.25f,
+                Masking = true,
+                CornerRadius = 25,
+                Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane2), 200)
+            });
+            AddInternal(new BasicButton()
+            {
+                Text = "3",
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane3),
+                Size = new Vector2(100),
+                BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
+                Alpha = 0.25f,
+                Masking = true,
+                CornerRadius = 25,
+                Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane3), 200)
+            });
+            AddInternal(new BasicButton()
+            {
+                Text = "4",
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane4),
+                Size = new Vector2(100),
+                BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
+                Alpha = 0.25f,
+                Masking = true,
+                CornerRadius = 25,
+                Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane4), 200)
+            });
+        }
+
         AddInternal(new BasicButton()
         {
-            Text = "1",
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane1),
-            Size = new Vector2(50),
-            BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
-            Alpha = 0.5f,
-            Masking = true,
-            CornerRadius = 25,
-            Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane1), 200)
+            Text = "Exit",
+            Anchor = Anchor.BottomRight,
+            Origin = Anchor.BottomRight,
+            Action = this.Exit,
+            Size = new Vector2(100, 50),
+            Margin = new MarginPadding(20)
         });
-        AddInternal(new BasicButton()
-        {
-            Text = "2",
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane2),
-            Size = new Vector2(50),
-            BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
-            Alpha = 0.5f,
-            Masking = true,
-            CornerRadius = 25,
-            Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane2), 200)
-        });
-        AddInternal(new BasicButton()
-        {
-            Text = "3",
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane3),
-            Size = new Vector2(50),
-            BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
-            Alpha = 0.5f,
-            Masking = true,
-            CornerRadius = 25,
-            Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane3), 200)
-        });
-        AddInternal(new BasicButton()
-        {
-            Text = "4",
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            Action = () => playfieldContainer.ReceiveLaneInput(NoteLane.Lane4),
-            Size = new Vector2(50),
-            BackgroundColour = Color4Extensions.FromHex("F0E0E0"),
-            Alpha = 0.5f,
-            Masking = true,
-            CornerRadius = 25,
-            Position = new Vector2(PlayfieldContainer.GetLaneX(NoteLane.Lane4), 200)
-        });
+
         backgroundScreenStack.AdjustMaskAlpha(configManager.Get<int>(RenakoSetting.PlayfieldBackgroundDim) / 100f);
     }
 
