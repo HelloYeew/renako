@@ -100,6 +100,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private TextureStore textureStore;
 
     private Bindable<bool> useUnicodeInfo;
+    private Bindable<bool> disableVideoBackground;
 
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
@@ -892,7 +893,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
-        config.GetBindable<bool>(RenakoSetting.DisableVideoPreview).ValueChanged += delegate
+        disableVideoBackground = config.GetBindable<bool>(RenakoSetting.DisableVideoPreview);
+        disableVideoBackground.ValueChanged += delegate
         {
             Logger.Log($"Video preview is now {(config.Get<bool>(RenakoSetting.DisableVideoPreview) ? "disabled" : "enabled")}");
 
