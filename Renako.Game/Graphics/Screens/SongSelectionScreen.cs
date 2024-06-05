@@ -57,6 +57,9 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
+    [Resolved]
+    private RenakoAudioManager renakoAudioManager { get; set; }
+
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
@@ -111,7 +114,7 @@ public partial class SongSelectionScreen : RenakoScreen
     public const double INTERACTION_TIMEOUT = 15000;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager, RenakoAudioManager renakoAudioManager)
+    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
     {
         leftClickSample = audioManager.Samples.Get("UI/click-small-left");
         rightClickSample = audioManager.Samples.Get("UI/click-small-right");
@@ -896,8 +899,6 @@ public partial class SongSelectionScreen : RenakoScreen
         disableVideoBackground = config.GetBindable<bool>(RenakoSetting.DisableVideoPreview);
         disableVideoBackground.ValueChanged += delegate
         {
-            Logger.Log($"Video preview is now {(config.Get<bool>(RenakoSetting.DisableVideoPreview) ? "disabled" : "enabled")}");
-
             if (workingBeatmap.BeatmapSet.HasVideo && workingBeatmap.BeatmapSet.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
             {
                 backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), workingBeatmap.BeatmapSet.PreviewTime, workingBeatmap.BeatmapSet.TotalLength);
@@ -1207,6 +1208,7 @@ public partial class SongSelectionScreen : RenakoScreen
     public override void OnSuspending(ScreenTransitionEvent e)
     {
         interactionTimer.Stop();
+        backgroundScreenStack.HideBackgroundVideo();
         base.OnSuspending(e);
     }
 
@@ -1215,6 +1217,12 @@ public partial class SongSelectionScreen : RenakoScreen
         base.OnResuming(e);
         interactionTimer.Start();
         backgroundScreenStack.AdjustMaskAlpha(0f);
+
+        if (backgroundScreenStack.HaveBackgroundVideo())
+        {
+            backgroundScreenStack.ShowBackgroundVideo();
+            backgroundScreenStack.SeekBackgroundVideo(workingBeatmap.BeatmapSet.PreviewTime);
+        }
     }
 
     private void toggleNextButton()
@@ -1333,7 +1341,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 break;
 
             case SongSelectionScreenState.LastSetting:
-                mainScreenStack?.Push(new PlayerLoadingScreen());
+                mainScreenStack?.Push(new PlayerLoadingScreen(true));
                 backgroundScreenStack.AdjustMaskAlpha(0.5f);
                 break;
 

@@ -34,6 +34,9 @@ public partial class PlayerLoadingScreen : RenakoScreen
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 
+    [Resolved]
+    private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
+
     public PlayerLoadingScreen(bool loadPlayer = false)
     {
         this.loadPlayer = loadPlayer;
@@ -71,6 +74,11 @@ public partial class PlayerLoadingScreen : RenakoScreen
         }
 
         beatmapSetDetailContainer.CoverImage = coverTexture;
+
+        if (workingBeatmap.BeatmapSet.HasVideo)
+        {
+            backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), 0f, workingBeatmap.BeatmapSet.TotalLength, false);
+        }
     }
 
     protected override void LoadComplete()

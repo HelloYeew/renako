@@ -215,7 +215,8 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// <param name="videoPath">The path of the video file in game storage.</param>
     /// <param name="startTime">The start time of the video.</param>
     /// <param name="endTime">The end time of the video and will perform loop back to the start time.</param>
-    public void ChangeBackgroundVideo(string videoPath, double startTime = 0, double endTime = 0)
+    /// <param name="fadeIn">Whether to fade in the video container when changing.</param>
+    public void ChangeBackgroundVideo(string videoPath, double startTime = 0, double endTime = 0, bool fadeIn = true)
     {
         Scheduler.Add(() =>
         {
@@ -242,7 +243,8 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             video.StartTime = startTime;
             video.Seek(startTime);
             video.LoopToStartTime = true;
-            videoContainer.FadeIn(500, Easing.OutCubic);
+            if (fadeIn)
+                videoContainer.FadeIn(500, Easing.OutCubic);
         });
     }
 
@@ -267,5 +269,22 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                 video = null;
             videoContainer.FadeOut(500, Easing.OutCubic);
         });
+    }
+
+    /// <summary>
+    /// Show the background video
+    /// </summary>
+    public void ShowBackgroundVideo()
+    {
+        Scheduler.Add(() => videoContainer.FadeIn(500, Easing.OutCubic));
+    }
+
+    /// <summary>
+    /// Whether the background video is available.
+    /// </summary>
+    /// <returns>The availability of the background video.</returns>
+    public bool HaveBackgroundVideo()
+    {
+        return video != null;
     }
 }
