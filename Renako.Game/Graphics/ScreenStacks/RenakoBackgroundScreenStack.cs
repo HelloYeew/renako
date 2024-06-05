@@ -32,7 +32,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Box maskBox;
     private Container videoContainer;
 
-    private LoopableVideo video;
+    private AbLoopVideo video;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -214,7 +214,8 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     /// </summary>
     /// <param name="videoPath">The path of the video file in game storage.</param>
     /// <param name="startTime">The start time of the video.</param>
-    public void ChangeBackgroundVideo(string videoPath, double startTime = 0)
+    /// <param name="endTime">The end time of the video and will perform loop back to the start time.</param>
+    public void ChangeBackgroundVideo(string videoPath, double startTime = 0, double endTime = 0)
     {
         Scheduler.Add(() =>
         {
@@ -223,8 +224,10 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
 
             try
             {
-                videoContainer.Add(video = new LoopableVideo(host.Storage.GetFullPath(videoPath))
+                videoContainer.Add(video = new AbLoopVideo(host.Storage.GetFullPath(videoPath))
                 {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     FillMode = FillMode.Fill
                 });
@@ -235,9 +238,10 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                 return;
             }
 
-            video.RestartTime = startTime;
+            video.EndTime = endTime;
+            video.StartTime = startTime;
             video.Seek(startTime);
-            video.LoopToRestartTime = true;
+            video.LoopToStartTime = true;
             videoContainer.FadeIn(500, Easing.OutCubic);
         });
     }

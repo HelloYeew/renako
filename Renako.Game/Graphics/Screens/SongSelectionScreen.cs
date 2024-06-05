@@ -900,7 +900,7 @@ public partial class SongSelectionScreen : RenakoScreen
 
             if (workingBeatmap.BeatmapSet.HasVideo && workingBeatmap.BeatmapSet.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
             {
-                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), workingBeatmap.BeatmapSet.PreviewTime);
+                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), workingBeatmap.BeatmapSet.PreviewTime, workingBeatmap.BeatmapSet.TotalLength);
                 backgroundScreenStack.SeekBackgroundVideo(renakoAudioManager.Track.CurrentTime);
             }
             else
@@ -983,7 +983,7 @@ public partial class SongSelectionScreen : RenakoScreen
             // Video background
             if (item.NewValue.HasVideo && item.NewValue.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
             {
-                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(item.NewValue), item.NewValue.PreviewTime);
+                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(item.NewValue), item.NewValue.PreviewTime, item.NewValue.TotalLength);
             }
             else
             {
