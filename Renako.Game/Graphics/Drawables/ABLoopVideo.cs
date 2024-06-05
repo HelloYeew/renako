@@ -45,6 +45,13 @@ public partial class AbLoopVideo : Video
     {
         base.Update();
 
+        // If current end time is more than the video duration, set it to the video duration.
+        // Or if it's not set, set it to the video duration.
+        if (EndTime > Duration || EndTime == 0)
+        {
+            EndTime = Duration;
+        }
+
         if (PlaybackPosition >= EndTime && LoopToStartTime)
         {
             Seek(StartTime);

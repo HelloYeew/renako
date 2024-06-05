@@ -238,7 +238,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                 return;
             }
 
-            video.EndTime = endTime;
+            video.EndTime = video.Duration < endTime ? video.Duration : endTime;
             video.StartTime = startTime;
             video.Seek(startTime);
             video.LoopToStartTime = true;
