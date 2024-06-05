@@ -23,7 +23,7 @@ public partial class PlayfieldContainer : Container
     private Container playfield;
     private Container drawablePlayfield;
     private Circle player;
-    private statistics stats = new statistics();
+    private Statistics stats = new Statistics();
     private RenakoSpriteText scoreText;
     private RenakoSpriteText criticalText;
     private RenakoSpriteText breakText;
@@ -413,7 +413,7 @@ public partial class PlayfieldContainer : Container
         };
     }
 
-    private class statistics
+    private class Statistics
     {
         public double Score { get; set; }
 

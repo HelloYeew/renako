@@ -17,7 +17,7 @@ namespace Renako.Game.Graphics.Screens;
 
 public partial class PlayerLoadingScreen : RenakoScreen
 {
-    private bool loadPlayer;
+    private readonly bool loadPlayer;
     private bool isScreenLoaded;
 
     private RightBottomBeatmapSetDetailContainer beatmapSetDetailContainer;
@@ -83,6 +83,8 @@ public partial class PlayerLoadingScreen : RenakoScreen
 
     protected override void LoadComplete()
     {
+        isScreenLoaded = true;
+
         if (loadPlayer)
         {
             Scheduler.AddDelayed(() =>
