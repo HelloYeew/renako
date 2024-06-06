@@ -196,6 +196,14 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 },
                                 new SpriteText()
                                 {
+                                    Text = "Disable video on song select"
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.DisableVideoPreview)
+                                },
+                                new SpriteText()
+                                {
                                     Text = "Display".ToUpper(),
                                     Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
                                 },

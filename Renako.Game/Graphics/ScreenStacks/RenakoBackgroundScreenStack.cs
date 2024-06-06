@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
@@ -5,10 +6,13 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
+using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK.Graphics;
 using Renako.Game.Beatmaps;
+using Renako.Game.Configurations;
+using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
 
@@ -26,6 +30,9 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private Texture fallbackBeatmapBackground;
     private Container backgroundContainer;
     private Box maskBox;
+    private Container videoContainer;
+
+    private AbLoopVideo video;
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
@@ -37,7 +44,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     private GameHost host { get; set; }
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore)
+    private void load(TextureStore textureStore, RenakoConfigManager configManager)
     {
         this.textureStore = textureStore;
 
@@ -67,6 +74,13 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
                     Origin = Anchor.Centre,
                     RelativeSizeAxes = Axes.Both,
                     FillMode = FillMode.Fill,
+                    Alpha = 0
+                },
+                videoContainer = new Container()
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
                     Alpha = 0
                 }
             }
@@ -193,5 +207,84 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     public void ResetMaskAlpha(int duration = 500, Easing easing = Easing.OutQuart)
     {
         AdjustMaskAlpha(0, duration, easing);
+    }
+
+    /// <summary>
+    /// Change the background video.
+    /// </summary>
+    /// <param name="videoPath">The path of the video file in game storage.</param>
+    /// <param name="startTime">The start time of the video.</param>
+    /// <param name="endTime">The end time of the video and will perform loop back to the start time.</param>
+    /// <param name="fadeIn">Whether to fade in the video container when changing.</param>
+    public void ChangeBackgroundVideo(string videoPath, double startTime = 0, double endTime = 0, bool fadeIn = true)
+    {
+        Scheduler.Add(() =>
+        {
+            videoContainer.FadeOut(500, Easing.OutCubic);
+            videoContainer.Clear();
+
+            try
+            {
+                videoContainer.Add(video = new AbLoopVideo(host.Storage.GetFullPath(videoPath))
+                {
+                    Anchor = Anchor.Centre,
+                    Origin = Anchor.Centre,
+                    RelativeSizeAxes = Axes.Both,
+                    FillMode = FillMode.Fill
+                });
+            }
+            catch (Exception e)
+            {
+                Logger.Log($"Failed to load video: {e.Message}", LoggingTarget.Runtime, LogLevel.Error);
+                return;
+            }
+
+            video.EndTime = video.Duration < endTime ? video.Duration : endTime;
+            video.StartTime = startTime;
+            video.Seek(startTime);
+            video.LoopToStartTime = true;
+            if (fadeIn)
+                videoContainer.FadeIn(500, Easing.OutCubic);
+        });
+    }
+
+    /// <summary>
+    /// Seek the background video to the specified time.
+    /// </summary>
+    /// <param name="time">The time to seek to.</param>
+    public void SeekBackgroundVideo(double time)
+    {
+        Scheduler.Add(() => video?.Seek(time));
+    }
+
+    /// <summary>
+    /// Hide the background video.
+    /// </summary>
+    /// <param name="dispose">Whether to dispose the video on hide.</param>
+    public void HideBackgroundVideo(bool dispose = false)
+    {
+        Scheduler.Add(() =>
+        {
+            if (dispose)
+                video = null;
+            videoContainer.FadeOut(500, Easing.OutCubic);
+        });
+    }
+
+    /// <summary>
+    /// Show the background video
+    /// </summary>
+    public void ShowBackgroundVideo()
+    {
+        Scheduler.Add(() => videoContainer.FadeIn(500, Easing.OutCubic));
+    }
+
+    /// <summary>
+    /// Whether the background video is available.
+    /// </summary>
+    /// <returns>The availability of the background video.</returns>
+    public bool HaveBackgroundVideo()
+    {
+        return video != null;
     }
 }

@@ -28,6 +28,9 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
     [Resolved]
     private RenakoAudioManager audioManager { get; set; }
 
+    [Resolved]
+    private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(RenakoConfigManager configManager, RenakoBackgroundScreenStack backgroundScreenStack)
     {
@@ -35,6 +38,7 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
         {
             RelativeSizeAxes = Axes.Both
         });
+
         // Dummy button for testing on touch screen
         if (RuntimeInfo.IsMobile)
         {
@@ -114,6 +118,8 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
             audioManager.Track?.Seek(0);
             audioManager.Track?.Start();
             stopwatchClock.Start();
+            backgroundScreenStack.SeekBackgroundVideo(0f);
+            backgroundScreenStack.ShowBackgroundVideo();
         }, 2000);
 
         if (audioManager.Track != null)

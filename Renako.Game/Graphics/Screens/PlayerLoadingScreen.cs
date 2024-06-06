@@ -17,7 +17,7 @@ namespace Renako.Game.Graphics.Screens;
 
 public partial class PlayerLoadingScreen : RenakoScreen
 {
-    private bool loadPlayer;
+    private readonly bool loadPlayer;
     private bool isScreenLoaded;
 
     private RightBottomBeatmapSetDetailContainer beatmapSetDetailContainer;
@@ -33,6 +33,9 @@ public partial class PlayerLoadingScreen : RenakoScreen
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
+
+    [Resolved]
+    private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
 
     public PlayerLoadingScreen(bool loadPlayer = false)
     {
@@ -71,15 +74,25 @@ public partial class PlayerLoadingScreen : RenakoScreen
         }
 
         beatmapSetDetailContainer.CoverImage = coverTexture;
+
+        if (workingBeatmap.BeatmapSet.HasVideo)
+        {
+            backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), 0f, workingBeatmap.BeatmapSet.TotalLength, false);
+        }
     }
 
     protected override void LoadComplete()
     {
-        Scheduler.AddDelayed(() =>
+        isScreenLoaded = true;
+
+        if (loadPlayer)
         {
-            this.Exit();
-            mainScreenStack.Push(new PlayablePlayfieldScreen());
-        }, 1000);
+            Scheduler.AddDelayed(() =>
+            {
+                this.Exit();
+                mainScreenStack.Push(new PlayablePlayfieldScreen());
+            }, 1000);
+        }
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)

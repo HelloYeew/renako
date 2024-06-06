@@ -21,6 +21,7 @@ using osu.Framework.Screens;
 using osu.Framework.Timing;
 using osuTK;
 using osuTK.Input;
+using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
@@ -55,6 +56,9 @@ public partial class SongSelectionScreen : RenakoScreen
 
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
+
+    [Resolved]
+    private RenakoAudioManager renakoAudioManager { get; set; }
 
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
@@ -99,6 +103,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private TextureStore textureStore;
 
     private Bindable<bool> useUnicodeInfo;
+    private Bindable<bool> disableVideoBackground;
 
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
@@ -891,6 +896,19 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomDetailsContainer.Source = workingBeatmap.BeatmapSet.Source;
             }
         };
+        disableVideoBackground = config.GetBindable<bool>(RenakoSetting.DisableVideoPreview);
+        disableVideoBackground.ValueChanged += delegate
+        {
+            if (workingBeatmap.BeatmapSet.HasVideo && workingBeatmap.BeatmapSet.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
+            {
+                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(workingBeatmap.BeatmapSet), workingBeatmap.BeatmapSet.PreviewTime, workingBeatmap.BeatmapSet.TotalLength);
+                backgroundScreenStack.SeekBackgroundVideo(renakoAudioManager.Track.CurrentTime);
+            }
+            else
+            {
+                backgroundScreenStack.HideBackgroundVideo(true);
+            }
+        };
 
         #endregion
 
@@ -961,6 +979,16 @@ public partial class SongSelectionScreen : RenakoScreen
             if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length >= 1)
             {
                 workingBeatmap.Beatmap = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue)[0];
+            }
+
+            // Video background
+            if (item.NewValue.HasVideo && item.NewValue.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
+            {
+                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(item.NewValue), item.NewValue.PreviewTime, item.NewValue.TotalLength);
+            }
+            else
+            {
+                backgroundScreenStack.HideBackgroundVideo(true);
             }
 
             // Disable the right bottom button if there is no beatmap in the beatmap set.
@@ -1172,12 +1200,15 @@ public partial class SongSelectionScreen : RenakoScreen
         songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
         songListContainer.MoveToY(600, 750, Easing.OutQuart);
 
+        backgroundScreenStack.HideBackgroundVideo(true);
+
         return base.OnExiting(e);
     }
 
     public override void OnSuspending(ScreenTransitionEvent e)
     {
         interactionTimer.Stop();
+        backgroundScreenStack.HideBackgroundVideo();
         base.OnSuspending(e);
     }
 
@@ -1186,6 +1217,12 @@ public partial class SongSelectionScreen : RenakoScreen
         base.OnResuming(e);
         interactionTimer.Start();
         backgroundScreenStack.AdjustMaskAlpha(0f);
+
+        if (backgroundScreenStack.HaveBackgroundVideo())
+        {
+            backgroundScreenStack.ShowBackgroundVideo();
+            backgroundScreenStack.SeekBackgroundVideo(workingBeatmap.BeatmapSet.PreviewTime);
+        }
     }
 
     private void toggleNextButton()
@@ -1304,7 +1341,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 break;
 
             case SongSelectionScreenState.LastSetting:
-                mainScreenStack?.Push(new PlayerLoadingScreen());
+                mainScreenStack?.Push(new PlayerLoadingScreen(true));
                 backgroundScreenStack.AdjustMaskAlpha(0.5f);
                 break;
 
