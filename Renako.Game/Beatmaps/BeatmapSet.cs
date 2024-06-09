@@ -91,6 +91,11 @@ public class BeatmapSet
     /// </summary>
     public string VideoPath { get; set; } = "";
 
+    /// <summary>
+    /// Whether the beatmap set need to be hidden from the selection or not.
+    /// </summary>
+    public bool Hide { get; set; }
+
     public override string ToString()
     {
         return $"{Title} - {Artist}";

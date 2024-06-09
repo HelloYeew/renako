@@ -142,9 +142,21 @@ public partial class SongSelectionScreen : RenakoScreen
         workingBeatmap.BeatmapSet = config.Get<int>(RenakoSetting.LatestBeatmapSetID) == 0 ? beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id) : beatmapsCollection.GetBeatmapSetByID(config.Get<int>(RenakoSetting.LatestBeatmapSetID));
         workingBeatmap.Beatmap = config.Get<int>(RenakoSetting.LatestBeatmapID) == 0 ? beatmapsCollection.GetBeatmapByID(default_beatmap_id) : beatmapsCollection.GetBeatmapByID(config.Get<int>(RenakoSetting.LatestBeatmapID));
 
+        if (workingBeatmap.BeatmapSet == null || workingBeatmap.BeatmapSet.Hide)
+        {
+            workingBeatmap.BeatmapSet = beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id);
+        }
+
+        workingBeatmap.Beatmap ??= beatmapsCollection.GetBeatmapByID(default_beatmap_id);
+
         foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
         {
             Texture texture;
+
+            if (beatmapSet.Hide)
+            {
+                continue;
+            }
 
             if (beatmapSet.UseLocalSource)
             {

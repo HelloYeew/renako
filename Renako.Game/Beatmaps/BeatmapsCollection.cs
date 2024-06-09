@@ -16,6 +16,7 @@ public class BeatmapsCollection
     {
         BeatmapSets = new List<BeatmapSet>();
         Beatmaps = new List<Beatmap>();
+        addThemeSongBeatmapSet();
     }
 
     /// <summary>
@@ -26,6 +27,52 @@ public class BeatmapsCollection
         BeatmapTestUtility beatmapTestUtility = new BeatmapTestUtility();
         BeatmapSets = beatmapTestUtility.BeatmapSets;
         Beatmaps = beatmapTestUtility.Beatmaps;
+    }
+
+    private void addThemeSongBeatmapSet()
+    {
+        // TODO: Get proper Title, Artist and Source translated from source
+        // TODO: Also change background
+        BeatmapSets.Add(new BeatmapSet()
+        {
+            ID = -1,
+            Title = "Night Beauty",
+            TitleUnicode = "月下美人",
+            Artist = "Manbou 2nd class",
+            ArtistUnicode = "まんぼう二等兵",
+            Source = "Manbou 2nd class (Renako Main Menu Theme Song)",
+            SourceUnicode = "まんぼう二等兵 (Renako Main Menu Theme Song)",
+            TotalLength = 525000,
+            PreviewTime = 171960,
+            BPM = 180,
+            Creator = "Renako",
+            HasVideo = false,
+            UseLocalSource = true,
+            CoverPath = "Screen/main-background.jpeg",
+            TrackPath = "theme/main-theme.mp3",
+            BackgroundPath = "Screen/main-background.jpeg",
+            Hide = true
+        });
+        BeatmapSets.Add(new BeatmapSet()
+        {
+            ID = -2,
+            Title = "Emotional catharsis",
+            TitleUnicode = "情動カタルシス",
+            Artist = "Manbou 2nd class",
+            ArtistUnicode = "まんぼう二等兵",
+            Source = "Manbou 2nd class (Renako Play Menu Theme Song)",
+            SourceUnicode = "まんぼう二等兵 (Renako Play Menu Theme Song)",
+            TotalLength = 311000,
+            PreviewTime = 0,
+            BPM = 148,
+            Creator = "Renako",
+            HasVideo = false,
+            UseLocalSource = true,
+            CoverPath = "Screen/play-background.jpg",
+            TrackPath = "theme/play-theme.mp3",
+            BackgroundPath = "Screen/play-background.jpg",
+            Hide = true
+        });
     }
 
     /// <summary>
