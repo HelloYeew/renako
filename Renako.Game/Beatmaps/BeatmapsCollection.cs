@@ -43,7 +43,7 @@ public class BeatmapsCollection
             Source = "Manbou 2nd class (Renako Main Menu Theme Song)",
             SourceUnicode = "まんぼう二等兵 (Renako Main Menu Theme Song)",
             TotalLength = 525000,
-            PreviewTime = 171970,
+            PreviewTime = 171960,
             BPM = 180,
             Creator = "Renako",
             HasVideo = false,
