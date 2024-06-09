@@ -88,7 +88,7 @@ dotnet test
 
 Contributing in the form of pull request, suggestions or bug reports via issues are welcome. If interested to touch on the game's design, please contact me beforehand working on designing. Idea or suggestions via issues are welcome too.
 
-Also, if you want to contact me directly, you can contact me via the contact in my GitHub profile. Don't hesitate to contact me if you have any questions or want to contribute to the project.
+Also, if you want to contact me directly, you can contact me via the contact in [my GitHub profile](https://github.com/HelloYeew). Don't hesitate to contact me if you have any questions or want to contribute to the project.
 
 ## License
 
