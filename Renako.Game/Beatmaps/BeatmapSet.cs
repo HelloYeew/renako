@@ -8,6 +8,11 @@ namespace Renako.Game.Beatmaps;
 /// </summary>
 public class BeatmapSet
 {
+    /// <summary>
+    /// Version of beatmapset file, will increase if there's a change in the file structure.
+    /// </summary>
+    public int Version { get; set; } = 1;
+
     public int ID { get; set; }
 
     /// <summary>
