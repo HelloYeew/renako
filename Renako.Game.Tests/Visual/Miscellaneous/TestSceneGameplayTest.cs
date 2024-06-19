@@ -26,7 +26,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private Container playfield;
     private Container drawablePlayfield;
     private Circle player;
-    private statistics stats = new statistics();
+    private Statistics stats = new Statistics();
     private RenakoSpriteText scoreText;
     private RenakoSpriteText criticalText;
     private RenakoSpriteText breakText;
@@ -34,8 +34,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     private RenakoSpriteText missText;
     private RenakoSpriteText clockText;
 
-    private DrawablePool<note> notePool;
-    private DrawablePool<indicator> indicatorPool;
+    private DrawablePool<Note> notePool;
+    private DrawablePool<Indicator> indicatorPool;
     private DrawablePool<hitResult> hitResultPool;
 
     private Container lane1;
@@ -56,8 +56,8 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore)
     {
-        Add(notePool = new DrawablePool<note>(50));
-        Add(indicatorPool = new DrawablePool<indicator>(20));
+        Add(notePool = new DrawablePool<Note>(50));
+        Add(indicatorPool = new DrawablePool<Indicator>(20));
         Add(hitResultPool = new DrawablePool<hitResult>(20));
 
         BackgroundScreenStack.ChangeBackground(textureStore.Get("Screen/fallback-beatmap-background.jpg"));
@@ -295,13 +295,13 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         };
     }
 
-    private note addNote(PlayfieldNote playfieldNote)
+    private Note addNote(PlayfieldNote playfieldNote)
     {
         if (!notePool.IsLoaded)
             return null;
 
         float x = getLaneX(playfieldNote.Lane);
-        note n = notePool.Get(noteObject =>
+        Note n = notePool.Get(noteObject =>
         {
             noteObject.Position = new Vector2(x, -200);
             noteObject.LifetimeEnd = Clock.CurrentTime + fade_in_time * 2 + move_time + 250;
@@ -332,7 +332,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         if (!indicatorPool.IsLoaded)
             return;
 
-        indicator indicatorDrawable = indicatorPool.Get(indicatorObject =>
+        Indicator indicatorDrawable = indicatorPool.Get(indicatorObject =>
         {
             indicatorObject.Position = new Vector2(getLaneX(lane), 200);
             indicatorObject.LifetimeEnd = Clock.CurrentTime + 500;
@@ -436,7 +436,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
     {
         public Lane Lane { get; set; }
 
-        public note DrawableNote { get; set; }
+        public Note DrawableNote { get; set; }
 
         public double Time { get; set; }
         public bool IsDrawn { get; set; }
@@ -504,7 +504,7 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         missText.Text = $"Miss: {stats.Miss}";
     }
 
-    private class statistics
+    private class Statistics
     {
         public double Score { get; set; }
 
@@ -514,9 +514,9 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         public int Miss { get; set; } // More than 200ms
     }
 
-    private partial class note : PoolableDrawable
+    private partial class Note : PoolableDrawable
     {
-        public note()
+        public Note()
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
@@ -535,9 +535,9 @@ public partial class TestSceneGameplayTest : GameDrawableTestScene
         }
     }
 
-    private partial class indicator : PoolableDrawable
+    private partial class Indicator : PoolableDrawable
     {
-        public indicator()
+        public Indicator()
         {
             Anchor = Anchor.Centre;
             Origin = Anchor.Centre;
