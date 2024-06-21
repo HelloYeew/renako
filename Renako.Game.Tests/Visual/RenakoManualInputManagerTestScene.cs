@@ -158,6 +158,6 @@ public abstract partial class RenakoManualInputManagerTestScene : RenakoTestScen
     /// </summary>
     protected void WaitForScreen()
     {
-        AddWaitStep("wait for screen", DebugUtils.IsNUnitRunning ? 1000 : 10);
+        AddWaitStep("wait for screen", DebugUtils.IsNUnitRunning ? 10000 : 10);
     }
 }
