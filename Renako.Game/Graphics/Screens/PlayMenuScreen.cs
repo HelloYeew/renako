@@ -36,7 +36,7 @@ public partial class PlayMenuScreen : Screen
                 Direction = FillDirection.Vertical,
                 Spacing = new Vector2(0, 28),
                 Position = new Vector2(-600, 0),
-                Size = new Vector2(1f, 0.5f),
+                Size = new Vector2(1f, 0.65f),
                 Children = new Drawable[]
                 {
                     // Play
@@ -59,7 +59,7 @@ public partial class PlayMenuScreen : Screen
                         DescriptionColor = Color4Extensions.FromHex("261321"),
                         Icon = FontAwesome.Solid.User,
                         Title = "Single Player".ToUpper(),
-                        Description = "1v1 with the boss",
+                        Description = "Quickly recap the story with the beat",
                         Action = toggleSinglePlayerButton
                     },
                     // Multiplayer
@@ -71,8 +71,20 @@ public partial class PlayMenuScreen : Screen
                         TitleColor = Color4Extensions.FromHex("563973"),
                         DescriptionColor = Color4Extensions.FromHex("1E1528"),
                         Icon = FontAwesome.Solid.Users,
-                        Title = "Multiplayer",
-                        Description = "Compete or help slain the boss"
+                        Title = "Multiplayer".ToUpper(),
+                        Description = "Compete or co-op in story"
+                    },
+                    // Story
+                    new MenuButton()
+                    {
+                        ButtonWidth = 0.30f,
+                        BackgroundColor = Color4Extensions.FromHex("E5DBEE"),
+                        IconColor = Color4Extensions.FromHex("3D2951"),
+                        TitleColor = Color4Extensions.FromHex("563973"),
+                        DescriptionColor = Color4Extensions.FromHex("1E1528"),
+                        Icon = FontAwesome.Solid.BookOpen,
+                        Title = "Story".ToUpper(),
+                        Description = "Full story experience"
                     }
                 }
             },
