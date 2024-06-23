@@ -78,10 +78,10 @@ public partial class PlayMenuScreen : Screen
                     new MenuButton()
                     {
                         ButtonWidth = 0.30f,
-                        BackgroundColor = Color4Extensions.FromHex("E5DBEE"),
-                        IconColor = Color4Extensions.FromHex("3D2951"),
-                        TitleColor = Color4Extensions.FromHex("563973"),
-                        DescriptionColor = Color4Extensions.FromHex("1E1528"),
+                        BackgroundColor = Color4Extensions.FromHex("DBE4EE"),
+                        IconColor = Color4Extensions.FromHex("293951"),
+                        TitleColor = Color4Extensions.FromHex("394D73"),
+                        DescriptionColor = Color4Extensions.FromHex("151F28"),
                         Icon = FontAwesome.Solid.BookOpen,
                         Title = "Story".ToUpper(),
                         Description = "Full story experience"
