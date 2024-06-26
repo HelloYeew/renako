@@ -73,7 +73,7 @@ public partial class MainMenuScreen : RenakoScreen
                         DescriptionColor = Color4Extensions.FromHex("212110"),
                         Icon = FontAwesome.Solid.PencilAlt,
                         Title = "Editor",
-                        Description = "Create a new strategy"
+                        Description = "Create a new story"
                     },
                     // List
                     new MenuButton()
@@ -85,7 +85,7 @@ public partial class MainMenuScreen : RenakoScreen
                         DescriptionColor = Color4Extensions.FromHex("1A321A"),
                         Icon = FontAwesome.Solid.List,
                         Title = "List",
-                        Description = "Find more enemies"
+                        Description = "Find more stories"
                     },
                     // Exit
                     new MenuButton()
