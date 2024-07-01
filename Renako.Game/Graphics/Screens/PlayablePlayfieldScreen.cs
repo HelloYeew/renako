@@ -12,6 +12,7 @@ using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Containers;
+using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
@@ -22,8 +23,9 @@ namespace Renako.Game.Graphics.Screens;
 public partial class PlayablePlayfieldScreen : PlayfieldScreen
 {
     private PlayfieldContainer playfieldContainer;
+    private GameplayProgressBar progressBar;
 
-    private readonly StopwatchClock stopwatchClock = new StopwatchClock();
+    private readonly StopwatchClock playfieldClock = new StopwatchClock();
 
     [Resolved]
     private RenakoAudioManager audioManager { get; set; }
@@ -31,10 +33,13 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
     [Resolved]
     private RenakoBackgroundScreenStack backgroundScreenStack { get; set; }
 
+    [Resolved]
+    private WorkingBeatmap workingBeatmap { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(RenakoConfigManager configManager, RenakoBackgroundScreenStack backgroundScreenStack)
     {
-        AddInternal(playfieldContainer = new PlayfieldContainer(stopwatchClock)
+        AddInternal(playfieldContainer = new PlayfieldContainer(playfieldClock)
         {
             RelativeSizeAxes = Axes.Both
         });
@@ -106,6 +111,9 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
             Margin = new MarginPadding(20)
         });
 
+        AddInternal(progressBar = new GameplayProgressBar());
+        progressBar.SetTotalTime(workingBeatmap.BeatmapSet.TotalLength);
+
         backgroundScreenStack.AdjustMaskAlpha(configManager.Get<int>(RenakoSetting.PlayfieldBackgroundDim) / 100f);
     }
 
@@ -117,9 +125,13 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
             audioManager.Track?.Restart();
             audioManager.Track?.Seek(0);
             audioManager.Track?.Start();
-            stopwatchClock.Start();
-            backgroundScreenStack.SeekBackgroundVideo(0f);
-            backgroundScreenStack.ShowBackgroundVideo();
+            playfieldClock.Start();
+
+            if (workingBeatmap.BeatmapSet.HasVideo)
+            {
+                backgroundScreenStack.SeekBackgroundVideo(0f);
+                backgroundScreenStack.ShowBackgroundVideo();
+            }
         }, 2000);
 
         if (audioManager.Track != null)
@@ -130,6 +142,12 @@ public partial class PlayablePlayfieldScreen : PlayfieldScreen
         }
 
         base.LoadComplete();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+        progressBar.SetCurrentTime(playfieldClock.CurrentTime);
     }
 
     protected override bool OnKeyDown(KeyDownEvent e)
