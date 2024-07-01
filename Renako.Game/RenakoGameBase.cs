@@ -1,10 +1,12 @@
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Bindables;
+using osu.Framework.Configuration;
 using osu.Framework.Development;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
+using osu.Framework.Graphics.Video;
 using osu.Framework.IO.Stores;
 using osu.Framework.Platform;
 using osuTK;
@@ -25,6 +27,9 @@ namespace Renako.Game
 
         protected override Container<Drawable> Content { get; }
 
+        [Resolved]
+        private FrameworkConfigManager frameworkConfig { get; set; }
+
         protected Storage Storage { get; set; }
 
         protected RenakoConfigManager LocalConfig { get; private set; }
@@ -38,6 +43,8 @@ namespace Renako.Game
         protected RenakoAudioManager RenakoAudioManager;
 
         private Bindable<bool> fpsDisplayVisible;
+
+        private Bindable<bool> hardwareAcceleration;
 
         protected BeatmapCollectionReader beatmapCollectionReader;
 
@@ -109,6 +116,12 @@ namespace Renako.Game
             fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
             fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };
             fpsDisplayVisible.TriggerChange();
+
+            hardwareAcceleration = LocalConfig.GetBindable<bool>(RenakoSetting.HardwareAcceleration);
+            hardwareAcceleration.ValueChanged += enabled =>
+            {
+                frameworkConfig.SetValue(FrameworkSetting.HardwareVideoDecoder, enabled.NewValue ? HardwareVideoDecoder.Any : HardwareVideoDecoder.None);
+            };
         }
 
         public override void SetHost(GameHost host)

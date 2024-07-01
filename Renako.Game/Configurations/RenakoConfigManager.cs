@@ -17,6 +17,7 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
         SetDefault(RenakoSetting.DisableVideoPreview, false);
 
         SetDefault(RenakoSetting.ShowFPSCounter, false);
+        SetDefault(RenakoSetting.HardwareAcceleration, true);
 
         // Game state
         SetDefault(RenakoSetting.LatestBeatmapSetID, 0);
