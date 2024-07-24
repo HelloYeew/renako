@@ -29,6 +29,7 @@ public partial class PlayfieldContainer : Container
     private RenakoSpriteText breakText;
     private RenakoSpriteText hitText;
     private RenakoSpriteText missText;
+    private RenakoSpriteText comboText;
     private RenakoSpriteText clockText;
 
     private const int fade_in_time = move_time / 2;
@@ -147,6 +148,12 @@ public partial class PlayfieldContainer : Container
                     Origin = Anchor.TopRight,
                     Text = "Miss: 0"
                 },
+                comboText = new RenakoSpriteText()
+                {
+                    Anchor = Anchor.TopRight,
+                    Origin = Anchor.TopRight,
+                    Text = "Combo: 0"
+                },
                 clockText = new RenakoSpriteText()
                 {
                     Anchor = Anchor.TopRight,
@@ -171,6 +178,7 @@ public partial class PlayfieldContainer : Container
                 Logger.Log($"Missed note at {note.EndTime}", LoggingTarget.Runtime, LogLevel.Debug);
                 note.IsHit = true;
                 stats.Miss++;
+                stats.Combo = 0;
                 addHitResultAnimation(HitResult.Miss);
                 updateScoreText();
             }
@@ -354,21 +362,25 @@ public partial class PlayfieldContainer : Container
             if (diff < 50)
             {
                 stats.Critical++;
+                stats.Combo++;
                 addHitResultAnimation(HitResult.Critical);
             }
             else if (diff < 100)
             {
                 stats.Break++;
+                stats.Combo++;
                 addHitResultAnimation(HitResult.Break);
             }
             else if (diff < 200)
             {
                 stats.Hit++;
+                stats.Combo++;
                 addHitResultAnimation(HitResult.Hit);
             }
             else
             {
                 stats.Miss++;
+                stats.Combo = 0;
                 addHitResultAnimation(HitResult.Miss);
                 playHitAnimation = false;
             }
@@ -391,6 +403,7 @@ public partial class PlayfieldContainer : Container
         breakText.Text = $"Break: {stats.Break}";
         hitText.Text = $"Hit: {stats.Hit}";
         missText.Text = $"Miss: {stats.Miss}";
+        comboText.Text = $"Combo: {stats.Combo}";
     }
 
     private enum HitResult
@@ -421,6 +434,7 @@ public partial class PlayfieldContainer : Container
         public int Break { get; set; } // More than 50ms but less than 100ms
         public int Hit { get; set; } // More than 100ms but less than 200ms
         public int Miss { get; set; } // More than 200ms
+        public int Combo { get; set; } // Count of critical, break, and hit
     }
 
     private class PlayfieldNote
