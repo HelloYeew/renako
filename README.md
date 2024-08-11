@@ -16,7 +16,7 @@ About the rhythm game concept you can check the gameplay design part in the desi
 
 The game is currently under heavy development that sometime will be slow due to my software engineer jobs, the gameplay are partially implemented but not yet fully implemented but you can try the game by running the game in the desktop project using the test beatmap provided in the game.
 
-You can follow the development by checking [Renako development blog](https://story.helloyeew.dev/tag/renako/) that I will try to update the blog post every week or follow this repository to get the latest update.
+You can follow the development by checking [Renako development blog](https://helloyeew.dev/journey) that I will try to update the blog post every week or follow this repository to get the latest update.
 
 Current development plans are available here:
 
