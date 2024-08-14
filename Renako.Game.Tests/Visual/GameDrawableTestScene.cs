@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using Renako.Game.Audio;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Tests.Visual;
@@ -20,6 +21,9 @@ public partial class GameDrawableTestScene : RenakoTestScene
     [Cached]
     public readonly SettingsScreenStack SettingsScreenStack = new SettingsScreenStack();
 
+    [Cached]
+    public readonly RenakoAudioManager AudioManager = new RenakoAudioManager();
+
     [BackgroundDependencyLoader]
     private void load()
     {
@@ -27,5 +31,6 @@ public partial class GameDrawableTestScene : RenakoTestScene
         Add(MainScreenStack);
         Add(LogoScreenStack);
         Add(SettingsScreenStack);
+        Add(AudioManager);
     }
 }

@@ -29,6 +29,14 @@ public class BeatmapsCollection
         Beatmaps = beatmapTestUtility.Beatmaps;
     }
 
+    /// <summary>
+    /// Sort all <see cref="BeatmapSets"/> by ID.
+    /// </summary>
+    public void SortBeatmapSetsByID()
+    {
+        BeatmapSets = BeatmapSets.OrderBy(e => e.ID).ToList();
+    }
+
     private void addThemeSongBeatmapSet()
     {
         // TODO: Get proper Title, Artist and Source translated from source

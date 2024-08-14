@@ -7,6 +7,7 @@ public enum RenakoSetting
     DisableVideoPreview,
 
     ShowFPSCounter,
+    HardwareAcceleration,
 
     LatestBeatmapSetID,
     LatestBeatmapID,

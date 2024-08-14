@@ -217,6 +217,14 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 },
                                 new SpriteText()
                                 {
+                                    Text = "Enable Hardware Acceleration"
+                                },
+                                new BasicCheckbox()
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.HardwareAcceleration)
+                                },
+                                new SpriteText()
+                                {
                                     Text = "FPS Limit"
                                 },
                                 new BasicDropdown<FrameSync>
