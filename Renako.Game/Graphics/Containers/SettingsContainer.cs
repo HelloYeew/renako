@@ -10,13 +10,15 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Graphics.UserInterface;
 using osu.Framework.Localisation;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 using osuTK;
 using Renako.Game.Configurations;
 using Renako.Game.Database;
+using Renako.Game.Graphics.Screens;
+using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Graphics.UserInterface;
 
 namespace Renako.Game.Graphics.Containers;
@@ -30,7 +32,6 @@ public partial class SettingsContainer : FocusedOverlayContainer
     private FillFlowContainer timeContainer;
     private SpriteText currentTimeText;
     private SpriteText runningTimeText;
-    private InternalBeatmapImporter internalBeatmapImporter;
 
     private readonly Bindable<Display> currentDisplay = new Bindable<Display>();
 
@@ -42,10 +43,9 @@ public partial class SettingsContainer : FocusedOverlayContainer
     protected override bool BlockScrollInput => false;
 
     [BackgroundDependencyLoader]
-    private void load(RenakoConfigManager renakoConfigManager, FrameworkConfigManager frameworkConfigManager, Storage storage, GameHost host, AudioManager audioManager, TextureStore textureStore)
+    private void load(RenakoConfigManager renakoConfigManager, FrameworkConfigManager frameworkConfigManager, Storage storage, GameHost host, AudioManager audioManager, BeatmapCollectionReader beatmapCollectionReader, RenakoScreenStack mainScreenStack)
     {
         IWindow window = host.Window;
-        internalBeatmapImporter = new InternalBeatmapImporter(audioManager, textureStore, host);
 
         if (window != null)
         {
@@ -329,10 +329,15 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 {
                                     Action = () =>
                                     {
-                                        internalBeatmapImporter.Import();
-                                        storage.PresentExternally();
+                                        beatmapCollectionReader.Read();
+
+                                        if (mainScreenStack.CurrentScreen is SongSelectionScreen)
+                                        {
+                                            mainScreenStack.CurrentScreen.Exit();
+                                            mainScreenStack.Push(new SongSelectionScreen());
+                                        }
                                     },
-                                    Text = "Import beatmap",
+                                    Text = "Refresh beatmaps collection",
                                     Width = 300,
                                     Height = 30
                                 }

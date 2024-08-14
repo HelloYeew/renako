@@ -23,8 +23,14 @@ public class BeatmapCollectionReader
         this.beatmapsCollection = beatmapsCollection;
     }
 
-    public void Read()
+    public void Read(bool clear = true, bool sortOnFinish = true)
     {
+        if (clear)
+        {
+            beatmapsCollection.Beatmaps.Clear();
+            beatmapsCollection.BeatmapSets.Clear();
+        }
+
         // Get list of folder in beatmap folder
         List<string> beatmapSetFolders = new List<string>(gameStorage.GetDirectories(string.Empty));
 
@@ -82,6 +88,11 @@ public class BeatmapCollectionReader
                     }
                 }
             }
+        }
+
+        if (sortOnFinish)
+        {
+            beatmapsCollection.SortBeatmapSetsByID();
         }
     }
 }

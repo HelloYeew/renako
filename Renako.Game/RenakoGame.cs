@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Development;
 using osu.Framework.Graphics;
+using osu.Framework.Input.Events;
 using osu.Framework.Logging;
 using osu.Framework.Platform;
+using osu.Framework.Screens;
 using osu.Framework.Threading;
 using Renako.Game.Configurations;
 using Renako.Game.Database;
@@ -23,7 +25,7 @@ namespace Renako.Game
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
         private InternalBeatmapImporter internalBeatmapImporter;
-        private BeatmapCollectionReader beatmapCollectionReader;
+        private new BeatmapCollectionReader beatmapCollectionReader;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -80,6 +82,32 @@ namespace Renako.Game
         public Type GetCurrentScreenType()
         {
             return mainScreenStack.CurrentScreen.GetType();
+        }
+
+        /// <summary>
+        /// Re-reads the beatmap collection from disk and refreshes the song selection screen if present.
+        /// </summary>
+        private void refreshBeatmapCollection()
+        {
+            beatmapCollectionReader.Read();
+
+            if (mainScreenStack.CurrentScreen is SongSelectionScreen)
+            {
+                mainScreenStack.CurrentScreen.Exit();
+                mainScreenStack.Push(new SongSelectionScreen());
+            }
+        }
+
+        protected override bool OnKeyDown(KeyDownEvent e)
+        {
+            // TODO: Add notification for refresh
+            if (e.Key == osuTK.Input.Key.F5)
+            {
+                refreshBeatmapCollection();
+                return true;
+            }
+
+            return base.OnKeyDown(e);
         }
 
         private Task asyncLoadStream;
