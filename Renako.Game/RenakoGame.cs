@@ -23,6 +23,7 @@ namespace Renako.Game
         private RenakoBackgroundScreenStack backgroundScreenStack;
         private LogoScreenStack logoScreenStack;
         private InternalBeatmapImporter internalBeatmapImporter;
+        private BeatmapCollectionReader beatmapCollectionReader;
 
         [BackgroundDependencyLoader]
         private void load()
@@ -30,6 +31,7 @@ namespace Renako.Game
             dependencies.CacheAs(backgroundScreenStack = new RenakoBackgroundScreenStack());
             dependencies.CacheAs(mainScreenStack = new RenakoScreenStack());
             dependencies.CacheAs(logoScreenStack = new LogoScreenStack());
+            dependencies.CacheAs(beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection));
             dependencies.CacheAs(logoScreenStack.LogoScreenObject);
             Add(backgroundScreenStack);
             Add(mainScreenStack);
@@ -55,8 +57,8 @@ namespace Renako.Game
                 LocalConfig.SetValue(RenakoSetting.FirstImport, true);
             }
 
-            beatmapCollectionReader = new BeatmapCollectionReader(Host.Storage, BeatmapsCollection);
             beatmapCollectionReader.Read();
+            BeatmapsCollection.SortBeatmapSetsByID();
 
             mainScreenStack.Push(new WarningScreen());
         }
