@@ -25,7 +25,7 @@ public partial class MenuTitleWithTexture : CompositeDrawable
 
     public const float CONTAINER_PADDING = 20;
 
-    private Box backgroundBox;
+    public Box BackgroundBox;
     private SpriteText titleSpriteText;
     private SpriteText descriptionSpriteText;
     private Container textureContainer;
@@ -65,7 +65,7 @@ public partial class MenuTitleWithTexture : CompositeDrawable
         Colour = Colour4.White;
         InternalChildren = new Drawable[]
         {
-            backgroundBox = new Box()
+            BackgroundBox = new Box()
             {
                 Colour = BackgroundColor,
                 RelativeSizeAxes = Axes.Both,

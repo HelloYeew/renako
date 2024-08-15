@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -81,6 +82,10 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText beatmapLevelNameText;
     private Container beatmapNoteCountContainer;
     private Box beatmapNoteCountBox;
+
+    private Box modeBackgroundBox;
+    private Box sourceBackgroundBox;
+    private Box songInfoBackgroundBox;
 
     private Container idleRenakoLogoContainer;
     private RightBottomBeatmapSetDetailContainer rightBottomDetailsContainer;
@@ -228,7 +233,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         CornerRadius = 15,
                         Children = new Drawable[]
                         {
-                            new Box()
+                            modeBackgroundBox = new Box()
                             {
                                 Colour = Color4Extensions.FromHex("E0BCD5"),
                                 RelativeSizeAxes = Axes.Both,
@@ -270,7 +275,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         CornerRadius = 15,
                         Children = new Drawable[]
                         {
-                            new Box()
+                            sourceBackgroundBox = new Box()
                             {
                                 Colour = Color4Extensions.FromHex("E0BCD5"),
                                 RelativeSizeAxes = Axes.Both,
@@ -322,7 +327,7 @@ public partial class SongSelectionScreen : RenakoScreen
                         CornerRadius = 15,
                         Children = new Drawable[]
                         {
-                            new Box()
+                            songInfoBackgroundBox = new Box()
                             {
                                 Colour = Color4Extensions.FromHex("BEB6BA"),
                                 RelativeSizeAxes = Axes.Both,
@@ -1176,6 +1181,12 @@ public partial class SongSelectionScreen : RenakoScreen
                 Setting = RenakoSetting.PlayfieldBackgroundDim
             }
         ];
+
+        modeBackgroundBox.FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(1000).Loop();
+        songTitle.BackgroundBox.Delay(100).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(900).Loop();
+        sourceBackgroundBox.Delay(200).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(800).Loop();
+        songInfoBackgroundBox.Delay(300).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(700).Loop();
+        beatmapInfoBox.Delay(400).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(600).Loop();
     }
 
     protected override void Update()
