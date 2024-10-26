@@ -21,7 +21,7 @@ namespace Renako.Game.Tests.Visual.Miscellaneous;
 /// <summary>
 /// A test scene for gameplay POC, will remove this later when implemented in the game.
 /// </summary>
-public partial class TestSceneGameplayTest : GameDrawableTestScene
+public partial class TestSceneGameplayTest : RenakoGameDrawableTestScene
 {
     private Container playfield;
     private Container drawablePlayfield;

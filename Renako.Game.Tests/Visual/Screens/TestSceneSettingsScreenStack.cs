@@ -2,7 +2,7 @@
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-public partial class TestSceneSettingsScreenStack : GameDrawableTestScene
+public partial class TestSceneSettingsScreenStack : RenakoGameDrawableTestScene
 {
     [Test]
     public void TestSettingsScreenStack()

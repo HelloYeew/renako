@@ -5,7 +5,7 @@ using Renako.Game.Graphics.UserInterface;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneBackButton : GameDrawableTestScene
+public partial class TestSceneBackButton : RenakoGameDrawableTestScene
 {
     public TestSceneBackButton()
     {

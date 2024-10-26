@@ -12,7 +12,7 @@ using Renako.Game.Graphics.Drawables;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneBindableSettingsSwiper : GameDrawableTestScene
+public partial class TestSceneBindableSettingsSwiper : RenakoGameDrawableTestScene
 {
     [Resolved]
     private RenakoConfigManager configManager { get; set; }

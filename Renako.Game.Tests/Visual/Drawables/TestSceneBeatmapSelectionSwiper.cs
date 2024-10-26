@@ -12,7 +12,7 @@ using Renako.Game.Utilities;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneBeatmapSelectionSwiper : GameDrawableTestScene
+public partial class TestSceneBeatmapSelectionSwiper : RenakoGameDrawableTestScene
 {
     [Resolved]
     private WorkingBeatmap workingBeatmap { get; set; }

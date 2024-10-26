@@ -4,7 +4,7 @@ using Renako.Game.Graphics.Screens;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-public partial class TestSceneMainMenuScreen : GameDrawableTestScene
+public partial class TestSceneMainMenuScreen : RenakoGameDrawableTestScene
 {
     [Test]
     public void TestMainMenuScreen()

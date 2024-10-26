@@ -6,7 +6,7 @@ using Renako.Game.Graphics.Drawables;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneLoadingSpinner : GameDrawableTestScene
+public partial class TestSceneLoadingSpinner : RenakoGameDrawableTestScene
 {
     public TestSceneLoadingSpinner()
     {

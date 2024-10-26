@@ -4,7 +4,7 @@ using Renako.Game.Graphics.Screens;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-public partial class TestSceneWarningScreen : GameDrawableTestScene
+public partial class TestSceneWarningScreen : RenakoGameDrawableTestScene
 {
     [Test]
     public void TestWarningScreen()

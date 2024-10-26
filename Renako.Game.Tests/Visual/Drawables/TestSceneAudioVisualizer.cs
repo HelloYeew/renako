@@ -8,7 +8,7 @@ using Renako.Game.Graphics.Drawables;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneAudioVisualizer : GameDrawableTestScene
+public partial class TestSceneAudioVisualizer : RenakoGameDrawableTestScene
 {
     [Resolved]
     private RenakoAudioManager audioManager { get; set; }

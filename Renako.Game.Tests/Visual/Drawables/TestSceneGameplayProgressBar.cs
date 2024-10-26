@@ -5,7 +5,7 @@ using Renako.Game.Graphics.Drawables;
 
 namespace Renako.Game.Tests.Visual.Drawables;
 
-public partial class TestSceneGameplayProgressBar : GameDrawableTestScene
+public partial class TestSceneGameplayProgressBar : RenakoGameDrawableTestScene
 {
     [Cached]
     private BeatmapsCollection beatmapsCollection = new BeatmapsCollection();

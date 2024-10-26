@@ -7,7 +7,7 @@ using Renako.Game.Graphics.Screens;
 
 namespace Renako.Game.Tests.Visual.Screens;
 
-public partial class TestScenePlayerLoadingScreen : GameDrawableTestScene
+public partial class TestScenePlayerLoadingScreen : RenakoGameDrawableTestScene
 {
     [Resolved]
     private WorkingBeatmap workingBeatmap { get; set; }

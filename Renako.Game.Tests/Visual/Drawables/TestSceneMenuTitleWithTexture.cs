@@ -7,7 +7,7 @@ using Renako.Game.Graphics.UserInterface;
 namespace Renako.Game.Tests.Visual.Drawables;
 
 [TestFixture]
-public partial class TestSceneMenuTitleWithTexture : GameDrawableTestScene
+public partial class TestSceneMenuTitleWithTexture : RenakoGameDrawableTestScene
 {
     private MenuTitleWithTexture menuTitleWithTexture;
 
