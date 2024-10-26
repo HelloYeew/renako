@@ -89,3 +89,7 @@ fabric.properties
 
 .DS_Store
 Renako.sln.DotSettings.user
+
+# Build file from Velopack
+Renako.Desktop/Releases/*
+Renako.Desktop/publish/*
