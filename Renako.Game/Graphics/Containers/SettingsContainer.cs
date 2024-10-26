@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using ManagedBass;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
+using osu.Framework.Development;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
@@ -17,6 +20,7 @@ using osu.Framework.Screens;
 using osuTK;
 using Renako.Game.Configurations;
 using Renako.Game.Database;
+using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.Screens;
 using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Graphics.UserInterface;
@@ -340,6 +344,37 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                     Text = "Refresh beatmaps collection",
                                     Width = 300,
                                     Height = 30
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "About".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new RenakoLogo(),
+                                new SpriteText()
+                                {
+                                    Text = DebugUtils.IsDebugBuild ? "Debug Build" : "Release V." + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Framework Information",
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = $"osu!framework {typeof(GameHost).Assembly.GetName().Version}"
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Device Information",
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f, RenakoFont.FontWeight.Bold)
+                                },
+                                new TextFlowContainer(s => s.Font = RenakoFont.GetFont(size: 16f))
+                                {
+                                    Text = $"OS: {RuntimeInformation.OSDescription} ({RuntimeInformation.OSArchitecture})\n" +
+                                           $"Framework: {RuntimeInformation.FrameworkDescription}\n" +
+                                           $"Process: {RuntimeInformation.ProcessArchitecture}\n",
+                                    AutoSizeAxes = Axes.Both
                                 }
                             }
                         }
