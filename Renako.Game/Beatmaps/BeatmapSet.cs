@@ -58,7 +58,7 @@ public class BeatmapSet
     /// <summary>
     /// Beat per minute of the track in the beatmap set.
     /// </summary>
-    public double BPM { get; set; }
+    public float BPM { get; set; }
 
     /// <summary>
     /// Main creator of the beatmap set. If more than one creator in different beatmap, use creator in beatmap instead.

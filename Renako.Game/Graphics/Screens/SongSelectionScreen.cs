@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Audio.Sample;
@@ -93,6 +92,8 @@ public partial class SongSelectionScreen : RenakoScreen
     private RightBottomButton rightBottomButton;
     private BackButton backButton;
 
+    private AudioVisualizer audioVisualizer;
+
     private double lastBeatmapChangeTime;
     private bool isBeatmapChanged;
 
@@ -119,7 +120,7 @@ public partial class SongSelectionScreen : RenakoScreen
     public const double INTERACTION_TIMEOUT = 15000;
 
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager)
+    private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager, RenakoAudioManager renakoAudioManager)
     {
         leftClickSample = audioManager.Samples.Get("UI/click-small-left");
         rightClickSample = audioManager.Samples.Get("UI/click-small-right");
@@ -196,6 +197,21 @@ public partial class SongSelectionScreen : RenakoScreen
         Alpha = 0;
         InternalChildren = new Drawable[]
         {
+            new Container()
+            {
+                Anchor = Anchor.BottomCentre,
+                Origin = Anchor.BottomCentre,
+                RelativeSizeAxes = Axes.Both,
+                Size = new Vector2(1),
+                Child = audioVisualizer = new AudioVisualizer()
+                {
+                    Anchor = Anchor.BottomCentre,
+                    Origin = Anchor.BottomCentre,
+                    RelativeSizeAxes = Axes.Both,
+                    Size = new Vector2(1),
+                    Alpha = 0.75f
+                }
+            },
             backButton = new BackButton()
             {
                 Anchor = Anchor.Centre,
@@ -1026,6 +1042,13 @@ public partial class SongSelectionScreen : RenakoScreen
             backButton.FlashBackground(60000 / item.NewValue.BPM, true);
 
             lastInteractionTime = interactionTimer.CurrentTime;
+
+            // Change track in visualizer
+            if (renakoAudioManager.Track != null)
+            {
+                audioVisualizer.ChangeTrack(renakoAudioManager.Track);
+                audioVisualizer.ChangeSpeedByBpm(item.NewValue.BPM == 0 ? 120 : item.NewValue.BPM);
+            }
         }, true);
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
@@ -1134,6 +1157,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomDetailsContainer.FadeIn(1000, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0.25f);
+
+                audioVisualizer.FadeOut(500, Easing.OutQuart);
             }
             else
             {
@@ -1151,6 +1176,8 @@ public partial class SongSelectionScreen : RenakoScreen
                 rightBottomDetailsContainer.FadeOut(250, Easing.OutQuart);
 
                 backgroundScreenStack.AdjustMaskAlpha(0f);
+
+                audioVisualizer.FadeIn(500, Easing.OutQuart);
             }
         }, true);
 
