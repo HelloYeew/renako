@@ -39,7 +39,7 @@ public partial class AudioVisualizer : Drawable
     /// <summary>
     /// The number of bars in one rotation of the visualiser.
     /// </summary>
-    private const int bars_per_visualiser = 250;
+    private const int bars_per_visualiser = 256;
 
     /// <summary>
     /// How much should each bar go down each millisecond (based on a full bar).
@@ -106,7 +106,7 @@ public partial class AudioVisualizer : Drawable
 
     public void ChangeSpeedByBpm(float bpm)
     {
-        timeBetweenUpdates = 60000 / bpm / 13.5f;
+        timeBetweenUpdates = 60000 / bpm / 30;
 
         if (updateDelegate != null)
         {
