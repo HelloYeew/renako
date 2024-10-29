@@ -39,7 +39,7 @@ public partial class AudioVisualizer : Drawable
     /// <summary>
     /// The number of bars in one rotation of the visualiser.
     /// </summary>
-    private const int bars_per_visualiser = 256;
+    private const int bars_per_visualiser = 150;
 
     /// <summary>
     /// How much should each bar go down each millisecond (based on a full bar).
@@ -140,7 +140,7 @@ public partial class AudioVisualizer : Drawable
                 frequencyAmplitudes[i] = targetAmplitude;
         }
 
-        indexOffset = (indexOffset + index_offset) % bars_per_visualiser;
+        // indexOffset = (indexOffset + index_offset) % bars_per_visualiser;
     }
 
     protected override void LoadComplete()
