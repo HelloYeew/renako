@@ -47,7 +47,7 @@ public class BeatmapSetUtility
     /// <returns></returns>
     public static string GetFolderName(BeatmapSet beatmapSet)
     {
-        return $"{beatmapSet.ID} {StringUtility.CleanFolderName(beatmapSet.Title)} - {StringUtility.CleanFolderName(beatmapSet.Artist)}";
+        return $"{beatmapSet.ID} {StringUtility.CleanFileName(beatmapSet.Title)} - {StringUtility.CleanFileName(beatmapSet.Artist)}";
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class BeatmapSetUtility
     /// <returns>The path of the cover image</returns>
     public static string GetCoverPath(BeatmapSet beatmapSet)
     {
-        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.CoverPath;
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + StringUtility.CleanFileName(beatmapSet.CoverPath);
     }
 
     /// <summary>
@@ -67,7 +67,7 @@ public class BeatmapSetUtility
     /// <returns>The path of the background image</returns>
     public static string GetBackgroundPath(BeatmapSet beatmapSet)
     {
-        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.BackgroundPath;
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + StringUtility.CleanFileName(beatmapSet.BackgroundPath);
     }
 
     /// <summary>
@@ -77,7 +77,7 @@ public class BeatmapSetUtility
     /// <returns>The path of the track</returns>
     public static string GetTrackPath(BeatmapSet beatmapSet)
     {
-        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + beatmapSet.TrackPath;
+        return "beatmaps/" + GetFolderName(beatmapSet) + "/" + StringUtility.CleanFileName(beatmapSet.TrackPath);
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ public class BeatmapSetUtility
     /// <returns></returns>
     public static string GetBeatmapSetFileName(BeatmapSet beatmapSet)
     {
-        return $"{beatmapSet.ID} {beatmapSet.Title} - {beatmapSet.Artist}";
+        return $"{beatmapSet.ID} {StringUtility.CleanFileName(beatmapSet.Title)} - {StringUtility.CleanFileName(beatmapSet.Artist)}";
     }
 
     /// <summary>
