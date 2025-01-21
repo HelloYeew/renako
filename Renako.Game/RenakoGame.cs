@@ -62,6 +62,9 @@ namespace Renako.Game
             beatmapCollectionReader.Read();
             BeatmapsCollection.SortBeatmapSetsByID();
 
+            backgroundScreenStack.AdjustMaskAlpha(1);
+            Scheduler.AddDelayed(() => backgroundScreenStack.ResetMaskAlpha(250), 3500);
+
             mainScreenStack.Push(new WarningScreen());
         }
 

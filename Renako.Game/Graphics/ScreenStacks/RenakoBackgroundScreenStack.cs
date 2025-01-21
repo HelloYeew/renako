@@ -13,7 +13,6 @@ using osuTK.Graphics;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
-using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
 
 namespace Renako.Game.Graphics.ScreenStacks;
@@ -25,8 +24,6 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     public Sprite ImageSpriteUp;
     public Sprite ImageSpriteDown;
 
-    private Texture mainBackgroundTexture;
-    private Texture playMenuBackgroundTexture;
     private Texture fallbackBeatmapBackground;
     private Container backgroundContainer;
     private Box maskBox;
@@ -48,8 +45,6 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     {
         this.textureStore = textureStore;
 
-        mainBackgroundTexture = textureStore.Get("Screen/main-background.jpeg");
-        playMenuBackgroundTexture = textureStore.Get("Screen/play-background.jpg");
         // TODO: Change this to a real fallback background and delete the fallback-beatmap-background.jpg
         fallbackBeatmapBackground = textureStore.Get("Screen/main-background.jpeg");
 
@@ -93,44 +88,7 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             Alpha = 0
         });
 
-        mainScreenStack.BindableCurrentScreen.BindValueChanged((e) => changeBackgroundByMainScreen(e.OldValue, e.NewValue));
-        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((e) => changeBackgroundByBeatmapSet(e.OldValue, e.NewValue));
-    }
-
-    /// <summary>
-    /// Change background by main screen.
-    /// </summary>
-    /// <param name="oldScreen">The old screen before change.</param>
-    /// <param name="newScreen">The new screen that will be changed.</param>
-    private void changeBackgroundByMainScreen(IScreen oldScreen, IScreen newScreen)
-    {
-        // Start game event
-        if (oldScreen is WarningScreen && newScreen is StartScreen)
-        {
-            ImageSpriteUp.Delay(250).FadeTo(1, 750, Easing.OutCubic);
-        }
-
-        switch (newScreen)
-        {
-            case (MainMenuScreen):
-                // Don't do background transition again between MainMenuScreen and StartScreen
-                if (oldScreen is StartScreen) break;
-
-                ChangeBackground(mainBackgroundTexture);
-                break;
-
-            case (StartScreen):
-                ChangeBackground(mainBackgroundTexture);
-                break;
-
-            case (PlayMenuScreen):
-                ChangeBackground(playMenuBackgroundTexture);
-                break;
-
-            case (SongSelectionScreen or PlayablePlayfieldScreen):
-                changeBackgroundByBeatmapSet(null, workingBeatmap.BeatmapSet);
-                break;
-        }
+        workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((e) => changeBackgroundByBeatmapSet(e.OldValue, e.NewValue), true);
     }
 
     /// <summary>
@@ -146,9 +104,10 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
             return;
         }
 
-        if (Equals(oldBeatmapSet, newBeatmapSet)) return;
+        if (Equals(oldBeatmapSet, newBeatmapSet) && ImageSpriteDown.Texture != null)
+            return;
 
-        if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
+        // if (mainScreenStack.CurrentScreen is not SongSelectionScreen) return;
 
         Texture newBackgroundTexture;
 

@@ -962,6 +962,8 @@ public partial class SongSelectionScreen : RenakoScreen
         {
             if (item.NewValue == null) return;
 
+            if (Equals(item.NewValue, item.OldValue)) return;
+
             beatmapSwiper.BeatmapList = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).ToList();
             beatmapSwiper.SetTexture(textureStore.Get(item.NewValue.CoverPath));
             beatmapSwiper.SetIndex(0);
@@ -1053,6 +1055,8 @@ public partial class SongSelectionScreen : RenakoScreen
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
+
+            if (Equals(item.NewValue, item.OldValue)) return;
 
             Scheduler.Add(() =>
             {
@@ -1250,8 +1254,6 @@ public partial class SongSelectionScreen : RenakoScreen
         songTitleContainer.MoveToX(-600, 500, Easing.OutQuart);
         songListContainer.MoveToY(600, 750, Easing.OutQuart);
 
-        backgroundScreenStack.HideBackgroundVideo(true);
-
         return base.OnExiting(e);
     }
 
@@ -1271,7 +1273,6 @@ public partial class SongSelectionScreen : RenakoScreen
         if (backgroundScreenStack.HaveBackgroundVideo())
         {
             backgroundScreenStack.ShowBackgroundVideo();
-            backgroundScreenStack.SeekBackgroundVideo(workingBeatmap.BeatmapSet.PreviewTime);
         }
     }
 

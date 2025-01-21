@@ -3,11 +3,9 @@ using osu.Framework.Development;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Sprites;
-using osu.Framework.Graphics.Textures;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
-using Renako.Game.Audio;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
@@ -28,11 +26,8 @@ public partial class StartScreen : RenakoScreen
     [Resolved]
     private LogoScreenStack logoScreenStack { get; set; }
 
-    [Resolved]
-    private RenakoAudioManager audioManager { get; set; }
-
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore)
+    private void load()
     {
         InternalChildren = new Drawable[]
         {
