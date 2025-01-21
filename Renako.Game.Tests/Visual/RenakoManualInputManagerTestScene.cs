@@ -42,6 +42,7 @@ public abstract partial class RenakoManualInputManagerTestScene : RenakoTestScen
             {
                 UseParentInput = true,
                 Child = Content,
+                ShowVisualCursorGuide = true
             },
             new Container
             {
