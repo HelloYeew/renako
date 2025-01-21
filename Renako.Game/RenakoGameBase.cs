@@ -107,6 +107,9 @@ namespace Renako.Game
             dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
             dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
+
+            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
+            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
         }
 
         protected override void LoadComplete()

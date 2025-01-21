@@ -43,7 +43,7 @@ public class BeatmapTestUtility
         {
             new BeatmapSet()
             {
-                ID = 0,
+                ID = 1,
                 Title = "Innocence (TV Size)",
                 TitleUnicode = "Innocence (TV Size)",
                 Artist = "Eir Aoi",
@@ -62,7 +62,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 1,
+                ID = 2,
                 Title = "Courage",
                 TitleUnicode = "courage",
                 Artist = "Haruka Tomatsu",
@@ -81,7 +81,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 2,
+                ID = 3,
                 Title = "Passionate Starmine",
                 TitleUnicode = "熱色スターマイン",
                 Artist = "Roselia",
@@ -100,7 +100,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 3,
+                ID = 4,
                 Title = "SnowMix",
                 TitleUnicode = "SnowMix",
                 Artist = "marasy & Hatsune Miku",
@@ -119,7 +119,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 4,
+                ID = 5,
                 Title = "Mirai No Museum",
                 TitleUnicode = "未来のミュージアム",
                 Artist = "Perfume",
@@ -138,7 +138,7 @@ public class BeatmapTestUtility
             },
             new BeatmapSet()
             {
-                ID = 5,
+                ID = 6,
                 Title = "ONESELF",
                 TitleUnicode = "ONESELF",
                 Artist = "Twinfield feat. Hatsune Miku",
@@ -158,7 +158,7 @@ public class BeatmapTestUtility
             // Added for edge case for very long title and dark background
             new BeatmapSet()
             {
-                ID = 6,
+                ID = 7,
                 Title = "I'm Glad You're Evil Too",
                 TitleUnicode = "きみも悪い人でよかった",
                 Artist = "PinocchioP feat. Hatsune Miku",

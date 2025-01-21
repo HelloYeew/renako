@@ -12,6 +12,9 @@ public class BeatmapsCollection
     public List<BeatmapSet> BeatmapSets { get; set; }
     public List<Beatmap> Beatmaps { get; set; }
 
+    public const int THEME_SONG_BEATMAP_SET_ID = 0;
+    public const int THEME_SONG_BEATMAP_ID = 0;
+
     public BeatmapsCollection()
     {
         BeatmapSets = new List<BeatmapSet>();
@@ -39,11 +42,13 @@ public class BeatmapsCollection
 
     private void addThemeSongBeatmapSet()
     {
+        BeatmapSet starterBeatmapSet;
+
         // TODO: Get proper Title, Artist and Source translated from source
         // TODO: Also change background
-        BeatmapSets.Add(new BeatmapSet()
+        BeatmapSets.Add(starterBeatmapSet = new BeatmapSet()
         {
-            ID = -1,
+            ID = THEME_SONG_BEATMAP_SET_ID,
             Title = "Night Beauty",
             TitleUnicode = "月下美人",
             Artist = "Manbou 2nd class",
@@ -61,25 +66,24 @@ public class BeatmapsCollection
             BackgroundPath = "Screen/main-background.jpeg",
             Hide = true
         });
-        BeatmapSets.Add(new BeatmapSet()
+        Beatmaps.Add(new Beatmap()
         {
-            ID = -2,
-            Title = "Emotional catharsis",
-            TitleUnicode = "情動カタルシス",
-            Artist = "Manbou 2nd class",
-            ArtistUnicode = "まんぼう二等兵",
-            Source = "Manbou 2nd class (Renako Play Menu Theme Song)",
-            SourceUnicode = "まんぼう二等兵 (Renako Play Menu Theme Song)",
-            TotalLength = 311000,
-            PreviewTime = 0,
-            BPM = 148,
+            ID = THEME_SONG_BEATMAP_ID,
+            BeatmapSet = starterBeatmapSet,
             Creator = "Renako",
-            HasVideo = false,
-            UseLocalSource = true,
-            CoverPath = "Screen/play-background.jpg",
-            TrackPath = "theme/play-theme.mp3",
-            BackgroundPath = "Screen/play-background.jpg",
-            Hide = true
+            DifficultyName = "Normal",
+            DifficultyRating = 0,
+            BackgroundPath = "Screen/main-background.jpeg",
+            Notes = new BeatmapNote[]
+            {
+                new BeatmapNote()
+                {
+                    Lane = NoteLane.Lane1,
+                    Type = NoteType.BasicNote,
+                    StartTime = 0,
+                    EndTime = 0
+                }
+            }
         });
     }
 
