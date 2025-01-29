@@ -37,7 +37,7 @@ public partial class TestSceneGameplayProgressBar : RenakoGameDrawableTestScene
     {
         base.Update();
 
-        if (AudioManager.Track.IsRunning)
+        if (AudioManager.Track.IsRunning && gameplayProgressBar != null)
         {
             gameplayProgressBar.SetCurrentTime(AudioManager.Track.CurrentTime);
         }
