@@ -60,6 +60,8 @@ public partial class SongSelectionScreen : RenakoScreen
     [Resolved]
     private RenakoAudioManager renakoAudioManager { get; set; }
 
+    private bool setupFirstTime;
+
     private HorizontalTextureSwiper<BeatmapSet> beatmapSetSwiper;
     private List<TextureSwiperItem<BeatmapSet>> beatmapSetSwiperItemList;
     private BeatmapSelectionSwiper beatmapSwiper;
@@ -114,8 +116,8 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int icon_size = 13;
     private const int song_description_font_size = 15;
 
-    private const int default_beatmapset_id = 0;
-    private const int default_beatmap_id = 0;
+    private const int default_beatmapset_id = 1;
+    private const int default_beatmap_id = 1;
 
     public const double INTERACTION_TIMEOUT = 15000;
 
@@ -144,55 +146,6 @@ public partial class SongSelectionScreen : RenakoScreen
         {
             Position = new Vector2(0, 0)
         };
-
-        workingBeatmap.BeatmapSet = config.Get<int>(RenakoSetting.LatestBeatmapSetID) == 0 ? beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id) : beatmapsCollection.GetBeatmapSetByID(config.Get<int>(RenakoSetting.LatestBeatmapSetID));
-        workingBeatmap.Beatmap = config.Get<int>(RenakoSetting.LatestBeatmapID) == 0 ? beatmapsCollection.GetBeatmapByID(default_beatmap_id) : beatmapsCollection.GetBeatmapByID(config.Get<int>(RenakoSetting.LatestBeatmapID));
-
-        if (workingBeatmap.BeatmapSet == null || workingBeatmap.BeatmapSet.Hide)
-        {
-            workingBeatmap.BeatmapSet = beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id);
-        }
-
-        workingBeatmap.Beatmap ??= beatmapsCollection.GetBeatmapByID(default_beatmap_id);
-
-        foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
-        {
-            Texture texture;
-
-            if (beatmapSet.Hide)
-            {
-                continue;
-            }
-
-            if (beatmapSet.UseLocalSource)
-            {
-                texture = textureStore.Get(beatmapSet.CoverPath);
-            }
-            else
-            {
-                string coverPath = BeatmapSetUtility.GetCoverPath(beatmapSet);
-                texture = textureStore.Get(coverPath);
-
-                if (texture == null)
-                {
-                    Stream coverTextureStream = host.Storage.GetStream(coverPath);
-                    texture = Texture.FromStream(host.Renderer, coverTextureStream);
-                    coverTextureStream?.Close();
-                }
-            }
-
-            beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
-            {
-                Item = beatmapSet,
-                Texture = texture
-            });
-        }
-
-        if (workingBeatmap.BeatmapSet != null)
-        {
-            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item.Equals(workingBeatmap.BeatmapSet));
-            beatmapList = beatmapsCollection.GetBeatmapsFromBeatmapSet(workingBeatmap.BeatmapSet).ToList();
-        }
 
         Alpha = 0;
         InternalChildren = new Drawable[]
@@ -962,7 +915,9 @@ public partial class SongSelectionScreen : RenakoScreen
         {
             if (item.NewValue == null) return;
 
-            if (Equals(item.NewValue, item.OldValue)) return;
+            if (Equals(item.NewValue, item.OldValue) && setupFirstTime) return;
+
+            setupFirstTime = true;
 
             beatmapSwiper.BeatmapList = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).ToList();
             beatmapSwiper.SetTexture(textureStore.Get(item.NewValue.CoverPath));
@@ -1052,6 +1007,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 audioVisualizer.ChangeSpeedByBpm(item.NewValue.BPM == 0 ? 120 : item.NewValue.BPM);
             }
         }, true);
+
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
         {
             if (item.NewValue == null) return;
@@ -1076,7 +1032,7 @@ public partial class SongSelectionScreen : RenakoScreen
             Scheduler.Add(() => config.SetValue(RenakoSetting.LatestBeatmapID, item.NewValue.ID));
 
             lastInteractionTime = interactionTimer.CurrentTime;
-        }, true);
+        });
 
         #endregion
 
@@ -1184,6 +1140,59 @@ public partial class SongSelectionScreen : RenakoScreen
                 audioVisualizer.FadeIn(500, Easing.OutQuart);
             }
         }, true);
+
+        #endregion
+
+        #region Setup working beatmap
+
+        workingBeatmap.BeatmapSet = config.Get<int>(RenakoSetting.LatestBeatmapSetID) == 0 ? beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id) : beatmapsCollection.GetBeatmapSetByID(config.Get<int>(RenakoSetting.LatestBeatmapSetID));
+        workingBeatmap.Beatmap = config.Get<int>(RenakoSetting.LatestBeatmapID) == 0 ? beatmapsCollection.GetBeatmapByID(default_beatmap_id) : beatmapsCollection.GetBeatmapByID(config.Get<int>(RenakoSetting.LatestBeatmapID));
+
+        if (workingBeatmap.BeatmapSet == null || workingBeatmap.BeatmapSet.Hide)
+        {
+            workingBeatmap.BeatmapSet = beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id);
+        }
+
+        workingBeatmap.Beatmap ??= beatmapsCollection.GetBeatmapByID(default_beatmap_id);
+
+        foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
+        {
+            Texture texture;
+
+            if (beatmapSet.Hide)
+            {
+                continue;
+            }
+
+            if (beatmapSet.UseLocalSource)
+            {
+                texture = textureStore.Get(beatmapSet.CoverPath);
+            }
+            else
+            {
+                string coverPath = BeatmapSetUtility.GetCoverPath(beatmapSet);
+                texture = textureStore.Get(coverPath);
+
+                if (texture == null)
+                {
+                    Stream coverTextureStream = host.Storage.GetStream(coverPath);
+                    texture = Texture.FromStream(host.Renderer, coverTextureStream);
+                    coverTextureStream?.Close();
+                }
+            }
+
+            beatmapSetSwiperItemList.Add(new TextureSwiperItem<BeatmapSet>()
+            {
+                Item = beatmapSet,
+                Texture = texture
+            });
+        }
+
+        if (workingBeatmap.BeatmapSet != null)
+        {
+            beatmapSetSwiper.CurrentIndex = beatmapSetSwiperItemList.FindIndex(x => x.Item.Equals(workingBeatmap.BeatmapSet));
+            beatmapList = beatmapsCollection.GetBeatmapsFromBeatmapSet(workingBeatmap.BeatmapSet).ToList();
+        }
 
         #endregion
     }
