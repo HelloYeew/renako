@@ -199,7 +199,7 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 },
                                 new SpriteText()
                                 {
-                                    Text = "Disable video on song select"
+                                    Text = "Disable video"
                                 },
                                 new BasicCheckbox
                                 {
