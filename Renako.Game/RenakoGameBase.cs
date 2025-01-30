@@ -107,14 +107,15 @@ namespace Renako.Game
             dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
             dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
             dependencies.CacheAs(this);
-
-            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
-            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
         }
 
         protected override void LoadComplete()
         {
             base.LoadComplete();
+
+            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
+            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
+            RenakoAudioManager.Track?.Stop();
 
             fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
             fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };

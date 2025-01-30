@@ -37,8 +37,6 @@ public partial class RenakoAudioManager : CompositeDrawable
 
         trackStore = audioManagerSource.Tracks;
         audioManager = audioManagerSource;
-
-        changeTrackOnBeatmapSetChanged(null, workingBeatmap.BeatmapSet);
     }
 
     /// <summary>

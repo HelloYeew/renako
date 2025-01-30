@@ -6,6 +6,7 @@ using osu.Framework.Graphics.Sprites;
 using osu.Framework.Input.Events;
 using osu.Framework.Screens;
 using osuTK;
+using Renako.Game.Audio;
 using Renako.Game.Graphics.ScreenStacks;
 
 namespace Renako.Game.Graphics.Screens;
@@ -25,6 +26,9 @@ public partial class StartScreen : RenakoScreen
 
     [Resolved]
     private LogoScreenStack logoScreenStack { get; set; }
+
+    [Resolved]
+    private RenakoAudioManager audioManager { get; set; }
 
     [BackgroundDependencyLoader]
     private void load()
@@ -68,6 +72,8 @@ public partial class StartScreen : RenakoScreen
 
         pressAnyKeyText.Delay(500).MoveToY(-0.15f, 750, Easing.OutCubic);
         Scheduler.AddDelayed(() => pressAnyKeyText.Loop(b => b.FadeTo(0.25f).FadeTo(1, 1000)).Loop(), 1250);
+
+        audioManager.Track?.Start();
     }
 
     protected override bool OnMouseDown(MouseDownEvent e)
