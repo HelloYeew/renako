@@ -1448,7 +1448,7 @@ public partial class SongSelectionScreen : RenakoScreen
                 toggleBackButton();
                 break;
 
-            case Key.Enter or Key.P:
+            case Key.Enter or Key.P or Key.Space:
                 toggleGoButton();
                 break;
 
