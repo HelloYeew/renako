@@ -19,8 +19,6 @@ public partial class RenakoAudioManager : CompositeDrawable
     private ITrackStore trackStore;
     private AudioManager audioManager;
 
-    private double mainThemeDuration;
-
     [Resolved]
     private RenakoScreenStack mainScreenStack { get; set; }
 

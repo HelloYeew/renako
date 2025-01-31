@@ -56,8 +56,6 @@ public partial class AudioVisualizer : Drawable
     /// </summary>
     private const float amplitude_dead_zone = 1f / bar_length;
 
-    private int indexOffset;
-
     /// <summary>
     /// The relative movement of bars based on input amplification. Defaults to 1.
     /// </summary>
@@ -135,7 +133,7 @@ public partial class AudioVisualizer : Drawable
 
         for (int i = 0; i < bars_per_visualiser; i++)
         {
-            float targetAmplitude = temporalAmplitudes[(i + indexOffset) % bars_per_visualiser];
+            float targetAmplitude = temporalAmplitudes[i % bars_per_visualiser];
             if (targetAmplitude > frequencyAmplitudes[i])
                 frequencyAmplitudes[i] = targetAmplitude;
         }
