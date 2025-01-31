@@ -50,7 +50,7 @@ public partial class StartScreen : RenakoScreen
                 Origin = Anchor.BottomLeft,
                 Text = DebugUtils.IsDebugBuild ? "Development build".ToUpper() : $"Version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
-                Colour = Color4Extensions.FromHex("82767E")
+                Colour = DebugUtils.IsDebugBuild ? Colour4.Red : Color4Extensions.FromHex("82767E")
             },
             rightBottomText = new SpriteText()
             {
