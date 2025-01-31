@@ -83,6 +83,7 @@ public partial class SongSelectionScreen : RenakoScreen
     private SpriteText beatmapLevelNameText;
     private Container beatmapNoteCountContainer;
     private Box beatmapNoteCountBox;
+    private LoadingSpinner loadingSpinner;
 
     private Box modeBackgroundBox;
     private Box sourceBackgroundBox;
@@ -120,6 +121,23 @@ public partial class SongSelectionScreen : RenakoScreen
     private const int default_beatmap_id = 1;
 
     public const double INTERACTION_TIMEOUT = 15000;
+
+    public SongSelectionScreen()
+    {
+        AddInternal(loadingSpinner = new LoadingSpinner()
+        {
+            Anchor = Anchor.BottomLeft,
+            Origin = Anchor.BottomLeft,
+            Size = new Vector2(50),
+            Margin = new MarginPadding()
+            {
+                Left = 20,
+                Bottom = 20
+            },
+            // Make sure the loading spinner is always on top
+            Depth = 100
+        });
+    }
 
     [BackgroundDependencyLoader]
     private void load(TextureStore textureStore, RenakoConfigManager config, AudioManager audioManager, RenakoAudioManager renakoAudioManager)
@@ -1200,6 +1218,7 @@ public partial class SongSelectionScreen : RenakoScreen
     protected override void LoadComplete()
     {
         base.LoadComplete();
+        loadingSpinner.FadeOut(500, Easing.OutQuart);
         songTitle.HideTexture();
         interactionTimer.Start();
 
