@@ -1,4 +1,5 @@
 using osu.Framework.Allocation;
+using osu.Framework.Graphics;
 using osu.Framework.Platform;
 using Renako.Game.Audio;
 using Renako.Game.Beatmaps;
@@ -42,5 +43,13 @@ public partial class RenakoGameDrawableTestScene : RenakoTestScene
         Add(LogoScreenStack);
         Add(SettingsScreenStack);
         Add(AudioManager);
+        AddStep("hide background", () => BackgroundScreenStack.FadeOut(250));
+        AddStep("show background", () => BackgroundScreenStack.FadeIn(250));
+    }
+
+    protected override void LoadComplete()
+    {
+        base.LoadComplete();
+        ChangeChildDepth(BackgroundScreenStack, 100);
     }
 }

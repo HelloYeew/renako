@@ -27,6 +27,7 @@ public partial class TestSceneAudioVisualizer : RenakoGameDrawableTestScene
         audioManager.Track.Looping = true;
         audioManager.Track.Start();
         Add(audioVisualizer = new AudioVisualizer()
+
         {
             Anchor = Anchor.Centre,
             Origin = Anchor.Centre,
