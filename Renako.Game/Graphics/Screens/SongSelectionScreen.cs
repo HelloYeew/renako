@@ -1024,28 +1024,6 @@ public partial class SongSelectionScreen : RenakoScreen
                 audioVisualizer.ChangeTrack(renakoAudioManager.Track);
                 audioVisualizer.ChangeSpeedByBpm(item.NewValue.BPM == 0 ? 120 : item.NewValue.BPM);
             }
-
-            // Update left-top corner animation
-
-            modeBackgroundBox.ClearTransforms();
-            songTitle.BackgroundBox.ClearTransforms();
-            sourceBackgroundBox.ClearTransforms();
-            songInfoBackgroundBox.ClearTransforms();
-            beatmapInfoBox.ClearTransforms();
-
-            modeBackgroundBox.Colour = Color4Extensions.FromHex("E0BCD5");
-            songTitle.BackgroundBox.Colour = Color4Extensions.FromHex("F2DFE9");
-            sourceBackgroundBox.Colour = Color4Extensions.FromHex("E0BCD5");
-            songInfoBackgroundBox.Colour = Color4Extensions.FromHex("BEB6BA");
-            beatmapInfoBox.Colour = Color4Extensions.FromHex("BEB6BA");
-
-            double flashDuration = 60000 / item.NewValue.BPM;
-
-            modeBackgroundBox.FlashColour(Color4Extensions.FromHex("f7f0f4"), flashDuration, Easing.OutCirc).Delay(flashDuration).Loop();
-            songTitle.BackgroundBox.Delay(flashDuration / 10).FlashColour(Color4Extensions.FromHex("f7f0f4"), flashDuration, Easing.OutCirc).Delay(flashDuration * 0.9).Loop();
-            sourceBackgroundBox.Delay(flashDuration / 5).FlashColour(Color4Extensions.FromHex("f7f0f4"), flashDuration, Easing.OutCirc).Delay(flashDuration * 0.8).Loop();
-            songInfoBackgroundBox.Delay(flashDuration / 3.33).FlashColour(Color4Extensions.FromHex("f7f0f4"), flashDuration, Easing.OutCirc).Delay(flashDuration * 0.7).Loop();
-            beatmapInfoBox.Delay(flashDuration / 2.5).FlashColour(Color4Extensions.FromHex("f7f0f4"), flashDuration, Easing.OutCirc).Delay(flashDuration * 0.6).Loop();
         }, true);
 
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
@@ -1262,6 +1240,12 @@ public partial class SongSelectionScreen : RenakoScreen
                 Setting = RenakoSetting.PlayfieldBackgroundDim
             }
         ];
+
+        modeBackgroundBox.FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(1000).Loop();
+        songTitle.BackgroundBox.Delay(100).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(900).Loop();
+        sourceBackgroundBox.Delay(200).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(800).Loop();
+        songInfoBackgroundBox.Delay(300).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(700).Loop();
+        beatmapInfoBox.Delay(400).FlashColour(Color4Extensions.FromHex("f7f0f4"), 600, Easing.OutCirc).Delay(600).Loop();
     }
 
     protected override void Update()
