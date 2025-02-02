@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using osu.Framework.Utils;
 using Renako.Game.Utilities;
 
 namespace Renako.Game.Beatmaps;
@@ -151,6 +152,16 @@ public class BeatmapsCollection
     public Beatmap GetBeatmapByID(int id)
     {
         return Beatmaps.Find(e => e.ID == id);
+    }
+
+    /// <summary>
+    /// Get random <see cref="BeatmapSet"/> from <see cref="BeatmapSets"/> list.
+    /// </summary>
+    /// <returns>The random <see cref="BeatmapSet"/></returns>
+    public BeatmapSet GetRandomBeatmapSet()
+    {
+        // Random exclude theme song beatmap set
+        return BeatmapSets[RNG.Next(1, BeatmapSets.Count)];
     }
 
     /// <summary>

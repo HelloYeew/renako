@@ -19,6 +19,8 @@ public class RenakoConfigManager : IniConfigManager<RenakoSetting>
         SetDefault(RenakoSetting.ShowFPSCounter, false);
         SetDefault(RenakoSetting.HardwareAcceleration, true);
 
+        SetDefault(RenakoSetting.UseRenakoThemeSong, true);
+
         // Game state
         SetDefault(RenakoSetting.LatestBeatmapSetID, 0);
         SetDefault(RenakoSetting.LatestBeatmapID, 0);

@@ -280,6 +280,24 @@ public partial class SettingsContainer : FocusedOverlayContainer
                                 },
                                 new SpriteText()
                                 {
+                                    Text = "User Interface".ToUpper(),
+                                    Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "Use Renako theme song"
+                                },
+                                new SpriteText()
+                                {
+                                    Text = "On startup, play Renako theme song or use select randomly from beatmap collection.",
+                                    Font = RenakoFont.GetFont(size: 14f)
+                                },
+                                new BasicCheckbox
+                                {
+                                    Current = renakoConfigManager.GetBindable<bool>(RenakoSetting.UseRenakoThemeSong)
+                                },
+                                new SpriteText()
+                                {
                                     Text = "Audio".ToUpper(),
                                     Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 32f, RenakoFont.FontWeight.Bold),
                                 },

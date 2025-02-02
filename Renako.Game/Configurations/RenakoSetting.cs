@@ -9,6 +9,8 @@ public enum RenakoSetting
     ShowFPSCounter,
     HardwareAcceleration,
 
+    UseRenakoThemeSong,
+
     LatestBeatmapSetID,
     LatestBeatmapID,
     FirstImport,

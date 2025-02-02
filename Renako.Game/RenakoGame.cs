@@ -63,8 +63,19 @@ namespace Renako.Game
             beatmapCollectionReader.Read();
             BeatmapsCollection.SortBeatmapSetsByID();
 
-            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
-            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
+            if (LocalConfig.Get<bool>(RenakoSetting.UseRenakoThemeSong))
+            {
+                WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
+                WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
+            }
+            else
+            {
+                WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetRandomBeatmapSet();
+                Beatmap[] beatmapsList = BeatmapsCollection.GetBeatmapsFromBeatmapSet(WorkingBeatmap.BeatmapSet);
+                if (beatmapsList.Length > 0)
+                    WorkingBeatmap.Beatmap = beatmapsList[0];
+            }
+
             RenakoAudioManager.Track?.Stop();
 
             backgroundScreenStack.AdjustMaskAlpha(1);
