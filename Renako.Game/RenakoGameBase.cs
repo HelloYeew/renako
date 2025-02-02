@@ -113,10 +113,6 @@ namespace Renako.Game
         {
             base.LoadComplete();
 
-            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
-            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
-            RenakoAudioManager.Track?.Stop();
-
             fpsDisplayVisible = LocalConfig.GetBindable<bool>(RenakoSetting.ShowFPSCounter);
             fpsDisplayVisible.ValueChanged += visible => { FrameStatistics.Value = visible.NewValue ? FrameStatisticsMode.Minimal : FrameStatisticsMode.None; };
             fpsDisplayVisible.TriggerChange();

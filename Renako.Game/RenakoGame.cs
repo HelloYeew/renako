@@ -9,6 +9,7 @@ using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Framework.Threading;
+using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Database;
 using Renako.Game.Graphics.Screens;
@@ -61,6 +62,10 @@ namespace Renako.Game
 
             beatmapCollectionReader.Read();
             BeatmapsCollection.SortBeatmapSetsByID();
+
+            WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetBeatmapSetByID(BeatmapsCollection.THEME_SONG_BEATMAP_SET_ID);
+            WorkingBeatmap.Beatmap = BeatmapsCollection.GetBeatmapByID(BeatmapsCollection.THEME_SONG_BEATMAP_ID);
+            RenakoAudioManager.Track?.Stop();
 
             backgroundScreenStack.AdjustMaskAlpha(1);
             Scheduler.AddDelayed(() => backgroundScreenStack.ResetMaskAlpha(250), 3500);
