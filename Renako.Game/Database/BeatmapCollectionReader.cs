@@ -27,8 +27,9 @@ public class BeatmapCollectionReader
     {
         if (clear)
         {
-            beatmapsCollection.Beatmaps.Clear();
-            beatmapsCollection.BeatmapSets.Clear();
+            // Clear beatmap that have ID more or equal than 1 (exclude theme song beatmap)
+            beatmapsCollection.Beatmaps.RemoveAll(e => e.ID >= 1);
+            beatmapsCollection.BeatmapSets.RemoveAll(e => e.ID >= 1);
         }
 
         // Get list of folder in beatmap folder
