@@ -1163,15 +1163,13 @@ public partial class SongSelectionScreen : RenakoScreen
 
         #region Setup working beatmap
 
-        workingBeatmap.BeatmapSet = config.Get<int>(RenakoSetting.LatestBeatmapSetID) == 0 ? beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id) : beatmapsCollection.GetBeatmapSetByID(config.Get<int>(RenakoSetting.LatestBeatmapSetID));
-        workingBeatmap.Beatmap = config.Get<int>(RenakoSetting.LatestBeatmapID) == 0 ? beatmapsCollection.GetBeatmapByID(default_beatmap_id) : beatmapsCollection.GetBeatmapByID(config.Get<int>(RenakoSetting.LatestBeatmapID));
-
         if (workingBeatmap.BeatmapSet == null || workingBeatmap.BeatmapSet.Hide)
         {
-            workingBeatmap.BeatmapSet = beatmapsCollection.GetBeatmapSetByID(default_beatmapset_id);
-        }
+            workingBeatmap.BeatmapSet = beatmapsCollection.GetRandomBeatmapSet();
+            var beatmaps = beatmapsCollection.GetBeatmapsFromBeatmapSet(workingBeatmap.BeatmapSet);
 
-        workingBeatmap.Beatmap ??= beatmapsCollection.GetBeatmapByID(default_beatmap_id);
+            workingBeatmap.Beatmap = beatmaps.Length >= 1 ? beatmaps[0] : null;
+        }
 
         foreach (BeatmapSet beatmapSet in beatmapsCollection.BeatmapSets)
         {
