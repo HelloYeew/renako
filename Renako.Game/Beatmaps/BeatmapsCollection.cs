@@ -108,6 +108,16 @@ public class BeatmapsCollection
     }
 
     /// <summary>
+    /// Get the first <see cref="Beatmap"/> from the <see cref="BeatmapSet"/> for set as default.
+    /// </summary>
+    /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the <see cref="Beatmap"/> from</param>
+    /// <returns>The first <see cref="Beatmap"/> from the <see cref="BeatmapSet"/></returns>
+    public Beatmap GetFirstBeatmapFromBeatmapSet(BeatmapSet beatmapSet)
+    {
+        return GetBeatmapsFromBeatmapSet(beatmapSet, false).FirstOrDefault();
+    }
+
+    /// <summary>
     /// Get the min and max difficulty rating from <see cref="Beatmap"/> in the <see cref="BeatmapSet"/>
     /// </summary>
     /// <param name="beatmapSet">The <see cref="BeatmapSet"/> to get the difficulty rating from</param>

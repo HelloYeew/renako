@@ -71,9 +71,7 @@ namespace Renako.Game
             else
             {
                 WorkingBeatmap.BeatmapSet = BeatmapsCollection.GetRandomBeatmapSet();
-                Beatmap[] beatmapsList = BeatmapsCollection.GetBeatmapsFromBeatmapSet(WorkingBeatmap.BeatmapSet);
-                if (beatmapsList.Length > 0)
-                    WorkingBeatmap.Beatmap = beatmapsList[0];
+                WorkingBeatmap.Beatmap = BeatmapsCollection.GetFirstBeatmapFromBeatmapSet(WorkingBeatmap.BeatmapSet);
             }
 
             RenakoAudioManager.Track?.Stop();

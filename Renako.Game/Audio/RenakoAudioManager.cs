@@ -28,6 +28,9 @@ public partial class RenakoAudioManager : CompositeDrawable
     [Resolved]
     private GameHost host { get; set; }
 
+    [Resolved]
+    private BeatmapManager beatmapManager { get; set; }
+
     [BackgroundDependencyLoader]
     private void load(AudioManager audioManagerSource)
     {
@@ -88,6 +91,11 @@ public partial class RenakoAudioManager : CompositeDrawable
         }
 
         Track.Start();
+
+        Track.Completed += () =>
+        {
+            beatmapManager.NextBeatmapSet();
+        };
     }
 
     /// <summary>

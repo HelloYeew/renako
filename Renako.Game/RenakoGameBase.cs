@@ -51,6 +51,8 @@ namespace Renako.Game
 
         protected WorkingBeatmap WorkingBeatmap;
 
+        protected BeatmapManager BeatmapManager;
+
         protected RenakoGameBase()
         {
             // Ensure game and tests scale with window size and screen DPI.
@@ -105,6 +107,8 @@ namespace Renako.Game
             dependencies.CacheAs(LocalConfig);
             dependencies.CacheAs(BeatmapsCollection = new BeatmapsCollection());
             dependencies.CacheAs(WorkingBeatmap = new WorkingBeatmap());
+            dependencies.CacheAs(BeatmapManager = new BeatmapManager());
+            Add(BeatmapManager);
             dependencies.CacheAs(this);
         }
 
