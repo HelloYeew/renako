@@ -33,6 +33,30 @@ public partial class RenakoAudioManager : CompositeDrawable
     {
         workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged(e => changeTrackOnBeatmapSetChanged(e.OldValue, e.NewValue), true);
 
+        mainScreenStack.BindableCurrentScreen.BindValueChanged(e =>
+        {
+            if (e.NewValue is SongSelectionScreen)
+            {
+                if (Track != null)
+                {
+                    Track.Looping = true;
+
+                    if (workingBeatmap.BeatmapSet != null)
+                    {
+                        if (Track != null) Track.RestartPoint = workingBeatmap.BeatmapSet.PreviewTime;
+                    }
+                }
+            }
+            else
+            {
+                if (Track != null)
+                {
+                    Track.Looping = false;
+                    Track.RestartPoint = 0;
+                }
+            }
+        }, true);
+
         trackStore = audioManagerSource.Tracks;
         audioManager = audioManagerSource;
     }

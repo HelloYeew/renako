@@ -13,6 +13,7 @@ using osuTK.Graphics;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Graphics.Drawables;
+using Renako.Game.Graphics.Screens;
 using Renako.Game.Utilities;
 
 namespace Renako.Game.Graphics.ScreenStacks;
@@ -40,8 +41,11 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
     [Resolved]
     private GameHost host { get; set; }
 
+    [Resolved]
+    private RenakoConfigManager config { get; set; }
+
     [BackgroundDependencyLoader]
-    private void load(TextureStore textureStore, RenakoConfigManager configManager)
+    private void load(TextureStore textureStore)
     {
         this.textureStore = textureStore;
 
@@ -89,6 +93,35 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         });
 
         workingBeatmap.BindableWorkingBeatmapSet.BindValueChanged((e) => changeBackgroundByBeatmapSet(e.OldValue, e.NewValue), true);
+
+        var disableVideoBackground = config.GetBindable<bool>(RenakoSetting.DisableVideoPreview);
+        disableVideoBackground.BindValueChanged((e) =>
+        {
+            if (e.NewValue)
+                HideBackgroundVideo(true);
+            else
+                changeBackgroundByBeatmapSet(null, workingBeatmap.BeatmapSet);
+        }, true);
+
+        mainScreenStack.BindableCurrentScreen.BindValueChanged((e) =>
+        {
+            if (e.NewValue is SongSelectionScreen)
+            {
+                if (video != null)
+                {
+                    video.StartTime = workingBeatmap.BeatmapSet.PreviewTime;
+                    video.LoopToStartTime = true;
+                }
+            }
+            else
+            {
+                if (video != null)
+                {
+                    video.StartTime = 0;
+                    video.LoopToStartTime = false;
+                }
+            }
+        }, true);
     }
 
     /// <summary>
@@ -127,6 +160,15 @@ public partial class RenakoBackgroundScreenStack : ScreenStack
         }
 
         ChangeBackground(newBackgroundTexture ?? fallbackBeatmapBackground);
+
+        if (newBeatmapSet.HasVideo && newBeatmapSet.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
+        {
+            ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(newBeatmapSet), mainScreenStack.CurrentScreen is SongSelectionScreen ? newBeatmapSet.PreviewTime : 0, newBeatmapSet.TotalLength);
+        }
+        else
+        {
+            HideBackgroundVideo(true);
+        }
     }
 
     /// <summary>

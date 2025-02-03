@@ -989,16 +989,6 @@ public partial class SongSelectionScreen : RenakoScreen
                 workingBeatmap.Beatmap = beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue)[0];
             }
 
-            // Video background
-            if (item.NewValue.HasVideo && item.NewValue.VideoPath != null && !config.Get<bool>(RenakoSetting.DisableVideoPreview))
-            {
-                backgroundScreenStack.ChangeBackgroundVideo(BeatmapSetUtility.GetVideoPath(item.NewValue), item.NewValue.PreviewTime, item.NewValue.TotalLength);
-            }
-            else
-            {
-                backgroundScreenStack.HideBackgroundVideo(true);
-            }
-
             // Disable the right bottom button if there is no beatmap in the beatmap set.
             if (beatmapsCollection.GetBeatmapsFromBeatmapSet(item.NewValue).Length < 1)
             {

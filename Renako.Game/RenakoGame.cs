@@ -79,7 +79,11 @@ namespace Renako.Game
             RenakoAudioManager.Track?.Stop();
 
             backgroundScreenStack.AdjustMaskAlpha(1);
-            Scheduler.AddDelayed(() => backgroundScreenStack.ResetMaskAlpha(250), 3500);
+            Scheduler.AddDelayed(() =>
+            {
+                backgroundScreenStack.SeekBackgroundVideo(RenakoAudioManager.Track?.CurrentTime ?? 0);
+                backgroundScreenStack.ResetMaskAlpha(250);
+            }, 3500);
 
             mainScreenStack.Push(new WarningScreen());
         }
