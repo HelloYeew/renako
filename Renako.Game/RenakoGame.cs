@@ -9,6 +9,7 @@ using osu.Framework.Logging;
 using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osu.Framework.Threading;
+using osuTK.Input;
 using Renako.Game.Beatmaps;
 using Renako.Game.Configurations;
 using Renako.Game.Database;
@@ -121,11 +122,19 @@ namespace Renako.Game
 
         protected override bool OnKeyDown(KeyDownEvent e)
         {
-            // TODO: Add notification for refresh
-            if (e.Key == osuTK.Input.Key.F5)
+            switch (e.Key)
             {
-                refreshBeatmapCollection();
-                return true;
+                case Key.F5:
+                    refreshBeatmapCollection();
+                    return true;
+
+                case Key.F6:
+                    BeatmapManager.PreviousBeatmapSet();
+                    return true;
+
+                case Key.F7:
+                    BeatmapManager.NextBeatmapSet();
+                    return true;
             }
 
             return base.OnKeyDown(e);

@@ -41,4 +41,16 @@ public partial class BeatmapManager : CompositeDrawable
             workingBeatmap.Beatmap = beatmapsCollection.GetFirstBeatmapFromBeatmapSet(workingBeatmap.BeatmapSet);
         }
     }
+
+    /// <summary>
+    /// Set the working beatmap to the previous beatmap in the collection.
+    /// </summary>
+    public void PreviousBeatmapSet()
+    {
+        int currentBeatmapSetIndex = beatmapsCollection.BeatmapSets.IndexOf(workingBeatmap.BeatmapSet);
+
+        workingBeatmap.BeatmapSet = currentBeatmapSetIndex == 0 ? beatmapsCollection.BeatmapSets[beatmapsCollection.BeatmapSets.Count - 1] : beatmapsCollection.BeatmapSets[currentBeatmapSetIndex - 1];
+
+        workingBeatmap.Beatmap = beatmapsCollection.GetFirstBeatmapFromBeatmapSet(workingBeatmap.BeatmapSet);
+    }
 }
