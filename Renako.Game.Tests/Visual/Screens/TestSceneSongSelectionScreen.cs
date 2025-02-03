@@ -36,6 +36,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Test]
     public void TestSongSelectionScreen()
     {
+        AddStep("set working beatmap", () => workingBeatmap.BeatmapSet = beatmapsCollection.BeatmapSets.First());
         AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
         WaitForScreen();
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
@@ -45,6 +46,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Test]
     public void TestSongSelectionScreenBasicInteraction()
     {
+        AddStep("set working beatmap", () => workingBeatmap.BeatmapSet = beatmapsCollection.BeatmapSets.First());
         AddStep("add song selection screen", () => MainScreenStack.Push(new SongSelectionScreen()));
         WaitForScreen();
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
@@ -58,6 +60,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Test]
     public void TestSongSelectionScreenWithNoBeatmapSets()
     {
+        AddStep("set working beatmap", () => workingBeatmap.BeatmapSet = beatmapsCollection.BeatmapSets.First());
         AddStep("clear beatmap sets", () => beatmapsCollection.BeatmapSets.Clear());
         AddStep("add song selection screen", rerunScreen);
         AddAssert("screen loaded", () => MainScreenStack.CurrentScreen is SongSelectionScreen);
@@ -66,6 +69,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Test]
     public void TestSongSelectionScreenBeatmapSetWithNoBeatmaps()
     {
+        AddStep("set working beatmap", () => workingBeatmap.BeatmapSet = beatmapsCollection.BeatmapSets.First());
         AddStep("clear collection", () => beatmapsCollection.Clear());
         AddStep("add dummy blank beatmapset", () => beatmapsCollection.BeatmapSets.Add(new BeatmapTestUtility().GetLocalBeatmapSets().First()));
         AddAssert("beatmapset added", () => beatmapsCollection.BeatmapSets.Count > 0);
@@ -80,6 +84,7 @@ public partial class TestSceneSongSelectionScreen : RenakoGameDrawableManualnput
     [Test]
     public void TestSongSelectionScreenHaveOldWorkingBeatmapSet()
     {
+        AddStep("set working beatmap", () => workingBeatmap.BeatmapSet = beatmapsCollection.BeatmapSets.First());
         AddStep("set old working beatmap in config", () => configManager.SetValue(RenakoSetting.LatestBeatmapSetID, 3));
         AddStep("add song selection screen", rerunScreen);
         WaitForScreen();
