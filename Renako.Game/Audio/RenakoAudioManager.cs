@@ -82,8 +82,6 @@ public partial class RenakoAudioManager : CompositeDrawable
         if (Track == null)
             return;
 
-        Track.Looping = true;
-
         if (mainScreenStack.CurrentScreen is SongSelectionScreen)
         {
             Track.Seek(newBeatmapSet.PreviewTime);
