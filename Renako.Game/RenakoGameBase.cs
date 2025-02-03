@@ -2,7 +2,6 @@ using osu.Framework.Allocation;
 using osu.Framework.Audio;
 using osu.Framework.Bindables;
 using osu.Framework.Configuration;
-using osu.Framework.Development;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Performance;
@@ -128,9 +127,7 @@ namespace Renako.Game
         {
             base.SetHost(host);
             Storage = host.Storage;
-            LocalConfig ??= DebugUtils.IsDebugBuild
-                ? new DevelopmentRenakoConfigManager(Storage)
-                : new RenakoConfigManager(Storage);
+            LocalConfig = new RenakoConfigManager(Storage);
         }
 
         protected override IReadOnlyDependencyContainer CreateChildDependencies(IReadOnlyDependencyContainer parent) => dependencies = new DependencyContainer(base.CreateChildDependencies(parent));
