@@ -86,6 +86,7 @@ public partial class RenakoAudioManager : CompositeDrawable
         {
             Track.Seek(newBeatmapSet.PreviewTime);
             Track.RestartPoint = newBeatmapSet.PreviewTime;
+            Track.Looping = true;
         }
 
         Track.Start();

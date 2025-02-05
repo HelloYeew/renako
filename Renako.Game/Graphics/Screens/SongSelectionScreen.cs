@@ -1014,6 +1014,9 @@ public partial class SongSelectionScreen : RenakoScreen
                 audioVisualizer.ChangeTrack(renakoAudioManager.Track);
                 audioVisualizer.ChangeSpeedByBpm(item.NewValue.BPM == 0 ? 120 : item.NewValue.BPM);
             }
+
+            // Update beatmap swiper index
+            beatmapSetSwiper.SetItem(workingBeatmap.BeatmapSet);
         }, true);
 
         workingBeatmap.BindableWorkingBeatmap.BindValueChanged(item =>
