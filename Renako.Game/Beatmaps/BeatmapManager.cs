@@ -34,6 +34,7 @@ public partial class BeatmapManager : CompositeDrawable
         }
         else
         {
+            // TODO: Avoid theme song
             int currentBeatmapSetIndex = beatmapsCollection.BeatmapSets.IndexOf(workingBeatmap.BeatmapSet);
 
             workingBeatmap.BeatmapSet = currentBeatmapSetIndex == beatmapsCollection.BeatmapSets.Count - 1 ? beatmapsCollection.BeatmapSets[0] : beatmapsCollection.BeatmapSets[currentBeatmapSetIndex + 1];

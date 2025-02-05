@@ -124,6 +124,10 @@ namespace Renako.Game
         {
             switch (e.Key)
             {
+                case Key.F2:
+                    BeatmapManager.NextBeatmapSet(true);
+                    return true;
+
                 case Key.F5:
                     refreshBeatmapCollection();
                     return true;
@@ -133,6 +137,10 @@ namespace Renako.Game
                     return true;
 
                 case Key.F7:
+                    // TODO: Pause
+                    return true;
+
+                case Key.F8:
                     BeatmapManager.NextBeatmapSet();
                     return true;
             }
