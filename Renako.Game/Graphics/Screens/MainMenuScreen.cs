@@ -11,6 +11,7 @@ using osu.Framework.Platform;
 using osu.Framework.Screens;
 using osuTK;
 using osuTK.Input;
+using Renako.Game.Graphics.Drawables;
 using Renako.Game.Graphics.ScreenStacks;
 using Renako.Game.Graphics.UserInterface;
 
@@ -23,6 +24,7 @@ public partial class MainMenuScreen : RenakoScreen
 {
     private FillFlowContainer menuContainer;
     private FillFlowContainer reverseMenuContainer;
+    private CurrentTrackText currentTrackText;
     private Sample clickSample;
 
     [Resolved]
@@ -131,6 +133,12 @@ public partial class MainMenuScreen : RenakoScreen
                 Text = DebugUtils.IsDebugBuild ? "Development build".ToUpper() : $"Version {System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}".ToUpper(),
                 Font = RenakoFont.GetFont(RenakoFont.Typeface.JosefinSans, 24f),
                 Colour = DebugUtils.IsDebugBuild ? Colour4.Red : Color4Extensions.FromHex("82767E")
+            },
+            currentTrackText = new CurrentTrackText
+            {
+                Anchor = Anchor.TopRight,
+                Origin = Anchor.TopRight,
+                Margin = new MarginPadding(20)
             }
         };
 

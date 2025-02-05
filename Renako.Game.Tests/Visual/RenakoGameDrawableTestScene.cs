@@ -34,6 +34,9 @@ public partial class RenakoGameDrawableTestScene : RenakoTestScene
     [Cached]
     public readonly BeatmapsCollection BeatmapsCollection = new BeatmapsCollection();
 
+    [Cached]
+    public readonly BeatmapManager BeatmapManager = new BeatmapManager();
+
     [BackgroundDependencyLoader]
     private void load()
     {
