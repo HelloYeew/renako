@@ -46,23 +46,26 @@ public partial class CurrentTrackText : CompositeDrawable
         {
             if (e.NewValue == null) return;
 
-            // Clear all scheduled transforms
-            Scheduler.CancelDelayedTasks();
-            nameText.ClearTransforms();
-            artistText.ClearTransforms();
-
-            nameText.Alpha = 1;
-            artistText.Alpha = 1;
-
-            bool useUnicode = configManager.Get<bool>(RenakoSetting.UseUnicodeInfo);
-            nameText.Text = useUnicode ? e.NewValue.TitleUnicode : e.NewValue.Title;
-            artistText.Text = useUnicode ? e.NewValue.ArtistUnicode : e.NewValue.Artist;
-
-            Scheduler.AddDelayed(() =>
+            Scheduler.Add(() =>
             {
-                nameText.FadeOut(500);
-                artistText.FadeOut(500);
-            }, 3000);
+                // Clear all scheduled transforms
+                Scheduler.CancelDelayedTasks();
+                nameText.ClearTransforms();
+                artistText.ClearTransforms();
+
+                nameText.Alpha = 1;
+                artistText.Alpha = 1;
+
+                bool useUnicode = configManager.Get<bool>(RenakoSetting.UseUnicodeInfo);
+                nameText.Text = useUnicode ? e.NewValue.TitleUnicode : e.NewValue.Title;
+                artistText.Text = useUnicode ? e.NewValue.ArtistUnicode : e.NewValue.Artist;
+
+                Scheduler.AddDelayed(() =>
+                {
+                    nameText.FadeOut(500);
+                    artistText.FadeOut(500);
+                }, 3000);
+            });
         }, true);
 
         useUnicodeInfoSettings = configManager.GetBindable<bool>(RenakoSetting.UseUnicodeInfo);
@@ -71,8 +74,11 @@ public partial class CurrentTrackText : CompositeDrawable
         {
             if (workingBeatmap.BeatmapSet == null) return;
 
-            nameText.Text = e.NewValue ? workingBeatmap.BeatmapSet.TitleUnicode : workingBeatmap.BeatmapSet.Title;
-            artistText.Text = e.NewValue ? workingBeatmap.BeatmapSet.ArtistUnicode : workingBeatmap.BeatmapSet.Artist;
+            Scheduler.Add(() =>
+            {
+                nameText.Text = e.NewValue ? workingBeatmap.BeatmapSet.TitleUnicode : workingBeatmap.BeatmapSet.Title;
+                artistText.Text = e.NewValue ? workingBeatmap.BeatmapSet.ArtistUnicode : workingBeatmap.BeatmapSet.Artist;
+            });
         };
     }
 }
